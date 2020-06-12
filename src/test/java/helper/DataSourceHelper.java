@@ -13,9 +13,8 @@ public abstract class DataSourceHelper {
     @BeforeEach
     void init() {
         String url = "jdbc:h2:mem:UNIT_TEST;" +
-            "MODE=MYSQL;IGNORECASE=TRUE;" +
-            "INIT=RUNSCRIPT FROM 'classpath.sql'\\;" +
-            "RUNSCRIPT FROM 'src/main/resources/db/migration/V002__Load_dataset.sql'\\;";
+            "MODE=PostgreSQL;" +
+            "INIT=RUNSCRIPT FROM 'classpath:schema.sql'\\;";
 
         dataSource.setUrl(url);
         dataSource.setMaxTotal(1);
