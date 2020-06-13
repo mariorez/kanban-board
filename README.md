@@ -1,6 +1,6 @@
 # Kanban Board Project
 
-## Links
+## Links de estudo
 
 https://reflectoring.io/spring-hexagonal/
 
