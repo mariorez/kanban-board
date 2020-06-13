@@ -3,7 +3,7 @@
 **Videos deste projeto**: https://www.twitch.tv/mariorez
 
 ## Repositorio dos Testes de Integração com KARATE DSL
-https://github.com/mariorez/kanban-board
+https://github.com/mariorez/kanban-board-test
 
 ## Links de estudo
 
