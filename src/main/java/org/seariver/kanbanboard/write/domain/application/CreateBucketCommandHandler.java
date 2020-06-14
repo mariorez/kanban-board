@@ -10,7 +10,6 @@ public class CreateBucketCommandHandler {
     private final BucketRepository repository;
 
     public CreateBucketCommandHandler(BucketRepository repository) {
-
         this.repository = repository;
     }
 
