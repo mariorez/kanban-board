@@ -5,6 +5,13 @@
 ## Repositorio dos Testes de Integração com KARATE DSL
 https://github.com/mariorez/kanban-board-test
 
+## STACK
+
+- Java 14
+- Spring Boot
+- PostgreSQL
+- Swagger API
+
 ## Links de estudo
 
 ### LIVE 01

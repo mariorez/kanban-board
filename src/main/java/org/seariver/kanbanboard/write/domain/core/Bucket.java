@@ -4,13 +4,11 @@ import java.util.Objects;
 import java.util.UUID;
 
 public class Bucket {
+
     private int id;
     private UUID uuid;
     private int position;
     private String name;
-
-    public Bucket() {
-    }
 
     public int getId() {
         return id;
