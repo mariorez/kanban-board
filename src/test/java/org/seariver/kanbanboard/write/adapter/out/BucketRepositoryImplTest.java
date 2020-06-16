@@ -66,16 +66,14 @@ class BucketRepositoryImplTest extends DataSourceHelper {
     private static Stream<Arguments> validDataProvider() {
         return Stream.of(
             arguments(UUID.randomUUID(), 1, "TODO"),
-            arguments(UUID.randomUUID(), 2, "DOING"),
-            arguments(UUID.randomUUID(), 3, "DONE")
+            arguments(UUID.randomUUID(), 2, "EXISTENT")
         );
     }
 
     private static Stream<Arguments> invalidDataProvider() {
         return Stream.of(
             arguments(UUID.fromString("3731c747-ea27-42e5-a52b-1dfbfa9617db"), 1, "TODO"),
-            arguments(UUID.randomUUID(), 100, "DOING"),
-            arguments(UUID.randomUUID(), 2, "EXISTENT")
+            arguments(UUID.randomUUID(), 100, "DOING")
         );
     }
 }
