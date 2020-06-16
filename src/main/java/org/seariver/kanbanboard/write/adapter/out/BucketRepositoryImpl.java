@@ -2,6 +2,8 @@ package org.seariver.kanbanboard.write.adapter.out;
 
 import org.seariver.kanbanboard.write.domain.core.Bucket;
 import org.seariver.kanbanboard.write.domain.core.BucketRepository;
+import org.seariver.kanbanboard.write.domain.exception.DuplicatedDataException;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -22,16 +24,21 @@ public class BucketRepositoryImpl implements BucketRepository {
     @Override
     public void create(Bucket bucket) {
 
-        String sql = """
-            INSERT INTO bucket(uuid, position, name)
-            values (:uuid, :position, :name)""";
+        try {
+            String sql = """
+                INSERT INTO bucket(uuid, position, name)
+                values (:uuid, :position, :name)""";
 
-        MapSqlParameterSource parameters = new MapSqlParameterSource()
-            .addValue("uuid", bucket.getUuid())
-            .addValue("position", bucket.getPosition())
-            .addValue("name", bucket.getName());
+            MapSqlParameterSource parameters = new MapSqlParameterSource()
+                .addValue("uuid", bucket.getUuid())
+                .addValue("position", bucket.getPosition())
+                .addValue("name", bucket.getName());
 
-        jdbcTemplate.update(sql, parameters);
+            jdbcTemplate.update(sql, parameters);
+
+        } catch (DuplicateKeyException exception) {
+            throw new DuplicatedDataException(exception.getMessage(), exception);
+        }
     }
 
     public Optional<Bucket> findByUuid(UUID id) {
@@ -53,7 +60,6 @@ public class BucketRepositoryImpl implements BucketRepository {
                     setUpdatedAt(resultSet.getTimestamp("updated_at").toLocalDateTime())
                 );
             }
-
             return Optional.empty();
         });
     }

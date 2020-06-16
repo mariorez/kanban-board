@@ -2,6 +2,7 @@ package org.seariver.kanbanboard.write.adapter.in;
 
 import org.seariver.kanbanboard.write.domain.application.CreateBucketCommand;
 import org.seariver.kanbanboard.write.domain.application.CreateBucketCommandHandler;
+import org.seariver.kanbanboard.write.domain.exception.DuplicatedDataException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -25,7 +26,11 @@ public class BucketController {
     @PostMapping(consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity create(@Validated @RequestBody CreateBucketCommand command) throws URISyntaxException {
 
-        handler.handle(command);
+        try {
+            handler.handle(command);
+        } catch (DuplicatedDataException exception) {
+            return ResponseEntity.badRequest().body(exception.getMessage());
+        }
 
         return ResponseEntity.created(new URI("")).build();
     }

@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.seariver.kanbanboard.write.domain.exception.DuplicatedDataException;
 import org.seariver.kanbanboard.write.domain.core.Bucket;
 import org.seariver.kanbanboard.write.domain.core.BucketRepository;
 
@@ -52,7 +53,8 @@ class BucketRepositoryImplTest extends DataSourceHelper {
     @MethodSource("invalidDataProvider")
     void GIVEN_AlreadyExistentBucket_MUST_ThrowException(UUID id,
                                                          int position,
-                                                         String name) {
+                                                         String name,
+                                                         String errorField) {
         // given
         var expected = new Bucket()
             .setUuid(id)
@@ -60,7 +62,10 @@ class BucketRepositoryImplTest extends DataSourceHelper {
             .setName(name);
 
         // then
-        assertThrows(RuntimeException.class, () -> repository.create(expected));
+        DuplicatedDataException exception = assertThrows(DuplicatedDataException.class, () -> repository.create(expected));
+
+        // when
+        assertThat(exception.getMessage()).isEqualTo("Invalid duplicated data: " + errorField);
     }
 
     private static Stream<Arguments> validDataProvider() {
@@ -72,8 +77,8 @@ class BucketRepositoryImplTest extends DataSourceHelper {
 
     private static Stream<Arguments> invalidDataProvider() {
         return Stream.of(
-            arguments(UUID.fromString("3731c747-ea27-42e5-a52b-1dfbfa9617db"), 1, "TODO"),
-            arguments(UUID.randomUUID(), 100, "DOING")
+            arguments(UUID.fromString("3731c747-ea27-42e5-a52b-1dfbfa9617db"), 1, "TODO", "id"),
+            arguments(UUID.randomUUID(), 100, "DOING", "position")
         );
     }
 }
