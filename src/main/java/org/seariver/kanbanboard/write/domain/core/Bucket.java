@@ -1,6 +1,6 @@
 package org.seariver.kanbanboard.write.domain.core;
 
-import java.util.Objects;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 public class Bucket {
@@ -9,6 +9,8 @@ public class Bucket {
     private UUID uuid;
     private int position;
     private String name;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
     public int getId() {
         return id;
@@ -46,18 +48,21 @@ public class Bucket {
         return this;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Bucket bucket = (Bucket) o;
-        return position == bucket.position &&
-            uuid.equals(bucket.uuid) &&
-            name.equals(bucket.name);
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(uuid, position, name);
+    public Bucket setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+        return this;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public Bucket setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+        return this;
     }
 }

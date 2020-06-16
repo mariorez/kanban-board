@@ -36,7 +36,7 @@ public class BucketRepositoryImpl implements BucketRepository {
 
     public Optional<Bucket> findByUuid(UUID id) {
         String sql = """
-            SELECT uuid, position, name
+            SELECT uuid, position, name, created_at, updated_at
             FROM bucket
             WHERE uuid = :uuid""";
 
@@ -48,7 +48,9 @@ public class BucketRepositoryImpl implements BucketRepository {
                 return Optional.of(new Bucket().
                     setUuid(UUID.fromString(resultSet.getString("uuid"))).
                     setPosition(resultSet.getInt("position")).
-                    setName(resultSet.getString("name"))
+                    setName(resultSet.getString("name")).
+                    setCreatedAt(resultSet.getTimestamp("created_at").toLocalDateTime()).
+                    setUpdatedAt(resultSet.getTimestamp("updated_at").toLocalDateTime())
                 );
             }
 
