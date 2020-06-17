@@ -18,7 +18,7 @@ import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 class BucketRepositoryImplTest extends DataSourceHelper {
 
-    private BucketRepository repository;
+    private BucketRepositoryImpl repository;
 
     @BeforeEach
     void setup() {
@@ -65,7 +65,7 @@ class BucketRepositoryImplTest extends DataSourceHelper {
         DuplicatedDataException exception = assertThrows(DuplicatedDataException.class, () -> repository.create(expected));
 
         // when
-        assertThat(exception.getMessage()).isEqualTo("Invalid duplicated data: " + errorField);
+        assertThat(exception.getMessage()).isEqualTo("Invalid duplicated data" + errorField);
     }
 
     private static Stream<Arguments> validDataProvider() {
@@ -77,8 +77,9 @@ class BucketRepositoryImplTest extends DataSourceHelper {
 
     private static Stream<Arguments> invalidDataProvider() {
         return Stream.of(
-            arguments(UUID.fromString("3731c747-ea27-42e5-a52b-1dfbfa9617db"), 1, "TODO", "id"),
-            arguments(UUID.randomUUID(), 100, "DOING", "position")
+            arguments(UUID.fromString("3731c747-ea27-42e5-a52b-1dfbfa9617db"), 1, "TODO", " - id"),
+            arguments(UUID.randomUUID(), 100, "DOING", " - position"),
+            arguments(UUID.fromString("3731c747-ea27-42e5-a52b-1dfbfa9617db"), 100, "WHATEVER", " - id - position")
         );
     }
 }
