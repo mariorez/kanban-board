@@ -17,13 +17,15 @@ import java.net.URISyntaxException;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
-@RequestMapping("v1/buckets")
+@RequestMapping
 public class BucketController {
+
+    public static final String BUCKETS_PATH = "v1/buckets";
 
     @Autowired
     private CreateBucketCommandHandler handler;
 
-    @PostMapping(consumes = APPLICATION_JSON_VALUE)
+    @PostMapping(path = BUCKETS_PATH, consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity create(@Validated @RequestBody CreateBucketCommand command) throws URISyntaxException {
 
         try {
@@ -32,6 +34,8 @@ public class BucketController {
             return ResponseEntity.badRequest().body(exception.getMessage());
         }
 
-        return ResponseEntity.created(new URI("")).build();
+        return ResponseEntity
+            .created(new URI(String.format("/%s/%s", BUCKETS_PATH, command.id())))
+            .build();
     }
 }
