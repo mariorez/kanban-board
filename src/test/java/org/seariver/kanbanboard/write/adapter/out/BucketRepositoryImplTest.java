@@ -7,8 +7,8 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.seariver.kanbanboard.write.domain.exception.DuplicatedDataException;
 import org.seariver.kanbanboard.write.domain.core.Bucket;
-import org.seariver.kanbanboard.write.domain.core.BucketRepository;
 
+import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Stream;
 
@@ -54,7 +54,7 @@ class BucketRepositoryImplTest extends DataSourceHelper {
     void GIVEN_AlreadyExistentBucket_MUST_ThrowException(UUID id,
                                                          int position,
                                                          String name,
-                                                         String errorField) {
+                                                         Map<String, Object> expectedError) {
         // given
         var expected = new Bucket()
             .setUuid(id)
@@ -65,7 +65,8 @@ class BucketRepositoryImplTest extends DataSourceHelper {
         DuplicatedDataException exception = assertThrows(DuplicatedDataException.class, () -> repository.create(expected));
 
         // when
-        assertThat(exception.getMessage()).isEqualTo("Invalid duplicated data" + errorField);
+        assertThat(exception.getMessage()).isEqualTo("Invalid duplicated data");
+        assertThat(exception.getErrors()).containsExactlyInAnyOrderEntriesOf(expectedError);
     }
 
     private static Stream<Arguments> validDataProvider() {
@@ -76,10 +77,14 @@ class BucketRepositoryImplTest extends DataSourceHelper {
     }
 
     private static Stream<Arguments> invalidDataProvider() {
+
+        UUID existentUuid = UUID.fromString("3731c747-ea27-42e5-a52b-1dfbfa9617db");
+        int existentPosition = 100;
+
         return Stream.of(
-            arguments(UUID.fromString("3731c747-ea27-42e5-a52b-1dfbfa9617db"), 1, "TODO", " - id"),
-            arguments(UUID.randomUUID(), 100, "DOING", " - position"),
-            arguments(UUID.fromString("3731c747-ea27-42e5-a52b-1dfbfa9617db"), 100, "WHATEVER", " - id - position")
+            arguments(existentUuid, 1, "TODO", Map.of("id", existentUuid)),
+            arguments(UUID.randomUUID(), existentPosition, "DOING", Map.of("position", existentPosition)),
+            arguments(existentUuid, existentPosition, "DONE", Map.of("id", existentUuid, "position", Integer.valueOf(existentPosition)))
         );
     }
 }

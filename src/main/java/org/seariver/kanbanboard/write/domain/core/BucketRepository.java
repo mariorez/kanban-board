@@ -8,4 +8,6 @@ public interface BucketRepository {
     void create(Bucket bucket);
 
     Optional<Bucket> findByUuid(UUID id);
+
+    Optional<Bucket> findByUuidOrPosition(UUID id, int position);
 }
