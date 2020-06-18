@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class LogListener {
 
-    Logger logger = LoggerFactory.getLogger(LogListener.class);
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Async
     @EventListener
@@ -19,9 +19,9 @@ public class LogListener {
         if (event.isSuccess()) {
             logger.info(event.toJson());
         } else if (event.getException() instanceof DomainException) {
-            logger.warn(event.toJson());
+            logger.warn(event.toJson(), event.getException());
         } else {
-            logger.error(event.toJson());
+            logger.error(event.toJson(), event.getException());
         }
     }
 }

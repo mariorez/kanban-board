@@ -41,10 +41,10 @@ public class CommandEvent {
         try {
 
             if (hasError()) {
-                message.put("error", exception.getMessage());
+                message.put("message", exception.getMessage());
 
                 if (exception instanceof DomainException domainException && domainException.hasError()) {
-                    message.put("details", domainException.getErrors().toString());
+                    message.put("errors", domainException.getErrors().toString());
                 }
             }
 
