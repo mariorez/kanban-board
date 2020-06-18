@@ -5,10 +5,21 @@ import java.util.Map;
 
 public abstract class DomainException extends RuntimeException {
 
+    public enum Error {
+
+        INVALID_DUPLICATED_DATA("Invalid duplicated data");
+
+        private String message;
+
+        Error(String message) {
+            this.message = message;
+        }
+    }
+
     private Map<String, Object> errors = new HashMap<>();
 
-    public DomainException(String message, Throwable cause) {
-        super(message, cause);
+    public DomainException(Error error, Throwable cause) {
+        super(error.message, cause);
     }
 
     public void addError(String key, Object value) {

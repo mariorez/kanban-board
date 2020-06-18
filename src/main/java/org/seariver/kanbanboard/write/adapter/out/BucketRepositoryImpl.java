@@ -12,6 +12,8 @@ import javax.sql.DataSource;
 import java.util.Optional;
 import java.util.UUID;
 
+import static org.seariver.kanbanboard.write.domain.exception.DomainException.Error.INVALID_DUPLICATED_DATA;
+
 @Repository
 public class BucketRepositoryImpl implements BucketRepository {
 
@@ -38,7 +40,7 @@ public class BucketRepositoryImpl implements BucketRepository {
 
         } catch (DuplicateKeyException exception) {
 
-            var duplicatedDataException = new DuplicatedDataException("Invalid duplicated data", exception);
+            var duplicatedDataException = new DuplicatedDataException(INVALID_DUPLICATED_DATA, exception);
 
             var existentBucket = findByUuidOrPosition(bucket.getUuid(), bucket.getPosition()).get();
 
@@ -55,6 +57,7 @@ public class BucketRepositoryImpl implements BucketRepository {
     }
 
     public Optional<Bucket> findByUuid(UUID id) {
+
         String sql = """
             SELECT uuid, position, name, created_at, updated_at
             FROM bucket
@@ -63,21 +66,11 @@ public class BucketRepositoryImpl implements BucketRepository {
         MapSqlParameterSource parameters = new MapSqlParameterSource()
             .addValue("uuid", id);
 
-        return jdbcTemplate.query(sql, parameters, resultSet -> {
-            if (resultSet.next()) {
-                return Optional.of(new Bucket().
-                    setUuid(UUID.fromString(resultSet.getString("uuid"))).
-                    setPosition(resultSet.getInt("position")).
-                    setName(resultSet.getString("name")).
-                    setCreatedAt(resultSet.getTimestamp("created_at").toLocalDateTime()).
-                    setUpdatedAt(resultSet.getTimestamp("updated_at").toLocalDateTime())
-                );
-            }
-            return Optional.empty();
-        });
+        return getBucket(sql, parameters);
     }
 
     public Optional<Bucket> findByUuidOrPosition(UUID id, int position) {
+
         String sql = """
             SELECT uuid, position, name, created_at, updated_at
             FROM bucket
@@ -87,7 +80,13 @@ public class BucketRepositoryImpl implements BucketRepository {
             .addValue("uuid", id)
             .addValue("position", position);
 
+        return getBucket(sql, parameters);
+    }
+
+    private Optional<Bucket> getBucket(String sql, MapSqlParameterSource parameters) {
+
         return jdbcTemplate.query(sql, parameters, resultSet -> {
+
             if (resultSet.next()) {
                 return Optional.of(new Bucket().
                     setUuid(UUID.fromString(resultSet.getString("uuid"))).
@@ -97,6 +96,7 @@ public class BucketRepositoryImpl implements BucketRepository {
                     setUpdatedAt(resultSet.getTimestamp("updated_at").toLocalDateTime())
                 );
             }
+
             return Optional.empty();
         });
     }

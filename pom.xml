@@ -16,9 +16,22 @@
 
     <properties>
         <java.version>14</java.version>
+        <spring-cloud.version>Hoxton.SR5</spring-cloud.version>
         <commons-dbcp2.version>2.7.0</commons-dbcp2.version>
         <springfox-swagger2.version>2.9.2</springfox-swagger2.version>
     </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <dependencies>
 
@@ -58,6 +71,12 @@
             <artifactId>spring-boot-devtools</artifactId>
             <scope>runtime</scope>
             <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-sleuth</artifactId>
+            <scope>runtime</scope>
         </dependency>
 
         <dependency>
