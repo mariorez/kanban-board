@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @ControllerAdvice
-public class ControllerExceptionHandler {
+public class WriteExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Object> onMethodArgumentNotValidException(MethodArgumentNotValidException exception) {
@@ -31,6 +31,7 @@ public class ControllerExceptionHandler {
     public ResponseEntity<Object> onDuplicatedDataException(DuplicatedDataException exception) {
 
         exception.addError("message", exception.getMessage());
+
         return new ResponseEntity<>(exception.getErrors(), BAD_REQUEST);
     }
 }
