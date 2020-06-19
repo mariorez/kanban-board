@@ -14,7 +14,7 @@ public class LogListener {
 
     @Async
     @EventListener
-    void onSuccess(CommandEvent event) {
+    void onEventOccur(CommandEvent event) {
 
         if (event.isSuccess()) {
             logger.info(event.toJson());
