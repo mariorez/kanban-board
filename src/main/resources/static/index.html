@@ -1,32 +1,38 @@
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto|PT+Mono">
+    <link rel="stylesheet" href="/style.css">
+    <title>JAVA das Ruas</title>
 </head>
 <body>
 
-<div class="ui container">
-    <h1>JAVA das Ruas</h1>
-    <div id="app">
+<div class="ui">
+    <nav class="navbar app">Kanban Board</nav>
+    <nav class="navbar board">JAVA das Ruas</nav>
+
+    <div id="app" id="lists" class="lists">
+        <div class="list">
+            <footer>Add a card...</footer>
+        </div>
     </div>
 </div>
 
 <script id="buckets-list" type="text/x-handlebars-template">
     {{#each buckets}}
-    <div class="bucket-wrapper">
-        <div class="ui card" id="{{id}}" data-position="{{position}}">
-            <div class="content">
-                <span class="header">{{name}}</span>
-            </div>
-        </div>
+    <div class="list" data-bucket-id="{{id}}" data-bucket-position="{{position}}">
+        <header>{{name}}</header>
+        <footer>Add a card...</footer>
     </div>
     {{/each}}
+    <div class="list">
+        <header>Add bucket ...</header>
+        <footer>&nbsp;</footer>
+    </div>
 </script>
-
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.6/handlebars.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"></script>
 <script src="/app.js"></script>
-
 </body>
 </html>
