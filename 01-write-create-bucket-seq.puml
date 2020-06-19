@@ -1,0 +1,13 @@
+@startuml
+Frontend -> BucketController: JSON Payload
+BucketController -> CommandBus: CreateBucketCommand
+CommandBus -> CreateBucketCommandHandler: CreateBucketCommand
+CreateBucketCommandHandler -> BucketRepository: Bucket
+BucketRepository -> DATABASE: create statement
+DATABASE -> BucketRepository
+BucketRepository -> CreateBucketCommandHandler
+CreateBucketCommandHandler -> CommandBus
+CommandBus -> BucketController
+CommandBus --> CommandBus: EventPublisher::CommandEvent
+BucketController -> Frontend: HTTP 201 created
+@enduml

@@ -2,9 +2,11 @@ package org.seariver.kanbanboard.write.adapter.out;
 
 import helper.DataSourceHelper;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.seariver.kanbanboard.write.domain.core.BucketRepository;
 import org.seariver.kanbanboard.write.domain.exception.DuplicatedDataException;
 import org.seariver.kanbanboard.write.domain.core.Bucket;
 
@@ -23,6 +25,11 @@ class BucketRepositoryImplTest extends DataSourceHelper {
     @BeforeEach
     void setup() {
         repository = new BucketRepositoryImpl(dataSource);
+    }
+
+    @Test
+    void MUST_ImplementInterface() {
+        assertThat(repository).isInstanceOf(BucketRepository.class);
     }
 
     @ParameterizedTest
