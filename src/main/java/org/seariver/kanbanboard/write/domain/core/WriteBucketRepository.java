@@ -3,7 +3,7 @@ package org.seariver.kanbanboard.write.domain.core;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface BucketRepository {
+public interface WriteBucketRepository {
 
     void create(Bucket bucket);
 

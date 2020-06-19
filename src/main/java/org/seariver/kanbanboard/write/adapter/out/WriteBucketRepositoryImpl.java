@@ -1,7 +1,7 @@
 package org.seariver.kanbanboard.write.adapter.out;
 
 import org.seariver.kanbanboard.write.domain.core.Bucket;
-import org.seariver.kanbanboard.write.domain.core.BucketRepository;
+import org.seariver.kanbanboard.write.domain.core.WriteBucketRepository;
 import org.seariver.kanbanboard.write.domain.exception.DuplicatedDataException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -15,11 +15,11 @@ import java.util.UUID;
 import static org.seariver.kanbanboard.write.domain.exception.DomainException.Error.INVALID_DUPLICATED_DATA;
 
 @Repository
-public class BucketRepositoryImpl implements BucketRepository {
+public class WriteBucketRepositoryImpl implements WriteBucketRepository {
 
     private NamedParameterJdbcTemplate jdbcTemplate;
 
-    public BucketRepositoryImpl(DataSource dataSource) {
+    public WriteBucketRepositoryImpl(DataSource dataSource) {
         jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
     }
 

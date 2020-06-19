@@ -15,7 +15,7 @@ import java.net.URISyntaxException;
 
 @RestController
 @RequestMapping
-public class BucketController {
+public class WriteBucketController {
 
     public static final String BUCKETS_PATH = "v1/buckets";
 

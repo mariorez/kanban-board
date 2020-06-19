@@ -1,15 +1,15 @@
 package org.seariver.kanbanboard.write.domain.application;
 
 import org.seariver.kanbanboard.write.domain.core.Bucket;
-import org.seariver.kanbanboard.write.domain.core.BucketRepository;
+import org.seariver.kanbanboard.write.domain.core.WriteBucketRepository;
 import org.springframework.stereotype.Service;
 
 @Service
 public class CreateBucketCommandHandler implements Handler<CreateBucketCommand> {
 
-    private final BucketRepository repository;
+    private final WriteBucketRepository repository;
 
-    public CreateBucketCommandHandler(BucketRepository repository) {
+    public CreateBucketCommandHandler(WriteBucketRepository repository) {
         this.repository = repository;
     }
 

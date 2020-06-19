@@ -2,7 +2,7 @@ package org.seariver.kanbanboard.write.domain.application;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
-import org.seariver.kanbanboard.write.adapter.out.BucketRepositoryImpl;
+import org.seariver.kanbanboard.write.adapter.out.WriteBucketRepositoryImpl;
 import org.seariver.kanbanboard.write.domain.core.Bucket;
 
 import java.util.UUID;
@@ -23,7 +23,7 @@ public class CreateBucketCommandHandlerTest {
         var position = 1;
         var name = "TODO";
         var command = new CreateBucketCommand(id, position, name);
-        var repository = mock(BucketRepositoryImpl.class);
+        var repository = mock(WriteBucketRepositoryImpl.class);
 
         // when
         var handler = new CreateBucketCommandHandler(repository);

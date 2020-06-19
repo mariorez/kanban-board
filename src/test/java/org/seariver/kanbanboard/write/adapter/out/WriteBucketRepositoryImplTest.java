@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.seariver.kanbanboard.write.domain.core.BucketRepository;
+import org.seariver.kanbanboard.write.domain.core.WriteBucketRepository;
 import org.seariver.kanbanboard.write.domain.exception.DuplicatedDataException;
 import org.seariver.kanbanboard.write.domain.core.Bucket;
 
@@ -18,18 +18,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 
-class BucketRepositoryImplTest extends DataSourceHelper {
+class WriteBucketRepositoryImplTest extends DataSourceHelper {
 
-    private BucketRepositoryImpl repository;
+    private WriteBucketRepositoryImpl repository;
 
     @BeforeEach
     void setup() {
-        repository = new BucketRepositoryImpl(dataSource);
+        repository = new WriteBucketRepositoryImpl(dataSource);
     }
 
     @Test
     void MUST_ImplementInterface() {
-        assertThat(repository).isInstanceOf(BucketRepository.class);
+        assertThat(repository).isInstanceOf(WriteBucketRepository.class);
     }
 
     @ParameterizedTest
