@@ -1,3 +1,32 @@
-<h1>JAVA das Ruas</h1>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
 
-<h2>Projeto: KANBAN BOARD</h2>
+<div class="ui container">
+    <h1>JAVA das Ruas</h1>
+    <div id="app">
+    </div>
+</div>
+
+<script id="buckets-list" type="text/x-handlebars-template">
+    {{#each buckets}}
+    <div class="bucket-wrapper">
+        <div class="ui card" id="{{id}}" data-position="{{position}}">
+            <div class="content">
+                <span class="header">{{name}}</span>
+            </div>
+        </div>
+    </div>
+    {{/each}}
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.6/handlebars.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"></script>
+<script src="/app.js"></script>
+
+</body>
+</html>
