@@ -1,5 +1,6 @@
 package org.seariver.kanbanboard.write.domain.application;
 
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.seariver.kanbanboard.write.adapter.out.WriteBucketRepositoryImpl;
@@ -11,6 +12,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
+@Tag("unit")
 public class CreateBucketCommandHandlerTest {
 
     ArgumentCaptor<Bucket> captor = ArgumentCaptor.forClass(Bucket.class);

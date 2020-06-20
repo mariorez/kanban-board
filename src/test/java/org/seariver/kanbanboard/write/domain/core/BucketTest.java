@@ -1,5 +1,6 @@
 package org.seariver.kanbanboard.write.domain.core;
 
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
@@ -7,6 +8,7 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Tag("unit")
 public class BucketTest {
 
     @Test

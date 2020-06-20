@@ -2,7 +2,7 @@ version: '3.1'
 
 services:
 
-  db:
+  postgres_kanbanboard:
     image: postgres
     restart: always
     ports:

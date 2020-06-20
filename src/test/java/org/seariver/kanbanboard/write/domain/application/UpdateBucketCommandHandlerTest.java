@@ -1,5 +1,6 @@
 package org.seariver.kanbanboard.write.domain.application;
 
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.seariver.kanbanboard.write.domain.core.Bucket;
 import org.seariver.kanbanboard.write.domain.core.WriteBucketRepository;
@@ -14,6 +15,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+@Tag("unit")
 public class UpdateBucketCommandHandlerTest {
 
     @Test

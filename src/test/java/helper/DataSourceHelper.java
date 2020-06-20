@@ -9,13 +9,14 @@ import java.sql.SQLException;
 public abstract class DataSourceHelper {
 
     protected BasicDataSource dataSource = new BasicDataSource();
+    protected String dataSetName;
 
     @BeforeEach
     void init() {
         String url = "jdbc:h2:mem:UNIT_TEST;" +
             "MODE=PostgreSQL;" +
             "INIT=RUNSCRIPT FROM 'src/main/resources/db/migration/V001__Initial_setup.sql'\\;" +
-            "RUNSCRIPT FROM 'classpath:dataset.sql'\\;";
+            "RUNSCRIPT FROM 'classpath:" + dataSetName + ".sql'\\;";
 
         dataSource.setUrl(url);
         dataSource.setMaxTotal(1);

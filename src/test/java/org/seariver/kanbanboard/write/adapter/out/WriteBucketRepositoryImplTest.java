@@ -2,13 +2,14 @@ package org.seariver.kanbanboard.write.adapter.out;
 
 import helper.DataSourceHelper;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.seariver.kanbanboard.write.domain.core.Bucket;
 import org.seariver.kanbanboard.write.domain.core.WriteBucketRepository;
 import org.seariver.kanbanboard.write.domain.exception.DuplicatedDataException;
-import org.seariver.kanbanboard.write.domain.core.Bucket;
 
 import java.util.Map;
 import java.util.UUID;
@@ -18,9 +19,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 
+@Tag("unit")
 class WriteBucketRepositoryImplTest extends DataSourceHelper {
 
     private WriteBucketRepositoryImpl repository;
+
+    public WriteBucketRepositoryImplTest() {
+        dataSetName = "WriteBucketRepositoryImplTest";
+    }
 
     @BeforeEach
     void setup() {
@@ -85,7 +91,7 @@ class WriteBucketRepositoryImplTest extends DataSourceHelper {
 
     private static Stream<Arguments> invalidDataProvider() {
 
-        UUID existentUuid = UUID.fromString("3731c747-ea27-42e5-a52b-1dfbfa9617db");
+        UUID existentUuid = UUID.fromString("6d9db741-ef57-4d5a-ac0f-34f68fb0ab5e");
         double existentPosition = 100.15;
 
         return Stream.of(
