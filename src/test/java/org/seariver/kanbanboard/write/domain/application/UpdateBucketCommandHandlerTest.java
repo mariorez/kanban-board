@@ -3,11 +3,13 @@ package org.seariver.kanbanboard.write.domain.application;
 import org.junit.jupiter.api.Test;
 import org.seariver.kanbanboard.write.domain.core.Bucket;
 import org.seariver.kanbanboard.write.domain.core.WriteBucketRepository;
+import org.seariver.kanbanboard.write.domain.exception.BucketNotExistentException;
 
 import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -40,5 +42,23 @@ public class UpdateBucketCommandHandlerTest {
         assertThat(bucket.getUuid()).isEqualTo(uuid);
         assertThat(bucket.getPosition()).isEqualTo(position);
         assertThat(bucket.getName()).isEqualTo(name);
+    }
+
+    @Test
+    void GIVEN_NotExistentBucket_MUST_ThrowException() {
+
+        // given
+        var uuid = UUID.fromString("019641f6-6e9e-4dd9-ab02-e864a3dfa016");
+        var command = new UpdateBucketCommand(uuid, 1, "WHATEVER");
+        var repository = mock(WriteBucketRepository.class);
+        when(repository.findByUuid(uuid)).thenReturn(Optional.empty());
+
+        // when
+        var handler = new UpdateBucketCommandHandler(repository);
+        var exception = assertThrows(BucketNotExistentException.class, () -> handler.handle(command));
+
+        // then
+        verify(repository).findByUuid(uuid);
+        assertThat(exception.getMessage()).isEqualTo(String.format("Bucket not exist"));
     }
 }

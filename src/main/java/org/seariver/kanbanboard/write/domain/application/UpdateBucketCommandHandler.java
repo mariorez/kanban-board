@@ -1,7 +1,13 @@
 package org.seariver.kanbanboard.write.domain.application;
 
+import org.seariver.kanbanboard.write.domain.core.Bucket;
 import org.seariver.kanbanboard.write.domain.core.WriteBucketRepository;
+import org.seariver.kanbanboard.write.domain.exception.BucketNotExistentException;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
+
+import static org.seariver.kanbanboard.write.domain.exception.DomainException.Error.*;
 
 @Service
 public class UpdateBucketCommandHandler {
@@ -14,7 +20,13 @@ public class UpdateBucketCommandHandler {
 
     public void handle(UpdateBucketCommand command) {
 
-        var bucket = repository.findByUuid(command.id()).get();
+        Optional<Bucket> bucketOptional = repository.findByUuid(command.id());
+
+        if (!bucketOptional.isPresent()) {
+            throw new BucketNotExistentException(BUCKET_NOT_EXIST);
+        }
+
+        var bucket = bucketOptional.get();
 
         bucket
             .setPosition(command.position())
@@ -23,3 +35,4 @@ public class UpdateBucketCommandHandler {
         repository.update(bucket);
     }
 }
+

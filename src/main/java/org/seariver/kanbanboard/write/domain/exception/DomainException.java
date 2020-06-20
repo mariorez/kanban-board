@@ -7,7 +7,8 @@ public abstract class DomainException extends RuntimeException {
 
     public enum Error {
 
-        INVALID_DUPLICATED_DATA("Invalid duplicated data");
+        INVALID_DUPLICATED_DATA("Invalid duplicated data"),
+        BUCKET_NOT_EXIST("Bucket not exist");
 
         private String message;
 
@@ -17,6 +18,10 @@ public abstract class DomainException extends RuntimeException {
     }
 
     private Map<String, Object> errors = new HashMap<>();
+
+    public DomainException(Error error) {
+        super(error.message);
+    }
 
     public DomainException(Error error, Throwable cause) {
         super(error.message, cause);
