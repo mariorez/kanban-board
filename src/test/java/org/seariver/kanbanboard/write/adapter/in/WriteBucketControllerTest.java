@@ -13,7 +13,7 @@ import java.util.UUID;
 import static org.hamcrest.Matchers.containsInRelativeOrder;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -38,7 +38,7 @@ class WriteBucketControllerTest {
 
         // when
         mockMvc
-            .perform(post("/v1/buckets/{uuid}", id)
+            .perform(put("/v1/buckets/{uuid}", id)
                 .contentType("application/json")
                 .content(mapper.writeValueAsString(command)))
             .andExpect(status().isOk());
