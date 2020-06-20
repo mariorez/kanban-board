@@ -25,8 +25,11 @@ public class ReadWriteBucketRepositoryImplTest extends DataSourceHelper {
         List<BucketDto> actual = repository.findAll();
 
         // then
-        var expected = new BucketDto(UUID.fromString("3731c747-ea27-42e5-a52b-1dfbfa9617db"), 100, "EXISTENT");
-        assertThat(actual)
-            .containsExactlyInAnyOrderElementsOf(List.of(expected));
+        var expected = List.of(
+            new BucketDto(UUID.fromString("6d9db741-ef57-4d5a-ac0f-34f68fb0ab5e"), 10.785, "FIRST-BUCKET"),
+            new BucketDto(UUID.fromString("3731c747-ea27-42e5-a52b-1dfbfa9617db"), 100.15, "EXISTENT")
+        );
+
+        assertThat(actual).containsExactlyElementsOf(expected);
     }
 }

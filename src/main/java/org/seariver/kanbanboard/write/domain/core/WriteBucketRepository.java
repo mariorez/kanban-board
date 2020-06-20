@@ -9,5 +9,5 @@ public interface WriteBucketRepository {
 
     Optional<Bucket> findByUuid(UUID id);
 
-    Optional<Bucket> findByUuidOrPosition(UUID id, int position);
+    Optional<Bucket> findByUuidOrPosition(UUID id, double position);
 }

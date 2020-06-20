@@ -7,7 +7,7 @@ public class Bucket {
 
     private int id;
     private UUID uuid;
-    private int position;
+    private double position;
     private String name;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
@@ -30,11 +30,11 @@ public class Bucket {
         return this;
     }
 
-    public int getPosition() {
+    public double getPosition() {
         return position;
     }
 
-    public Bucket setPosition(int position) {
+    public Bucket setPosition(double position) {
         this.position = position;
         return this;
     }

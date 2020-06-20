@@ -18,7 +18,7 @@ public class ReadBucketController {
     private ReadBucketRepositoryImpl repository;
 
     @GetMapping
-    public ResponseEntity<List<BucketDto>> getAll() {
+    public ResponseEntity<List<BucketDto>> listAll() {
 
         return ResponseEntity.ok(repository.findAll());
     }

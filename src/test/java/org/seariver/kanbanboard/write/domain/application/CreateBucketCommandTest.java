@@ -12,12 +12,12 @@ public class CreateBucketCommandTest {
     void GIVEN_ValidData_MUST_RetrieveSameData() {
 
         // given
-        UUID id = UUID.randomUUID();
-        int position = 1;
-        String name = "TODO";
+        var id = UUID.randomUUID();
+        var position = 1.5;
+        var name = "TODO";
 
         // when
-        CreateBucketCommand command = new CreateBucketCommand(id, position, name);
+        var command = new CreateBucketCommand(id, position, name);
 
         // then
         assertThat(command.id()).isEqualTo(id);

@@ -35,7 +35,7 @@ class WriteBucketRepositoryImplTest extends DataSourceHelper {
     @ParameterizedTest
     @MethodSource("validDataProvider")
     void GIVEN_ValidBucket_MUST_PersistOnDatabase(UUID id,
-                                                  int position,
+                                                  double position,
                                                   String name) {
         // given
         var expected = new Bucket()
@@ -59,7 +59,7 @@ class WriteBucketRepositoryImplTest extends DataSourceHelper {
     @ParameterizedTest
     @MethodSource("invalidDataProvider")
     void GIVEN_AlreadyExistentBucket_MUST_ThrowException(UUID id,
-                                                         int position,
+                                                         double position,
                                                          String name,
                                                          Map<String, Object> expectedError) {
         // given
@@ -79,19 +79,19 @@ class WriteBucketRepositoryImplTest extends DataSourceHelper {
     private static Stream<Arguments> validDataProvider() {
         return Stream.of(
             arguments(UUID.randomUUID(), 1, "TODO"),
-            arguments(UUID.randomUUID(), 2, "EXISTENT")
+            arguments(UUID.randomUUID(), 2.35, "EXISTENT")
         );
     }
 
     private static Stream<Arguments> invalidDataProvider() {
 
         UUID existentUuid = UUID.fromString("3731c747-ea27-42e5-a52b-1dfbfa9617db");
-        int existentPosition = 100;
+        double existentPosition = 100.15;
 
         return Stream.of(
             arguments(existentUuid, 1, "TODO", Map.of("id", existentUuid)),
             arguments(UUID.randomUUID(), existentPosition, "DOING", Map.of("position", existentPosition)),
-            arguments(existentUuid, existentPosition, "DONE", Map.of("id", existentUuid, "position", Integer.valueOf(existentPosition)))
+            arguments(existentUuid, existentPosition, "DONE", Map.of("id", existentUuid, "position", Double.valueOf(existentPosition)))
         );
     }
 }

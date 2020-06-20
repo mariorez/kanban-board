@@ -69,7 +69,7 @@ public class WriteBucketRepositoryImpl implements WriteBucketRepository {
         return getBucket(sql, parameters);
     }
 
-    public Optional<Bucket> findByUuidOrPosition(UUID id, int position) {
+    public Optional<Bucket> findByUuidOrPosition(UUID id, double position) {
 
         String sql = """
             SELECT uuid, position, name, created_at, updated_at
@@ -90,7 +90,7 @@ public class WriteBucketRepositoryImpl implements WriteBucketRepository {
             if (resultSet.next()) {
                 return Optional.of(new Bucket().
                     setUuid(UUID.fromString(resultSet.getString("uuid"))).
-                    setPosition(resultSet.getInt("position")).
+                    setPosition(resultSet.getDouble("position")).
                     setName(resultSet.getString("name")).
                     setCreatedAt(resultSet.getTimestamp("created_at").toLocalDateTime()).
                     setUpdatedAt(resultSet.getTimestamp("updated_at").toLocalDateTime())

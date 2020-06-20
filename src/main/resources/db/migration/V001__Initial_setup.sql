@@ -1,7 +1,7 @@
 CREATE TABLE bucket (
     id SERIAL PRIMARY KEY,
     uuid UUID UNIQUE NOT NULL,
-    position INT UNIQUE NOT NULL,
+    position DECIMAL UNIQUE NOT NULL,
     name VARCHAR NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMP NOT NULL DEFAULT NOW()

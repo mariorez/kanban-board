@@ -23,7 +23,7 @@ public class ReadBucketRepositoryImpl {
         return jdbcTemplate.query(sql, (rs, rowNum) ->
             new BucketDto(
                 UUID.fromString(rs.getString("uuid")),
-                rs.getInt("position"),
+                rs.getDouble("position"),
                 rs.getString("name"))
         );
     }
