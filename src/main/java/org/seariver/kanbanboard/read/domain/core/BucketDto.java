@@ -1,4 +1,4 @@
-package org.seariver.kanbanboard.read.adapter.out;
+package org.seariver.kanbanboard.read.domain.core;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

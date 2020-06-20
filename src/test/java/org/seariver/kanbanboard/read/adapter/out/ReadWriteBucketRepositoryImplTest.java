@@ -3,6 +3,8 @@ package org.seariver.kanbanboard.read.adapter.out;
 import helper.DataSourceHelper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.seariver.kanbanboard.read.domain.core.BucketDto;
+import org.seariver.kanbanboard.read.domain.core.ReadBucketRepository;
 
 import java.util.List;
 import java.util.UUID;
@@ -16,6 +18,11 @@ public class ReadWriteBucketRepositoryImplTest extends DataSourceHelper {
     @BeforeEach
     void setup() {
         repository = new ReadBucketRepositoryImpl(dataSource);
+    }
+
+    @Test
+    void MUST_ImplementInterface() {
+        assertThat(repository).isInstanceOf(ReadBucketRepository.class);
     }
 
     @Test()

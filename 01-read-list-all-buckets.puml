@@ -1,9 +1,9 @@
 @startuml
-Frontend -> BucketController: GET /v1/buckets
-BucketController -> ReadBucketRepository
-ReadBucketRepositoryImpl -> DATABASE: select statement
-DATABASE -> ReadBucketRepositoryImpl
-ReadBucketRepositoryImpl -> BucketController: List<BucketDTO>
-BucketController --> Frontend: HTTP 200 ok
-BucketController -> Frontend: JSON
+Frontend -> ReadBucketController: GET /v1/buckets
+ReadBucketController -> ReadBucketRepository
+ReadBucketRepository -> DATABASE: select statement
+DATABASE -> ReadBucketRepository
+ReadBucketRepository -> ReadBucketController: List<BucketDTO>
+ReadBucketController --> Frontend: HTTP 200 ok
+ReadBucketController -> Frontend: JSON
 @enduml

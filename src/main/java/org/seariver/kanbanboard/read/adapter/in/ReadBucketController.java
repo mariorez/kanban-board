@@ -1,6 +1,6 @@
 package org.seariver.kanbanboard.read.adapter.in;
 
-import org.seariver.kanbanboard.read.adapter.out.BucketDto;
+import org.seariver.kanbanboard.read.domain.core.BucketDto;
 import org.seariver.kanbanboard.read.adapter.out.ReadBucketRepositoryImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
