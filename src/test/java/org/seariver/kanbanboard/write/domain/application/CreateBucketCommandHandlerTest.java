@@ -16,7 +16,7 @@ public class CreateBucketCommandHandlerTest {
     ArgumentCaptor<Bucket> captor = ArgumentCaptor.forClass(Bucket.class);
 
     @Test
-    void GIVEN_ValidCommand_MUST_DelegateToListAggregate() {
+    void GIVEN_ValidCommand_MUST_CreateBucketInDatabase() {
 
         // given
         var id = UUID.randomUUID();

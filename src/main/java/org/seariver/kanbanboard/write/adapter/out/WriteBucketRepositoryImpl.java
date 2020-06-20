@@ -56,6 +56,11 @@ public class WriteBucketRepositoryImpl implements WriteBucketRepository {
         }
     }
 
+    @Override
+    public void update(Bucket bucket) {
+
+    }
+
     public Optional<Bucket> findByUuid(UUID id) {
 
         String sql = """
