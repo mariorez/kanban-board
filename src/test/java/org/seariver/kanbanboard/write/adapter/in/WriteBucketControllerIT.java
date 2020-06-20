@@ -1,16 +1,9 @@
 package org.seariver.kanbanboard.write.adapter.in;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.javafaker.Faker;
+import helper.IntegrationHelper;
 import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.seariver.kanbanboard.write.domain.application.UpdateBucketCommand;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.UUID;
 
@@ -23,17 +16,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Disabled("Waiting full implementation")
-@Tag("integration")
-@SpringBootTest
-@AutoConfigureMockMvc
 @TestPropertySource(properties = "test.dataset=WriteBucketControllerIT")
-class WriteBucketControllerIT {
-
-    @Autowired
-    private MockMvc mockMvc;
-    @Autowired
-    private ObjectMapper mapper;
-    private Faker faker = new Faker();
+class WriteBucketControllerIT extends IntegrationHelper {
 
     @Test
     void GIVEN_ValidData_MUST_UpdateBucket() throws Exception {
@@ -42,13 +26,19 @@ class WriteBucketControllerIT {
         var id = UUID.fromString("3731c747-ea27-42e5-a52b-1dfbfa9617db");
         double position = faker.number().randomDouble(5, 1, 10);
         var name = faker.pokemon().name();
-        var command = new UpdateBucketCommand(id, position, name);
+
+        var payload = """
+            {
+                "position" = %s,
+                "name" = "%s"
+            }
+            """.formatted(position, name);
 
         // when
         mockMvc
             .perform(put("/v1/buckets/{uuid}", id)
                 .contentType("application/json")
-                .content(mapper.writeValueAsString(command)))
+                .content(payload))
             .andExpect(status().isOk());
 
         // then

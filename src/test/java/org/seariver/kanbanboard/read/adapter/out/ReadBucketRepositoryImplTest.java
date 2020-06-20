@@ -2,7 +2,6 @@ package org.seariver.kanbanboard.read.adapter.out;
 
 import helper.DataSourceHelper;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.seariver.kanbanboard.read.domain.core.BucketDto;
 import org.seariver.kanbanboard.read.domain.core.ReadBucketRepository;
@@ -12,7 +11,6 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@Tag("unit")
 public class ReadBucketRepositoryImplTest extends DataSourceHelper {
 
     private ReadBucketRepositoryImpl repository;

@@ -2,7 +2,6 @@ package org.seariver.kanbanboard.write.adapter.out;
 
 import helper.DataSourceHelper;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -19,7 +18,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 
-@Tag("unit")
 class WriteBucketRepositoryImplTest extends DataSourceHelper {
 
     private WriteBucketRepositoryImpl repository;
@@ -84,20 +82,34 @@ class WriteBucketRepositoryImplTest extends DataSourceHelper {
 
     private static Stream<Arguments> validDataProvider() {
         return Stream.of(
-            arguments(UUID.randomUUID(), 1, "TODO"),
-            arguments(UUID.randomUUID(), 2.35, "EXISTENT")
+            arguments(UUID.randomUUID(),
+                faker.number().randomDigitNotZero(),
+                faker.pokemon().name()),
+            arguments(UUID.randomUUID(),
+                faker.number().randomDouble(3, 1, 10),
+                "EXISTENT NAME")
         );
     }
 
     private static Stream<Arguments> invalidDataProvider() {
 
-        UUID existentUuid = UUID.fromString("6d9db741-ef57-4d5a-ac0f-34f68fb0ab5e");
-        double existentPosition = 100.15;
+        var existentUuid = UUID.fromString("3731c747-ea27-42e5-a52b-1dfbfa9617db");
+        var existentPosition = 200.987;
+        var whateverName = faker.pokemon().name();
 
         return Stream.of(
-            arguments(existentUuid, 1, "TODO", Map.of("id", existentUuid)),
-            arguments(UUID.randomUUID(), existentPosition, "DOING", Map.of("position", existentPosition)),
-            arguments(existentUuid, existentPosition, "DONE", Map.of("id", existentUuid, "position", Double.valueOf(existentPosition)))
+            arguments(existentUuid,
+                faker.number().randomDouble(3, 1, 10),
+                whateverName,
+                Map.of("id", existentUuid)),
+            arguments(UUID.randomUUID(),
+                existentPosition,
+                whateverName,
+                Map.of("position", existentPosition)),
+            arguments(existentUuid,
+                existentPosition,
+                whateverName,
+                Map.of("id", existentUuid, "position", Double.valueOf(existentPosition)))
         );
     }
 }

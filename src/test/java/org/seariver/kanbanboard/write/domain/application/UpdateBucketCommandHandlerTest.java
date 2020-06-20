@@ -1,5 +1,6 @@
 package org.seariver.kanbanboard.write.domain.application;
 
+import helper.TestHelper;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.seariver.kanbanboard.write.domain.core.Bucket;
@@ -16,22 +17,18 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @Tag("unit")
-public class UpdateBucketCommandHandlerTest {
+public class UpdateBucketCommandHandlerTest extends TestHelper {
 
     @Test
     void GIVEN_ValidCommand_MUST_UpdateBucketInDatabase() {
 
         // given
-        var position = 200.25;
-        var name = "SECOND-BUCKET";
         var uuid = UUID.fromString("6d9db741-ef57-4d5a-ac0f-34f68fb0ab5e");
+        var position = faker.number().randomDouble(3, 1, 10);
+        var name = faker.pokemon().name();
         var command = new UpdateBucketCommand(uuid, position, name);
         var repository = mock(WriteBucketRepository.class);
-        Bucket bucket = new Bucket()
-            .setId(1)
-            .setUuid(uuid)
-            .setPosition(123)
-            .setName("FOOBAR");
+        var bucket = new Bucket().setUuid(uuid).setPosition(123).setName("FOOBAR");
         when(repository.findByUuid(uuid)).thenReturn(Optional.of(bucket));
 
         // when

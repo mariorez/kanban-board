@@ -1,5 +1,6 @@
 package org.seariver.kanbanboard.write.domain.exception;
 
+import helper.TestHelper;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
@@ -8,7 +9,7 @@ import static org.seariver.kanbanboard.write.domain.exception.DomainException.Er
 import static org.seariver.kanbanboard.write.domain.exception.DomainException.Error.INVALID_DUPLICATED_DATA;
 
 @Tag("unit")
-class DomainExceptionTest {
+class DomainExceptionTest extends TestHelper {
 
     @Test
     void ALL_UseCaseException_MUST_ImplementsDomainException() {

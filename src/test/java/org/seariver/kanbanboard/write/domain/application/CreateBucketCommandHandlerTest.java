@@ -1,5 +1,6 @@
 package org.seariver.kanbanboard.write.domain.application;
 
+import helper.TestHelper;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -13,17 +14,17 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 @Tag("unit")
-public class CreateBucketCommandHandlerTest {
+public class CreateBucketCommandHandlerTest extends TestHelper {
 
-    ArgumentCaptor<Bucket> captor = ArgumentCaptor.forClass(Bucket.class);
+    private ArgumentCaptor<Bucket> captor = ArgumentCaptor.forClass(Bucket.class);
 
     @Test
     void GIVEN_ValidCommand_MUST_CreateBucketInDatabase() {
 
         // given
         var id = UUID.randomUUID();
-        var position = 1;
-        var name = "TODO";
+        var position = faker.number().randomDouble(3, 1, 10);
+        var name = faker.pokemon().name();
         var command = new CreateBucketCommand(id, position, name);
         var repository = mock(WriteBucketRepositoryImpl.class);
 

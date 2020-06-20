@@ -3,10 +3,12 @@ package helper;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 
 import java.sql.SQLException;
 
-public abstract class DataSourceHelper {
+@Tag("unit")
+public abstract class DataSourceHelper extends TestHelper {
 
     protected BasicDataSource dataSource = new BasicDataSource();
     protected String dataSetName;
