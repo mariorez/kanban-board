@@ -7,10 +7,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-import static org.seariver.kanbanboard.write.domain.exception.DomainException.Error.*;
+import static org.seariver.kanbanboard.write.domain.exception.DomainException.Error.BUCKET_NOT_EXIST;
 
 @Service
-public class UpdateBucketCommandHandler {
+public class UpdateBucketCommandHandler implements Handler<UpdateBucketCommand> {
 
     private WriteBucketRepository repository;
 

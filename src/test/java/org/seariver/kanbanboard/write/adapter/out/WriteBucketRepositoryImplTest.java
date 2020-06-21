@@ -38,9 +38,9 @@ class WriteBucketRepositoryImplTest extends DataSourceHelper {
 
     @ParameterizedTest
     @MethodSource("validDataProvider")
-    void GIVEN_ValidBucket_MUST_PersistOnDatabase(UUID id,
-                                                  double position,
-                                                  String name) {
+    void WHEN_CreatingBucket_GIVEN_ValidData_MUST_PersistOnDatabase(UUID id,
+                                                                    double position,
+                                                                    String name) {
         // given
         var expected = new Bucket()
             .setUuid(id)
@@ -62,10 +62,10 @@ class WriteBucketRepositoryImplTest extends DataSourceHelper {
 
     @ParameterizedTest
     @MethodSource("invalidDataProvider")
-    void GIVEN_AlreadyExistentBucket_MUST_ThrowException(UUID id,
-                                                         double position,
-                                                         String name,
-                                                         Map<String, Object> expectedError) {
+    void WHEN_CreatingBucket_GIVEN_AlreadyExistentBucket_MUST_ThrowException(UUID id,
+                                                                             double position,
+                                                                             String name,
+                                                                             Map<String, Object> expectedError) {
         // given
         var expected = new Bucket()
             .setUuid(id)
@@ -78,6 +78,30 @@ class WriteBucketRepositoryImplTest extends DataSourceHelper {
         // when
         assertThat(exception.getMessage()).isEqualTo("Invalid duplicated data");
         assertThat(exception.getErrors()).containsExactlyInAnyOrderEntriesOf(expectedError);
+    }
+
+    @Test
+    void WHEN_UpdatingBucket_WITH_ValidData_MUST_SaveOnDatabase() {
+        // given
+        var id = UUID.fromString("3731c747-ea27-42e5-a52b-1dfbfa9617db");
+        var actualBucket = repository.findByUuid(id).get();
+        assertThat(actualBucket.getPosition()).isEqualTo(200.987);
+        assertThat(actualBucket.getName()).isEqualTo("EXISTENT NAME");
+
+        var position = faker.number().randomDouble(3, 1, 10);
+        var name = faker.pokemon().name();
+        actualBucket.setPosition(position).setName(name);
+
+        // when
+        repository.update(actualBucket);
+
+        // then
+        var expectedBucket = repository.findByUuid(id).get();
+        assertThat(expectedBucket.getUuid()).isEqualTo(id);
+        assertThat(expectedBucket.getPosition()).isEqualTo(position);
+        assertThat(expectedBucket.getName()).isEqualTo(name);
+        assertThat(expectedBucket.getCreatedAt()).isNotNull();
+        assertThat(expectedBucket.getUpdatedAt()).isNotNull();
     }
 
     private static Stream<Arguments> validDataProvider() {

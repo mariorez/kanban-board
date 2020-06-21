@@ -59,6 +59,17 @@ public class WriteBucketRepositoryImpl implements WriteBucketRepository {
     @Override
     public void update(Bucket bucket) {
 
+        String sql = """
+            UPDATE bucket
+            SET position = :position, name =:name
+            WHERE uuid = :uuid""";
+
+        MapSqlParameterSource parameters = new MapSqlParameterSource()
+            .addValue("uuid", bucket.getUuid())
+            .addValue("position", bucket.getPosition())
+            .addValue("name", bucket.getName());
+
+        jdbcTemplate.update(sql, parameters);
     }
 
     public Optional<Bucket> findByUuid(UUID id) {

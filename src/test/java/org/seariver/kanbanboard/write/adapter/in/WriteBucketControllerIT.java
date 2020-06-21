@@ -1,7 +1,6 @@
 package org.seariver.kanbanboard.write.adapter.in;
 
 import helper.IntegrationHelper;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.context.TestPropertySource;
 
@@ -22,7 +21,7 @@ class WriteBucketControllerIT extends IntegrationHelper {
     @Test
     void GIVEN_ValidData_MUST_CreateBucket() throws Exception {
         // given
-        var id = UUID.randomUUID();
+        var id = UUID.randomUUID().toString();
         var position = faker.number().randomDouble(5, 1, 10);
         var name = faker.pokemon().name();
         var payload = """
@@ -46,7 +45,7 @@ class WriteBucketControllerIT extends IntegrationHelper {
             .andExpect(status().isOk())
             .andExpect(content().contentType(APPLICATION_JSON))
             .andExpect(jsonPath("$[*].id",
-                containsInRelativeOrder(id.toString(), "6d9db741-ef57-4d5a-ac0f-34f68fb0ab5e", "3731c747-ea27-42e5-a52b-1dfbfa9617db")))
+                containsInRelativeOrder(id, "6d9db741-ef57-4d5a-ac0f-34f68fb0ab5e", "3731c747-ea27-42e5-a52b-1dfbfa9617db")))
             .andExpect(jsonPath("$[*].position",
                 containsInRelativeOrder(position, 100.15, 200.987)))
             .andExpect(jsonPath("$[*].name", containsInRelativeOrder(name, "FIRST-BUCKET", "SECOND-BUCKET")));
@@ -74,13 +73,11 @@ class WriteBucketControllerIT extends IntegrationHelper {
             .andExpect(status().isBadRequest());
     }
 
-
-    @Disabled("Waiting full implementation")
     @Test
     void GIVEN_ValidData_MUST_UpdateBucket() throws Exception {
 
         // given
-        var id = UUID.fromString("3731c747-ea27-42e5-a52b-1dfbfa9617db");
+        var id = "3731c747-ea27-42e5-a52b-1dfbfa9617db";
         var position = faker.number().randomDouble(5, 1, 10);
         var name = faker.pokemon().name();
         var payload = """
@@ -92,10 +89,10 @@ class WriteBucketControllerIT extends IntegrationHelper {
 
         // when
         mockMvc
-            .perform(put("/v1/buckets/{uuid}", id)
+            .perform(put("/v1/buckets/{id}", id)
                 .contentType("application/json")
                 .content(payload))
-            .andExpect(status().isOk());
+            .andExpect(status().isNoContent());
 
         // then
         mockMvc
