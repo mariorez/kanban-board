@@ -6,6 +6,8 @@ import org.seariver.kanbanboard.write.domain.application.UpdateBucketCommand;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -27,6 +29,11 @@ public class WriteBucketController {
     @Autowired
     private CommandBus commandBus;
 
+    @InitBinder()
+    private void initBinder(WebDataBinder dataBinder) {
+
+    }
+
     @PostMapping(path = BUCKETS_PATH)
     public ResponseEntity create(@Validated @RequestBody CreateBucketCommand command) throws URISyntaxException {
 
@@ -38,9 +45,7 @@ public class WriteBucketController {
     }
 
     @PutMapping(path = BUCKETS_PATH + "/{uuid}")
-    public ResponseEntity update(
-        @PathVariable(name = "uuid") UUID uuid,
-        @RequestBody Map<String, Object> payload) throws URISyntaxException {
+    public ResponseEntity update(@PathVariable UUID uuid, @RequestBody Map<String, Object> payload) {
 
         var command = new UpdateBucketCommand(uuid, (double) payload.get("position"), (String) payload.get("name"));
 
