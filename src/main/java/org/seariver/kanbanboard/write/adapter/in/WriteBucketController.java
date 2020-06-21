@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -35,21 +34,19 @@ public class WriteBucketController {
     }
 
     @PostMapping(path = BUCKETS_PATH)
-    public ResponseEntity create(@Validated @RequestBody CreateBucketCommand command) throws URISyntaxException {
+    public ResponseEntity create(@Validated @RequestBody BucketDto dto) throws URISyntaxException {
 
-        commandBus.execute(command);
+        commandBus.execute(new CreateBucketCommand(dto.id(), dto.position(), dto.name()));
 
         return ResponseEntity
-            .created(new URI(String.format("/%s/%s", BUCKETS_PATH, command.id())))
+            .created(new URI(String.format("/%s/%s", BUCKETS_PATH, dto.id())))
             .build();
     }
 
-    @PutMapping(path = BUCKETS_PATH + "/{uuid}")
-    public ResponseEntity update(@PathVariable UUID uuid, @RequestBody Map<String, Object> payload) {
+    @PutMapping(path = BUCKETS_PATH + "/{id}")
+    public ResponseEntity update(@PathVariable UUID id, @RequestBody BucketDto dto) {
 
-        var command = new UpdateBucketCommand(uuid, (double) payload.get("position"), (String) payload.get("name"));
-
-        commandBus.execute(command);
+        commandBus.execute(new UpdateBucketCommand(id, dto.position(), dto.name()));
 
         return ResponseEntity.noContent().build();
     }

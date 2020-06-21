@@ -13,8 +13,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@TestPropertySource(properties = "test.dataset=ReadBucketControllerIT")
-class ReadBucketControllerIT extends IntegrationHelper {
+@TestPropertySource(properties = "test.dataset=ReadBucketIT")
+class ReadBucketIT extends IntegrationHelper {
 
     @Autowired
     private MockMvc mockMvc;
