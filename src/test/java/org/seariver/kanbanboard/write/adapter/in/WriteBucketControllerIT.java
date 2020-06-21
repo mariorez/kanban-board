@@ -24,9 +24,8 @@ class WriteBucketControllerIT extends IntegrationHelper {
 
         // given
         var id = UUID.fromString("3731c747-ea27-42e5-a52b-1dfbfa9617db");
-        double position = faker.number().randomDouble(5, 1, 10);
+        var position = faker.number().randomDouble(5, 1, 10);
         var name = faker.pokemon().name();
-
         var payload = """
             {
                 "position" = %s,

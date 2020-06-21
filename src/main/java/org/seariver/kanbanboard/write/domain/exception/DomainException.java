@@ -17,7 +17,7 @@ public abstract class DomainException extends RuntimeException {
         }
     }
 
-    private Map<String, Object> errors = new HashMap<>();
+    private final Map<String, Object> errors = new HashMap<>();
 
     public DomainException(Error error) {
         super(error.message);

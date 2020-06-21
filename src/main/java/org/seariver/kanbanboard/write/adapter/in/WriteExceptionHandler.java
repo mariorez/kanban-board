@@ -47,7 +47,9 @@ public class WriteExceptionHandler {
             errorResult.put("errors", detailedErrors);
         }
 
-        logger.warn(errorResult.toString());
+        if (logger.isWarnEnabled()) {
+            logger.warn(errorResult.toString());
+        }
 
         return new ResponseEntity<>(errorResult, status);
     }
