@@ -18,7 +18,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class CreateBucketIT extends IntegrationHelper {
 
     @Test
-    void GIVEN_ValidData_MUST_ReturnCreated() throws Exception {
+    void GIVEN_ValidPayload_MUST_ReturnCreated() throws Exception {
+
         // given
         var id = UUID.randomUUID().toString();
         var position = faker.number().randomDouble(5, 1, 10);
