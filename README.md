@@ -1,27 +1,38 @@
 # Kanban Board Project
 
-**Videos deste projeto**: https://www.twitch.tv/mariorez
+**Videos deste projeto**: https://www.youtube.com/user/mariorez
 
-## Repositorio dos Testes de Integração com KARATE DSL
-https://github.com/mariorez/kanban-board-test
+## Stack utilizada
 
-## STACK
+- Java 14: https://sdkman.io/
+- Maven: https://sdkman.io/
+- Spring Boot 2.3: https://start.spring.io/
+- Postgres: https://hub.docker.com/_/postgres
 
-- Java 14
-- Spring Boot
-- PostgreSQL
-- Swagger API
+## Levantando a aplicação
 
-## Links de estudo
+1 - Levantar o **Banco-de-Dados POSTGRES**:
+```
+docker-compose up -d
+```
 
-### LIVE 01
+2 - Levantar o **SPRING-BOOT**:
+```
+mvn spring-boot:run
+```
 
-- Hexagonal Architecture with Java and Spring: https://reflectoring.io/spring-hexagonal/
-- DDD, Hexagonal, Onion, Clean, CQRS, … How I put it all together: https://herbertograca.com/2017/11/16/explicit-architecture-01-ddd-hexagonal-onion-clean-cqrs-how-i-put-it-all-together/
-- Design Stamina Hypothesis: https://martinfowler.com/bliki/DesignStaminaHypothesis.html
+## Documentação API
 
-### LIVE 02
+**Swagger**: http://localhost:8080/swagger-ui.html
 
-- DEV Eficiente: https://www.youtube.com/channel/UC9xYzttzFxK9cmhKPQCalYQ
-- Livro "Growing Object-Oriented Software Guided by Tests": http://www.growing-object-oriented-software.com/
-- Anemic vs. Rich Domain Objects—Finding the Balance: https://dzone.com/articles/anaemic-vs-rich-domain-objects-finding-the-balance
+## Frontend Web
+
+**Home**: http://localhost:8080
+
+## Documentos complementares
+
+Slide em PDF: ["Test First: Como eu faço?"](Test-First_Como-eu-Faco.pdf)
+
+![Bucket](kanban-board-bucket.png)
+
+![Card](kanban-board-card.png)
