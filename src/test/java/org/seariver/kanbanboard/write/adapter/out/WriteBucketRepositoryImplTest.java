@@ -22,10 +22,6 @@ class WriteBucketRepositoryImplTest extends DataSourceHelper {
 
     private WriteBucketRepositoryImpl repository;
 
-    public WriteBucketRepositoryImplTest() {
-        dataSetName = "WriteBucketRepositoryImplTest";
-    }
-
     @BeforeEach
     void setup() {
         repository = new WriteBucketRepositoryImpl(dataSource);
@@ -87,7 +83,7 @@ class WriteBucketRepositoryImplTest extends DataSourceHelper {
         var id = UUID.fromString("3731c747-ea27-42e5-a52b-1dfbfa9617db");
         var actualBucket = repository.findByUuid(id).get();
         assertThat(actualBucket.getPosition()).isEqualTo(200.987);
-        assertThat(actualBucket.getName()).isEqualTo("EXISTENT NAME");
+        assertThat(actualBucket.getName()).isEqualTo("SECOND-BUCKET");
 
         var position = faker.number().randomDouble(3, 1, 10);
         var name = faker.pokemon().name();

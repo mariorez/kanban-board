@@ -11,7 +11,7 @@ import java.sql.SQLException;
 public abstract class DataSourceHelper extends TestHelper {
 
     protected BasicDataSource dataSource = new BasicDataSource();
-    protected String dataSetName;
+    protected String dataSetName = "dataset";
 
     @BeforeEach
     void init() {

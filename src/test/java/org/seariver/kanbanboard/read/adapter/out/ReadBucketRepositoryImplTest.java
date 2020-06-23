@@ -15,10 +15,6 @@ public class ReadBucketRepositoryImplTest extends DataSourceHelper {
 
     private ReadBucketRepositoryImpl repository;
 
-    public ReadBucketRepositoryImplTest() {
-        dataSetName = "ReadBucketRepositoryImplTest";
-    }
-
     @BeforeEach
     void setup() {
         repository = new ReadBucketRepositoryImpl(dataSource);

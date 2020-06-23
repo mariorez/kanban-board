@@ -14,10 +14,6 @@ class WriteCardRepositoryImplTest extends DataSourceHelper {
 
     private WriteCardRepositoryImpl repository;
 
-    public WriteCardRepositoryImplTest() {
-        dataSetName = "WriteCardRepositoryImplTest";
-    }
-
     @BeforeEach
     void setup() {
         repository = new WriteCardRepositoryImpl(dataSource);
