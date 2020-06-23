@@ -5,6 +5,8 @@ import java.util.Map;
 
 public abstract class DomainException extends RuntimeException {
 
+    private static final long serialVersionUID = -7119093928181516799L;
+
     public enum Error {
 
         INVALID_DUPLICATED_DATA("Invalid duplicated data"),
@@ -29,10 +31,6 @@ public abstract class DomainException extends RuntimeException {
 
     public void addError(String key, Object value) {
         errors.put(key, value);
-    }
-
-    public void addError(String key, int value) {
-        errors.put(key, Integer.valueOf(value));
     }
 
     public Map<String, Object> getErrors() {

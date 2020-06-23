@@ -16,7 +16,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class UpdateBucketIT extends IntegrationHelper {
 
     @Test
-    void GIVEN_ValidData_MUST_ReturnSuccess() throws Exception {
+    void GIVEN_ValidPayload_MUST_ReturnSuccess() throws Exception {
 
         // given
         var id = "3731c747-ea27-42e5-a52b-1dfbfa9617db";
