@@ -7,6 +7,7 @@ import org.springframework.test.context.jdbc.Sql;
 import java.util.UUID;
 
 import static org.hamcrest.Matchers.containsInRelativeOrder;
+import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -44,6 +45,7 @@ class CreateBucketIT extends IntegrationHelper {
             .perform(get("/v1/buckets"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(APPLICATION_JSON))
+            .andExpect(jsonPath("$.*", hasSize(3)))
             .andExpect(jsonPath("$[*].id",
                 containsInRelativeOrder(id, "6d9db741-ef57-4d5a-ac0f-34f68fb0ab5e", "3731c747-ea27-42e5-a52b-1dfbfa9617db")))
             .andExpect(jsonPath("$[*].position",
