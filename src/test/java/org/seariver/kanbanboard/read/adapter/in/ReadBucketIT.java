@@ -2,9 +2,7 @@ package org.seariver.kanbanboard.read.adapter.in;
 
 import helper.IntegrationHelper;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.Matchers.containsInRelativeOrder;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -15,9 +13,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @TestPropertySource(properties = "test.dataset=ReadBucketIT")
 class ReadBucketIT extends IntegrationHelper {
-
-    @Autowired
-    private MockMvc mockMvc;
 
     @Test
     void WHEN_GetAllBuckets_MUST_ListByPositionOrder() throws Exception {
