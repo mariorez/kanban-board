@@ -2,7 +2,7 @@ package org.seariver.kanbanboard.write.adapter.in;
 
 import helper.IntegrationHelper;
 import org.junit.jupiter.api.Test;
-import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.jdbc.Sql;
 
 import java.util.UUID;
 
@@ -14,7 +14,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@TestPropertySource(properties = "test.dataset=CreateBucketIT")
+@Sql("/fixture/dataset.sql")
 class CreateBucketIT extends IntegrationHelper {
 
     @Test
