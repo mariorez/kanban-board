@@ -2,7 +2,6 @@ package org.seariver.kanbanboard.read.adapter.in;
 
 import helper.IntegrationHelper;
 import org.junit.jupiter.api.Test;
-import org.springframework.test.context.jdbc.Sql;
 
 import static org.hamcrest.Matchers.containsInRelativeOrder;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
@@ -12,7 +11,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@Sql("/fixture/dataset.sql")
 class ReadBucketIT extends IntegrationHelper {
 
     @Test
