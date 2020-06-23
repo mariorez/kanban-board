@@ -6,12 +6,7 @@ import org.springframework.test.context.TestPropertySource;
 
 import java.util.UUID;
 
-import static org.hamcrest.Matchers.containsInRelativeOrder;
-import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @TestPropertySource(properties = "test.dataset=CreateCardIT")
@@ -22,7 +17,7 @@ class CreateCardIT extends IntegrationHelper {
 
         // given
         var id = UUID.randomUUID().toString();
-        var bucketId = UUID.randomUUID().toString();
+        var bucketId = "6d9db741-ef57-4d5a-ac0f-34f68fb0ab5e";
         var position = faker.number().randomDouble(5, 1, 10);
         var name = faker.pokemon().name();
         var payload = """

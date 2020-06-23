@@ -75,7 +75,7 @@ public class WriteBucketRepositoryImpl implements WriteBucketRepository {
     public Optional<Bucket> findByUuid(UUID id) {
 
         String sql = """
-            SELECT uuid, position, name, created_at, updated_at
+            SELECT id, uuid, position, name, created_at, updated_at
             FROM bucket
             WHERE uuid = :uuid""";
 
@@ -88,7 +88,7 @@ public class WriteBucketRepositoryImpl implements WriteBucketRepository {
     public Optional<Bucket> findByUuidOrPosition(UUID id, double position) {
 
         String sql = """
-            SELECT uuid, position, name, created_at, updated_at
+            SELECT id, uuid, position, name, created_at, updated_at
             FROM bucket
             WHERE uuid = :uuid OR position = :position""";
 
@@ -104,12 +104,13 @@ public class WriteBucketRepositoryImpl implements WriteBucketRepository {
         return jdbcTemplate.query(sql, parameters, resultSet -> {
 
             if (resultSet.next()) {
-                return Optional.of(new Bucket().
-                    setUuid(UUID.fromString(resultSet.getString("uuid"))).
-                    setPosition(resultSet.getDouble("position")).
-                    setName(resultSet.getString("name")).
-                    setCreatedAt(resultSet.getTimestamp("created_at").toLocalDateTime()).
-                    setUpdatedAt(resultSet.getTimestamp("updated_at").toLocalDateTime())
+                return Optional.of(new Bucket()
+                    .setId(resultSet.getInt("id"))
+                    .setUuid(UUID.fromString(resultSet.getString("uuid")))
+                    .setPosition(resultSet.getDouble("position"))
+                    .setName(resultSet.getString("name"))
+                    .setCreatedAt(resultSet.getTimestamp("created_at").toLocalDateTime())
+                    .setUpdatedAt(resultSet.getTimestamp("updated_at").toLocalDateTime())
                 );
             }
 

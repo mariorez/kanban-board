@@ -53,6 +53,7 @@ class WriteBucketRepositoryImplTest extends DataSourceHelper {
         // then
         var actualOptional = repository.findByUuid(id);
         Bucket actual = actualOptional.get();
+        assertThat(actual.getId()).isGreaterThan(0);
         assertThat(actual.getUuid()).isEqualTo(expected.getUuid());
         assertThat(actual.getPosition()).isEqualTo(expected.getPosition());
         assertThat(actual.getName()).isEqualTo(expected.getName());

@@ -38,7 +38,7 @@ public class WriteCardRepositoryImpl implements WriteCardRepository {
     public Optional<Card> findByUuid(UUID uuid) {
 
         String sql = """
-            SELECT uuid, position, name, created_at, updated_at
+            SELECT bucket_id, uuid, position, name, created_at, updated_at
             FROM card
             WHERE uuid = :uuid""";
 
@@ -48,12 +48,13 @@ public class WriteCardRepositoryImpl implements WriteCardRepository {
         return jdbcTemplate.query(sql, parameters, resultSet -> {
 
             if (resultSet.next()) {
-                return Optional.of(new Card().
-                    setUuid(UUID.fromString(resultSet.getString("uuid"))).
-                    setPosition(resultSet.getDouble("position")).
-                    setName(resultSet.getString("name")).
-                    setCreatedAt(resultSet.getTimestamp("created_at").toLocalDateTime()).
-                    setUpdatedAt(resultSet.getTimestamp("updated_at").toLocalDateTime())
+                return Optional.of(new Card()
+                    .setBucketId(resultSet.getInt("bucket_id"))
+                    .setUuid(UUID.fromString(resultSet.getString("uuid")))
+                    .setPosition(resultSet.getDouble("position"))
+                    .setName(resultSet.getString("name"))
+                    .setCreatedAt(resultSet.getTimestamp("created_at").toLocalDateTime())
+                    .setUpdatedAt(resultSet.getTimestamp("updated_at").toLocalDateTime())
                 );
             }
 

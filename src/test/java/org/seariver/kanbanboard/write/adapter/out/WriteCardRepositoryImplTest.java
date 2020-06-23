@@ -29,7 +29,7 @@ class WriteCardRepositoryImplTest extends DataSourceHelper {
     }
 
     @Test
-    void WHEN_CreatingBucket_GIVEN_ValidData_MUST_PersistOnDatabase() {
+    void WHEN_CreatingCard_GIVEN_ValidData_MUST_PersistOnDatabase() {
 
         // given
         var bucketId = 1;
@@ -48,6 +48,7 @@ class WriteCardRepositoryImplTest extends DataSourceHelper {
         // then
         var actualOptional = repository.findByUuid(uuid);
         Card actual = actualOptional.get();
+        assertThat(actual.getBucketId()).isEqualTo(bucketId);
         assertThat(actual.getUuid()).isEqualTo(expected.getUuid());
         assertThat(actual.getPosition()).isEqualTo(expected.getPosition());
         assertThat(actual.getName()).isEqualTo(expected.getName());
