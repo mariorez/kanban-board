@@ -4,10 +4,12 @@ import org.seariver.kanbanboard.write.domain.core.Bucket;
 import org.seariver.kanbanboard.write.domain.core.Card;
 import org.seariver.kanbanboard.write.domain.core.WriteBucketRepository;
 import org.seariver.kanbanboard.write.domain.core.WriteCardRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-public class CreateCardCommandHandler {
+@Service
+public class CreateCardCommandHandler implements Handler<CreateCardCommand> {
 
     private WriteBucketRepository bucketRepository;
     private WriteCardRepository cardRepository;

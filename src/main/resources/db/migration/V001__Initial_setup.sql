@@ -6,3 +6,14 @@ CREATE TABLE IF NOT EXISTS bucket (
     created_at TIMESTAMP NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMP NOT NULL DEFAULT NOW()
 );
+
+CREATE TABLE IF NOT EXISTS card (
+    id SERIAL PRIMARY KEY,
+    bucket_id INT,
+    uuid UUID UNIQUE NOT NULL,
+    position DECIMAL UNIQUE NOT NULL,
+    name VARCHAR(100) NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMP NOT NULL DEFAULT NOW(),
+    FOREIGN KEY (bucket_id) REFERENCES bucket(id)
+);

@@ -6,5 +6,5 @@ public record CreateCardCommand(
     UUID id,
     UUID bucketId,
     double position,
-    String name) {
+    String name) implements Command {
 }
