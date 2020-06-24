@@ -24,7 +24,7 @@ public class CreateCardCommandTest extends TestHelper {
         CreateCardCommand command = new CreateCardCommand(id, bucketId, position, name);
 
         // then
-        assertThat(command.id()).isEqualTo(id);
+        assertThat(command.uuid()).isEqualTo(id);
         assertThat(command.bucketId()).isEqualTo(bucketId);
         assertThat(command.position()).isEqualTo(position);
         assertThat(command.name()).isEqualTo(name);

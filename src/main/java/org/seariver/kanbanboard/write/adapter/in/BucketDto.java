@@ -8,7 +8,7 @@ import javax.validation.constraints.Size;
 import java.util.UUID;
 
 public record BucketDto(
-    @JsonProperty("id")UUID id,
+    @JsonProperty("id")UUID uuid,
     @Positive @JsonProperty("position")double position,
     @NotBlank @Size(min = 1, max = 100) @JsonProperty("name")String name) {
 }

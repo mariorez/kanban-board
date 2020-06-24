@@ -8,8 +8,8 @@ import javax.validation.constraints.Size;
 import java.util.UUID;
 
 public record CardDto(
-    @JsonProperty("id")UUID id,
-    @JsonProperty("bucketId")UUID bucketId,
+    @JsonProperty("id")UUID uuid,
+    @JsonProperty("bucketId")UUID bucketUuid,
     @Positive @JsonProperty("position")double position,
     @NotBlank @Size(min = 1, max = 100) @JsonProperty("name")String name) {
 }

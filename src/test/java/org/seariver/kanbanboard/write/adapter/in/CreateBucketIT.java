@@ -20,7 +20,7 @@ class CreateBucketIT extends IntegrationHelper {
     void GIVEN_ValidPayload_MUST_ReturnCreated() throws Exception {
 
         // given
-        var id = UUID.randomUUID().toString();
+        var uuid = UUID.randomUUID().toString();
         var position = faker.number().randomDouble(5, 1, 10);
         var name = faker.pokemon().name();
         var payload = """
@@ -29,7 +29,7 @@ class CreateBucketIT extends IntegrationHelper {
                 "position": %s,
                 "name": "%s"
             }
-            """.formatted(id, position, name);
+            """.formatted(uuid, position, name);
 
         // when
         mockMvc
@@ -45,7 +45,7 @@ class CreateBucketIT extends IntegrationHelper {
             .andExpect(content().contentType(APPLICATION_JSON))
             .andExpect(jsonPath("$.*", hasSize(3)))
             .andExpect(jsonPath("$[*].id",
-                containsInRelativeOrder(id, "6d9db741-ef57-4d5a-ac0f-34f68fb0ab5e", "3731c747-ea27-42e5-a52b-1dfbfa9617db")))
+                containsInRelativeOrder(uuid, "6d9db741-ef57-4d5a-ac0f-34f68fb0ab5e", "3731c747-ea27-42e5-a52b-1dfbfa9617db")))
             .andExpect(jsonPath("$[*].position",
                 containsInRelativeOrder(position, 100.15, 200.987)))
             .andExpect(jsonPath("$[*].name", containsInRelativeOrder(name, "FIRST-BUCKET", "SECOND-BUCKET")));
@@ -54,7 +54,7 @@ class CreateBucketIT extends IntegrationHelper {
     @Test
     void GIVEN_InvalidData_MUST_ReturnError() throws Exception {
         // given
-        var id = UUID.randomUUID();
+        var uuid = UUID.randomUUID();
         var position = faker.number().randomDouble(5, 1, 10);
         var name = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras fringilla elit elementum, ullamcorper turpis consequat.";
         var payload = """
@@ -63,7 +63,7 @@ class CreateBucketIT extends IntegrationHelper {
                 "position": %s,
                 "name": "%s"
             }
-            """.formatted(id, position, name);
+            """.formatted(uuid, position, name);
 
         // when
         mockMvc

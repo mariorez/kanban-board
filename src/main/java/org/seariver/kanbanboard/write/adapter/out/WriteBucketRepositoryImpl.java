@@ -72,7 +72,7 @@ public class WriteBucketRepositoryImpl implements WriteBucketRepository {
         jdbcTemplate.update(sql, parameters);
     }
 
-    public Optional<Bucket> findByUuid(UUID id) {
+    public Optional<Bucket> findByUuid(UUID uuid) {
 
         String sql = """
             SELECT id, uuid, position, name, created_at, updated_at
@@ -80,12 +80,12 @@ public class WriteBucketRepositoryImpl implements WriteBucketRepository {
             WHERE uuid = :uuid""";
 
         MapSqlParameterSource parameters = new MapSqlParameterSource()
-            .addValue("uuid", id);
+            .addValue("uuid", uuid);
 
         return getBucket(sql, parameters);
     }
 
-    public Optional<Bucket> findByUuidOrPosition(UUID id, double position) {
+    public Optional<Bucket> findByUuidOrPosition(UUID uuid, double position) {
 
         String sql = """
             SELECT id, uuid, position, name, created_at, updated_at
@@ -93,7 +93,7 @@ public class WriteBucketRepositoryImpl implements WriteBucketRepository {
             WHERE uuid = :uuid OR position = :position""";
 
         MapSqlParameterSource parameters = new MapSqlParameterSource()
-            .addValue("uuid", id)
+            .addValue("uuid", uuid)
             .addValue("position", position);
 
         return getBucket(sql, parameters);

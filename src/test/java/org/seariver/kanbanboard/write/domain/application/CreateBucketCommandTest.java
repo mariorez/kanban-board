@@ -23,7 +23,7 @@ public class CreateBucketCommandTest extends TestHelper {
         var command = new CreateBucketCommand(id, position, name);
 
         // then
-        assertThat(command.id()).isEqualTo(id);
+        assertThat(command.uuid()).isEqualTo(id);
         assertThat(command.position()).isEqualTo(position);
         assertThat(command.name()).isEqualTo(name);
     }

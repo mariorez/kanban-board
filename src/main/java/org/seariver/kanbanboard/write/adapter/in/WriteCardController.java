@@ -23,10 +23,10 @@ public class WriteCardController {
     @PostMapping(path = CARDS_PATH)
     public ResponseEntity<String> create(@Validated @RequestBody CardDto dto) throws URISyntaxException {
 
-        commandBus.execute(new CreateCardCommand(dto.id(), dto.bucketId(), dto.position(), dto.name()));
+        commandBus.execute(new CreateCardCommand(dto.uuid(), dto.bucketUuid(), dto.position(), dto.name()));
 
         return ResponseEntity
-            .created(new URI(String.format("/%s/%s", CARDS_PATH, dto.id())))
+            .created(new URI(String.format("/%s/%s", CARDS_PATH, dto.uuid())))
             .build();
     }
 }

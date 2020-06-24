@@ -9,7 +9,7 @@ public interface WriteBucketRepository {
 
     void update(Bucket bucket);
 
-    Optional<Bucket> findByUuid(UUID id);
+    Optional<Bucket> findByUuid(UUID uuid);
 
-    Optional<Bucket> findByUuidOrPosition(UUID id, double position);
+    Optional<Bucket> findByUuidOrPosition(UUID uuid, double position);
 }

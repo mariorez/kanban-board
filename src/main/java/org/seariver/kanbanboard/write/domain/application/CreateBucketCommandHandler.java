@@ -16,7 +16,7 @@ public class CreateBucketCommandHandler implements Handler<CreateBucketCommand> 
     public void handle(CreateBucketCommand command) {
 
         var bucket = new Bucket()
-            .setUuid(command.id())
+            .setUuid(command.uuid())
             .setPosition(command.position())
             .setName(command.name());
 

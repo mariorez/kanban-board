@@ -14,7 +14,7 @@ class CreateCardIT extends IntegrationHelper {
     void GIVEN_ValidPayload_MUST_ReturnCreated() throws Exception {
 
         // given
-        var id = UUID.randomUUID().toString();
+        var uuid = UUID.randomUUID().toString();
         var bucketId = "6d9db741-ef57-4d5a-ac0f-34f68fb0ab5e";
         var position = faker.number().randomDouble(5, 1, 10);
         var name = faker.pokemon().name();
@@ -25,7 +25,7 @@ class CreateCardIT extends IntegrationHelper {
                 "position": %s,
                 "name": "%s"
             }
-            """.formatted(id, bucketId, position, name);
+            """.formatted(uuid, bucketId, position, name);
 
         // when
         mockMvc

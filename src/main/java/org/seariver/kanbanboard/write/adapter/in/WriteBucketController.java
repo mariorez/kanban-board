@@ -27,17 +27,17 @@ public class WriteBucketController {
     @PostMapping(path = BUCKETS_PATH)
     public ResponseEntity<String> create(@Validated @RequestBody BucketDto dto) throws URISyntaxException {
 
-        commandBus.execute(new CreateBucketCommand(dto.id(), dto.position(), dto.name()));
+        commandBus.execute(new CreateBucketCommand(dto.uuid(), dto.position(), dto.name()));
 
         return ResponseEntity
-            .created(new URI(String.format("/%s/%s", BUCKETS_PATH, dto.id())))
+            .created(new URI(String.format("/%s/%s", BUCKETS_PATH, dto.uuid())))
             .build();
     }
 
     @PutMapping(path = BUCKETS_PATH + "/{id}")
-    public ResponseEntity<String> update(@PathVariable UUID id, @Validated @RequestBody BucketDto dto) {
+    public ResponseEntity<String> update(@PathVariable UUID uuid, @Validated @RequestBody BucketDto dto) {
 
-        commandBus.execute(new UpdateBucketCommand(id, dto.position(), dto.name()));
+        commandBus.execute(new UpdateBucketCommand(uuid, dto.position(), dto.name()));
 
         return ResponseEntity.noContent().build();
     }
