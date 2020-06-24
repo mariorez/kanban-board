@@ -23,6 +23,11 @@
     {{#each buckets}}
     <div class="list" data-bucket-id="{{id}}" data-bucket-position="{{position}}">
         <header>{{name}}</header>
+        <ul>
+            {{#each cards}}
+            <li>{{name}}</li>
+            {{/each}}
+        </ul>
         <footer>Add a card...</footer>
     </div>
     {{/each}}

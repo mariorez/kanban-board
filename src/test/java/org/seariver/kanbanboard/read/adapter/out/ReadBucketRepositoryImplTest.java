@@ -4,6 +4,7 @@ import helper.DataSourceHelper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.seariver.kanbanboard.read.domain.core.BucketDto;
+import org.seariver.kanbanboard.read.domain.core.CardDto;
 import org.seariver.kanbanboard.read.domain.core.ReadBucketRepository;
 
 import java.util.List;
@@ -33,8 +34,14 @@ public class ReadBucketRepositoryImplTest extends DataSourceHelper {
 
         // then
         var expected = List.of(
-            new BucketDto(UUID.fromString("6d9db741-ef57-4d5a-ac0f-34f68fb0ab5e"), 100.15, "FIRST-BUCKET"),
-            new BucketDto(UUID.fromString("3731c747-ea27-42e5-a52b-1dfbfa9617db"), 200.987, "SECOND-BUCKET")
+            new BucketDto(
+                UUID.fromString("6d9db741-ef57-4d5a-ac0f-34f68fb0ab5e"), 100.15, "FIRST-BUCKET",
+                List.of(new CardDto(
+                    UUID.fromString("df5cf5b1-c2c7-4c02-b4d4-341d6772f193"), 100.01, "FIRST-CARD"))),
+            new BucketDto(
+                UUID.fromString("3731c747-ea27-42e5-a52b-1dfbfa9617db"), 200.987, "SECOND-BUCKET",
+                List.of(new CardDto(
+                    UUID.fromString("021944cd-f516-4432-ba8d-44a312267c7d"), 200.01, "SECOND-CARD")))
         );
 
         assertThat(actual).containsExactlyElementsOf(expected);
