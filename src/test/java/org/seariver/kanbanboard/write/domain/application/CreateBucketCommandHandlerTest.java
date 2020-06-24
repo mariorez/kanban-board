@@ -22,10 +22,10 @@ public class CreateBucketCommandHandlerTest extends TestHelper {
     void GIVEN_ValidCommand_MUST_CreateBucketInDatabase() {
 
         // given
-        var id = UUID.randomUUID();
+        var uuid = UUID.randomUUID();
         var position = faker.number().randomDouble(3, 1, 10);
         var name = faker.pokemon().name();
-        var command = new CreateBucketCommand(id, position, name);
+        var command = new CreateBucketCommand(uuid, position, name);
         var repository = mock(WriteBucketRepositoryImpl.class);
 
         // when
@@ -35,7 +35,7 @@ public class CreateBucketCommandHandlerTest extends TestHelper {
         // then
         verify(repository).create(captor.capture());
         var bucket = captor.getValue();
-        assertThat(bucket.getUuid()).isEqualTo(id);
+        assertThat(bucket.getUuid()).isEqualTo(uuid);
         assertThat(bucket.getPosition()).isEqualTo(position);
         assertThat(bucket.getName()).isEqualTo(name);
     }

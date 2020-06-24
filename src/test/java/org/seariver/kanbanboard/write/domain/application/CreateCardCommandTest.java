@@ -15,16 +15,16 @@ public class CreateCardCommandTest extends TestHelper {
     void GIVEN_ValidData_MUST_RetrieveSameData() {
 
         // given
-        var id = UUID.randomUUID();
+        var uuid = UUID.randomUUID();
         var bucketId = UUID.randomUUID();
         var position = faker.number().randomDouble(3, 1, 10);
         var name = faker.pokemon().name();
 
         // when
-        CreateCardCommand command = new CreateCardCommand(id, bucketId, position, name);
+        CreateCardCommand command = new CreateCardCommand(uuid, bucketId, position, name);
 
         // then
-        assertThat(command.uuid()).isEqualTo(id);
+        assertThat(command.uuid()).isEqualTo(uuid);
         assertThat(command.bucketId()).isEqualTo(bucketId);
         assertThat(command.position()).isEqualTo(position);
         assertThat(command.name()).isEqualTo(name);
