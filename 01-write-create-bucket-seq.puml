@@ -1,13 +1,15 @@
 @startuml
-Frontend -> WriteBucketController: JSON Payload
+FRONTEND -> WriteBucketController: JSON Payload
 WriteBucketController -> CommandBus: CreateBucketCommand
+CommandBus --> CommandBus: try: creates event
 CommandBus -> CreateBucketCommandHandler: CreateBucketCommand
 CreateBucketCommandHandler -> WriteBucketRepository: Bucket
 WriteBucketRepository -> DATABASE: create statement
+CommandBus --> CommandBus: catch: set exception
 DATABASE -> WriteBucketRepository
 WriteBucketRepository -> CreateBucketCommandHandler
 CreateBucketCommandHandler -> CommandBus
 CommandBus -> WriteBucketController
-CommandBus --> CommandBus: CommandEvent
-WriteBucketController -> Frontend: HTTP 201 created
+CommandBus --> CommandBus: finally: publishes event
+WriteBucketController -> FRONTEND: HTTP 201 created
 @enduml
