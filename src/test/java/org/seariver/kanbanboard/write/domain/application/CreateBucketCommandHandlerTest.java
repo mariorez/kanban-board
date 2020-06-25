@@ -4,8 +4,8 @@ import helper.TestHelper;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
-import org.seariver.kanbanboard.write.adapter.out.WriteBucketRepositoryImpl;
 import org.seariver.kanbanboard.write.domain.core.Bucket;
+import org.seariver.kanbanboard.write.domain.core.WriteBucketRepository;
 
 import java.util.UUID;
 
@@ -26,7 +26,7 @@ public class CreateBucketCommandHandlerTest extends TestHelper {
         var position = faker.number().randomDouble(3, 1, 10);
         var name = faker.pokemon().name();
         var command = new CreateBucketCommand(uuid, position, name);
-        var repository = mock(WriteBucketRepositoryImpl.class);
+        var repository = mock(WriteBucketRepository.class);
 
         // when
         var handler = new CreateBucketCommandHandler(repository);
