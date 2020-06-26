@@ -40,12 +40,12 @@ public class ReadBucketRepositoryImpl implements ReadBucketRepository {
 
             while (rs.next()) {
 
-                double position = rs.getDouble("bucket_position");
+                var position = rs.getDouble("bucket_position");
 
-                var bucketDto = resultMap.getOrDefault(position, new BucketDto()
-                    .setUuid(UUID.fromString(rs.getString("bucket_uuid")))
-                    .setPosition(position)
-                    .setName(rs.getString("bucket_name")));
+                var bucketDto = resultMap.getOrDefault(position, new BucketDto(
+                    UUID.fromString(rs.getString("bucket_uuid")),
+                    position,
+                    rs.getString("bucket_name")));
 
                 if (Optional.ofNullable(rs.getString("card_uuid")).isPresent()) {
                     bucketDto.addCard(new CardDto(
