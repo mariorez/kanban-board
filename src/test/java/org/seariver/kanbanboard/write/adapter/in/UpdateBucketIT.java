@@ -30,7 +30,7 @@ class UpdateBucketIT extends IntegrationHelper {
 
         // when
         mockMvc
-            .perform(put("/v1/buckets/{uuid}", uuid)
+            .perform(put("/v1/buckets/{id}", uuid)
                 .contentType("application/json")
                 .content(payload))
             .andExpect(status().isNoContent());

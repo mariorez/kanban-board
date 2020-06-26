@@ -35,7 +35,7 @@ public class WriteBucketController {
     }
 
     @PutMapping(path = BUCKETS_PATH + "/{id}")
-    public ResponseEntity<String> update(@PathVariable UUID uuid, @Validated @RequestBody BucketDto dto) {
+    public ResponseEntity<String> update(@PathVariable(name = "id") UUID uuid, @Validated @RequestBody BucketDto dto) {
 
         commandBus.execute(new UpdateBucketCommand(uuid, dto.position(), dto.name()));
 
