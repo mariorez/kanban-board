@@ -7,7 +7,11 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
@@ -23,25 +27,37 @@ public class ReadBucketRepositoryImpl implements ReadBucketRepository {
 
         var sql = """
             SELECT
-                b.uuid b_uuid, b.position b_position, b.name b_name,
-                c.uuid c_uuid, c.position c_position, c.name c_name
-            FROM
-                bucket AS b
-                LEFT JOIN card AS c ON c.bucket_id = b.id\s
-            ORDER BY b.position, c.position;
+                b.uuid bucket_uuid, b.position bucket_position, b.name bucket_name,
+                c.uuid card_uuid, c.position card_position, c.name card_name
+            FROM bucket AS b
+                LEFT JOIN card AS c ON c.bucket_id = b.id
+            ORDER BY b.position ASC, c.position ASC
             """;
 
-        return jdbcTemplate.query(sql, (rs, rowNum) ->
+        return jdbcTemplate.query(sql, rs -> {
 
-            new BucketDto(
-                UUID.fromString(rs.getString("b_uuid")),
-                rs.getDouble("b_position"),
-                rs.getString("b_name"),
-                List.of(new CardDto(
-                    UUID.fromString(rs.getString("c_uuid")),
-                    rs.getDouble("c_position"),
-                    rs.getString("c_name")
-                )))
-        );
+            Map<Double, BucketDto> resultMap = new LinkedHashMap<>();
+
+            while (rs.next()) {
+
+                double position = rs.getDouble("bucket_position");
+
+                var bucketDto = resultMap.getOrDefault(position, new BucketDto()
+                    .setUuid(UUID.fromString(rs.getString("bucket_uuid")))
+                    .setPosition(position)
+                    .setName(rs.getString("bucket_name")));
+
+                if (Optional.ofNullable(rs.getString("card_uuid")).isPresent()) {
+                    bucketDto.addCard(new CardDto(
+                        UUID.fromString(rs.getString("card_uuid")),
+                        rs.getDouble("card_position"),
+                        rs.getString("card_name")));
+                }
+
+                resultMap.put(position, bucketDto);
+            }
+
+            return new ArrayList<>(resultMap.values());
+        });
     }
 }
