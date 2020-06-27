@@ -2,11 +2,16 @@ package org.seariver.kanbanboard.write.adapter.in;
 
 import helper.IntegrationHelper;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.UUID;
+import java.util.stream.Stream;
 
 import static org.hamcrest.Matchers.containsInRelativeOrder;
 import static org.hamcrest.Matchers.hasSize;
+import static org.junit.jupiter.params.provider.Arguments.arguments;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -53,17 +58,16 @@ class CreateBucketIT extends IntegrationHelper {
             .andExpect(jsonPath("$[*].name", containsInRelativeOrder(name, "FIRST-BUCKET", "SECOND-BUCKET")));
     }
 
-    @Test
-    void GIVEN_InvalidData_MUST_ReturnError() throws Exception {
+    @ParameterizedTest
+    @MethodSource("provideInvalidData")
+    void GIVEN_InvalidData_MUST_ReturnBadRequest(String uuid, double position, String name) throws Exception {
+
         // given
-        var uuid = UUID.randomUUID();
-        var position = faker.number().randomDouble(5, 1, 10);
-        var name = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras fringilla elit elementum, ullamcorper turpis consequat.";
         var payload = """
             {
                 "id": "%s",
                 "position": %s,
-                "name": "%s"
+                "name": %s
             }
             """.formatted(uuid, position, name);
 
@@ -73,5 +77,23 @@ class CreateBucketIT extends IntegrationHelper {
                 .contentType("application/json")
                 .content(payload))
             .andExpect(status().isBadRequest());
+    }
+
+    private static Stream<Arguments> provideInvalidData() {
+
+        var validUuid = UUID.randomUUID().toString();
+        double validPosition = faker.number().randomDouble(5, 1, 10);
+        var textGreatherThan100Chars = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras fringilla elit elementum, ullamcorper turpis consequat.";
+
+        return Stream.of(
+            /*arguments(null, validPosition, "WHATEVER"),
+            arguments("", validPosition, "WHATEVER"),*/
+            arguments(validUuid, -1, "WHATEVER"),
+            arguments(validUuid, 0, "WHATEVER"),
+            arguments(validUuid, validPosition, null),
+            arguments(validUuid, validPosition, ""),
+            arguments(validUuid, validPosition, "      "),
+            arguments(validUuid, validPosition, textGreatherThan100Chars)
+        );
     }
 }
