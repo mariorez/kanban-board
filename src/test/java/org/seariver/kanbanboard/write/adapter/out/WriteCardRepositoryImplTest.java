@@ -7,6 +7,7 @@ import org.seariver.kanbanboard.write.domain.core.BucketId;
 import org.seariver.kanbanboard.write.domain.core.Card;
 import org.seariver.kanbanboard.write.domain.core.WriteCardRepository;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -49,7 +50,7 @@ class WriteCardRepositoryImplTest extends DataSourceHelper {
         assertThat(actual.getUuid()).isEqualTo(expected.getUuid());
         assertThat(actual.getPosition()).isEqualTo(expected.getPosition());
         assertThat(actual.getName()).isEqualTo(expected.getName());
-        assertThat(actual.getCreatedAt()).isNotNull();
-        assertThat(actual.getUpdatedAt()).isNotNull();
+        assertThat(actual.getCreatedAt()).isBeforeOrEqualTo(LocalDateTime.now());
+        assertThat(actual.getUpdatedAt()).isBeforeOrEqualTo(LocalDateTime.now());
     }
 }

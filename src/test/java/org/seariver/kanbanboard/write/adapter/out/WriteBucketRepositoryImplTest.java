@@ -10,6 +10,7 @@ import org.seariver.kanbanboard.write.domain.core.Bucket;
 import org.seariver.kanbanboard.write.domain.core.WriteBucketRepository;
 import org.seariver.kanbanboard.write.domain.exception.DuplicatedDataException;
 
+import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Stream;
@@ -53,8 +54,8 @@ class WriteBucketRepositoryImplTest extends DataSourceHelper {
         assertThat(actual.getUuid()).isEqualTo(expected.getUuid());
         assertThat(actual.getPosition()).isEqualTo(expected.getPosition());
         assertThat(actual.getName()).isEqualTo(expected.getName());
-        assertThat(actual.getCreatedAt()).isNotNull();
-        assertThat(actual.getUpdatedAt()).isNotNull();
+        assertThat(actual.getCreatedAt()).isBeforeOrEqualTo(LocalDateTime.now());
+        assertThat(actual.getUpdatedAt()).isBeforeOrEqualTo(LocalDateTime.now());
     }
 
     @ParameterizedTest
