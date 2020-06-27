@@ -1,6 +1,7 @@
 package org.seariver.kanbanboard.write.adapter.out;
 
 import org.seariver.kanbanboard.write.domain.core.Bucket;
+import org.seariver.kanbanboard.write.domain.core.BucketId;
 import org.seariver.kanbanboard.write.domain.core.WriteBucketRepository;
 import org.seariver.kanbanboard.write.domain.exception.DuplicatedDataException;
 import org.springframework.dao.DuplicateKeyException;
@@ -27,7 +28,7 @@ public class WriteBucketRepositoryImpl implements WriteBucketRepository {
     public void create(Bucket bucket) {
 
         try {
-            String sql = """
+            var sql = """
                 INSERT INTO bucket(uuid, position, name)
                 values (:uuid, :position, :name)""";
 
@@ -59,7 +60,7 @@ public class WriteBucketRepositoryImpl implements WriteBucketRepository {
     @Override
     public void update(Bucket bucket) {
 
-        String sql = """
+        var sql = """
             UPDATE bucket
             SET position = :position, name =:name
             WHERE uuid = :uuid""";
@@ -74,7 +75,7 @@ public class WriteBucketRepositoryImpl implements WriteBucketRepository {
 
     public Optional<Bucket> findByUuid(UUID uuid) {
 
-        String sql = """
+        var sql = """
             SELECT id, uuid, position, name, created_at, updated_at
             FROM bucket
             WHERE uuid = :uuid""";
@@ -87,7 +88,7 @@ public class WriteBucketRepositoryImpl implements WriteBucketRepository {
 
     public Optional<Bucket> findByUuidOrPosition(UUID uuid, double position) {
 
-        String sql = """
+        var sql = """
             SELECT id, uuid, position, name, created_at, updated_at
             FROM bucket
             WHERE uuid = :uuid OR position = :position""";
@@ -105,7 +106,7 @@ public class WriteBucketRepositoryImpl implements WriteBucketRepository {
 
             if (resultSet.next()) {
                 return Optional.of(new Bucket()
-                    .setId(resultSet.getInt("id"))
+                    .setId(new BucketId(resultSet.getLong("id")))
                     .setUuid(UUID.fromString(resultSet.getString("uuid")))
                     .setPosition(resultSet.getDouble("position"))
                     .setName(resultSet.getString("name"))

@@ -5,28 +5,28 @@ import java.util.UUID;
 
 public class Card {
 
-    private int id;
-    private int bucketId;
+    private CardId id;
+    private BucketId bucketId;
     private UUID uuid;
     private double position;
     private String name;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    public int getId() {
+    public CardId getId() {
         return id;
     }
 
-    public Card setId(int id) {
+    public Card setId(CardId id) {
         this.id = id;
         return this;
     }
 
-    public int getBucketId() {
+    public BucketId getBucketId() {
         return bucketId;
     }
 
-    public Card setBucketId(int bucketId) {
+    public Card setBucketId(BucketId bucketId) {
         this.bucketId = bucketId;
         return this;
     }

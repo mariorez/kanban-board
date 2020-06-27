@@ -1,5 +1,6 @@
 package org.seariver.kanbanboard.write.adapter.out;
 
+import org.seariver.kanbanboard.write.domain.core.BucketId;
 import org.seariver.kanbanboard.write.domain.core.Card;
 import org.seariver.kanbanboard.write.domain.core.WriteCardRepository;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -21,12 +22,12 @@ public class WriteCardRepositoryImpl implements WriteCardRepository {
 
     @Override
     public void create(Card card) {
-        String sql = """
+        var sql = """
             INSERT INTO card (bucket_id, uuid, position, name)
             values (:bucket_id, :uuid, :position, :name)""";
 
         MapSqlParameterSource parameters = new MapSqlParameterSource()
-            .addValue("bucket_id", card.getBucketId())
+            .addValue("bucket_id", card.getBucketId().value())
             .addValue("uuid", card.getUuid())
             .addValue("position", card.getPosition())
             .addValue("name", card.getName());
@@ -37,7 +38,7 @@ public class WriteCardRepositoryImpl implements WriteCardRepository {
     @Override
     public Optional<Card> findByUuid(UUID uuid) {
 
-        String sql = """
+        var sql = """
             SELECT bucket_id, uuid, position, name, created_at, updated_at
             FROM card
             WHERE uuid = :uuid""";
@@ -49,7 +50,7 @@ public class WriteCardRepositoryImpl implements WriteCardRepository {
 
             if (resultSet.next()) {
                 return Optional.of(new Card()
-                    .setBucketId(resultSet.getInt("bucket_id"))
+                    .setBucketId(new BucketId(resultSet.getLong("bucket_id")))
                     .setUuid(UUID.fromString(resultSet.getString("uuid")))
                     .setPosition(resultSet.getDouble("position"))
                     .setName(resultSet.getString("name"))
