@@ -86,8 +86,8 @@ class CreateBucketIT extends IntegrationHelper {
         var textGreatherThan100Chars = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras fringilla elit elementum, ullamcorper turpis consequat.";
 
         return Stream.of(
-            /*arguments(null, validPosition, "WHATEVER"),
-            arguments("", validPosition, "WHATEVER"),*/
+            arguments(null, validPosition, "WHATEVER"),
+            arguments("", validPosition, "WHATEVER"),
             arguments(validUuid, -1, "WHATEVER"),
             arguments(validUuid, 0, "WHATEVER"),
             arguments(validUuid, validPosition, null),
