@@ -1,6 +1,5 @@
 package org.seariver.kanbanboard.write.adapter.out;
 
-import org.seariver.kanbanboard.write.domain.core.BucketId;
 import org.seariver.kanbanboard.write.domain.core.Card;
 import org.seariver.kanbanboard.write.domain.core.WriteCardRepository;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -27,7 +26,7 @@ public class WriteCardRepositoryImpl implements WriteCardRepository {
             values (:bucket_id, :uuid, :position, :name)""";
 
         MapSqlParameterSource parameters = new MapSqlParameterSource()
-            .addValue("bucket_id", card.getBucketId().value())
+            .addValue("bucket_id", card.getBucketId())
             .addValue("uuid", card.getUuid())
             .addValue("position", card.getPosition())
             .addValue("name", card.getName());
@@ -50,7 +49,7 @@ public class WriteCardRepositoryImpl implements WriteCardRepository {
 
             if (resultSet.next()) {
                 return Optional.of(new Card()
-                    .setBucketId(new BucketId(resultSet.getLong("bucket_id")))
+                    .setBucketId(resultSet.getLong("bucket_id"))
                     .setUuid(UUID.fromString(resultSet.getString("uuid")))
                     .setPosition(resultSet.getDouble("position"))
                     .setName(resultSet.getString("name"))

@@ -1,7 +1,6 @@
 package org.seariver.kanbanboard.write.adapter.out;
 
 import org.seariver.kanbanboard.write.domain.core.Bucket;
-import org.seariver.kanbanboard.write.domain.core.BucketId;
 import org.seariver.kanbanboard.write.domain.core.WriteBucketRepository;
 import org.seariver.kanbanboard.write.domain.exception.DuplicatedDataException;
 import org.springframework.dao.DuplicateKeyException;
@@ -106,7 +105,7 @@ public class WriteBucketRepositoryImpl implements WriteBucketRepository {
 
             if (resultSet.next()) {
                 return Optional.of(new Bucket()
-                    .setId(new BucketId(resultSet.getLong("id")))
+                    .setId(resultSet.getLong("id"))
                     .setUuid(UUID.fromString(resultSet.getString("uuid")))
                     .setPosition(resultSet.getDouble("position"))
                     .setName(resultSet.getString("name"))

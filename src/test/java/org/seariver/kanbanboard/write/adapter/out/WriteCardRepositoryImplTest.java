@@ -3,7 +3,6 @@ package org.seariver.kanbanboard.write.adapter.out;
 import helper.DataSourceHelper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.seariver.kanbanboard.write.domain.core.BucketId;
 import org.seariver.kanbanboard.write.domain.core.Card;
 import org.seariver.kanbanboard.write.domain.core.WriteCardRepository;
 
@@ -30,7 +29,7 @@ class WriteCardRepositoryImplTest extends DataSourceHelper {
     void WHEN_CreatingCard_GIVEN_ValidData_MUST_PersistOnDatabase() {
 
         // given
-        var bucketId = new BucketId(1L);
+        var bucketId = 1L;
         var uuid = UUID.randomUUID();
         var position = faker.number().randomDouble(3, 1, 10);
         var name = faker.pokemon().name();

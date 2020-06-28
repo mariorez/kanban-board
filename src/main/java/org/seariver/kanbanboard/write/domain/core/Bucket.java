@@ -5,18 +5,18 @@ import java.util.UUID;
 
 public class Bucket {
 
-    private BucketId id;
+    private Long id;
     private UUID uuid;
     private double position;
     private String name;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    public BucketId getId() {
+    public Long getId() {
         return id;
     }
 
-    public Bucket setId(BucketId id) {
+    public Bucket setId(Long id) {
         this.id = id;
         return this;
     }

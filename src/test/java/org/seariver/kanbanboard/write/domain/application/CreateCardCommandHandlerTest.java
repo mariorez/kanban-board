@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.seariver.kanbanboard.write.domain.core.Bucket;
-import org.seariver.kanbanboard.write.domain.core.BucketId;
 import org.seariver.kanbanboard.write.domain.core.Card;
 import org.seariver.kanbanboard.write.domain.core.WriteBucketRepository;
 import org.seariver.kanbanboard.write.domain.core.WriteCardRepository;
@@ -27,7 +26,7 @@ public class CreateCardCommandHandlerTest extends TestHelper {
     void GIVEN_ValidCommand_MUST_CreateCard() {
 
         // given
-        var bucketId = new BucketId(100L);
+        var bucketId = 100L;
         var uuid = UUID.randomUUID();
         var bucketUuid = UUID.randomUUID();
         var position = faker.number().randomDouble(3, 1, 10);
