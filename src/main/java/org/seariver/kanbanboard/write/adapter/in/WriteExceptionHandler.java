@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -21,7 +22,14 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 public class WriteExceptionHandler {
 
     public static final String INVALID_FIELD_MESSAGE = "Invalid field";
+    public static final String MALFORMED_JSON_MESSAGE = "Malformed JSON";
     private Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<Object> onHttpMessageNotReadableException(HttpMessageNotReadableException exception) {
+
+        return getResponseEntity(MALFORMED_JSON_MESSAGE, null, BAD_REQUEST);
+    }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Object> onMethodArgumentNotValidException(MethodArgumentNotValidException exception) {

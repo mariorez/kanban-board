@@ -1,5 +1,6 @@
 package org.seariver.kanbanboard.write.adapter.in;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.seariver.kanbanboard.write.CommandBus;
 import org.seariver.kanbanboard.write.domain.application.CreateCardCommand;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +10,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.Size;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.UUID;
 
 @RestController
 public class WriteCardController {
@@ -28,5 +34,21 @@ public class WriteCardController {
         return ResponseEntity
             .created(new URI(String.format("/%s/%s", CARDS_PATH, dto.uuid())))
             .build();
+    }
+
+    private record CardDto(
+        @NotNull
+        @JsonProperty("id")
+        UUID uuid,
+        @NotNull
+        @JsonProperty("bucketId")
+        UUID bucketUuid,
+        @Positive
+        @JsonProperty("position")
+        double position,
+        @NotBlank
+        @Size(min = 1, max = 100)
+        @JsonProperty("name")
+        String name) {
     }
 }

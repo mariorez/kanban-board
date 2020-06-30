@@ -91,6 +91,27 @@ class CreateBucketIT extends IntegrationHelper {
             .andExpect(jsonPath("$.errors[*].detail", containsInAnyOrder(errorsDetails.toArray(new String[0]))));
     }
 
+    @Test
+    void GIVEN_MalformedJson_MUST_ReturnBadRequest() throws Exception {
+
+        // given
+        var malformedJson = """
+            {
+                "id": "786d35e5-83b0-4a1e-96de-5920cbe9180e"
+                position: 10.5,
+                "name": "WHATEVER"
+            """;
+
+        // when
+        mockMvc
+            .perform(post("/v1/buckets")
+                .contentType("application/json")
+                .content(malformedJson))
+            .andExpect(status().isBadRequest())
+            .andExpect(content().contentType(APPLICATION_JSON))
+            .andExpect(jsonPath("$.message", is("Malformed JSON")));
+    }
+
     private static Stream<Arguments> provideInvalidData() {
 
         var validUuid = UUID.randomUUID().toString();
