@@ -5,13 +5,13 @@ import org.seariver.kanbanboard.write.domain.application.CreateBucketCommand;
 import org.seariver.kanbanboard.write.domain.application.UpdateBucketCommand;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.UUID;
@@ -25,7 +25,7 @@ public class WriteBucketController {
     private CommandBus commandBus;
 
     @PostMapping(path = BUCKETS_PATH)
-    public ResponseEntity<String> create(@Validated @RequestBody BucketDto dto) throws URISyntaxException {
+    public ResponseEntity<String> create(@Valid @RequestBody CreateBucketDto dto) throws URISyntaxException {
 
         commandBus.execute(new CreateBucketCommand(dto.uuid(), dto.position(), dto.name()));
 
@@ -35,7 +35,8 @@ public class WriteBucketController {
     }
 
     @PutMapping(path = BUCKETS_PATH + "/{id}")
-    public ResponseEntity<String> update(@PathVariable(name = "id") UUID uuid, @Validated @RequestBody BucketDto dto) {
+    public ResponseEntity<String> update(@PathVariable(name = "id") UUID uuid,
+                                         @Valid @RequestBody UpdateBucketDto dto) {
 
         commandBus.execute(new UpdateBucketCommand(uuid, dto.position(), dto.name()));
 

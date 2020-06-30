@@ -5,12 +5,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -19,27 +20,37 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 @ControllerAdvice
 public class WriteExceptionHandler {
 
+    public static final String INVALID_FIELD_MESSAGE = "Invalid field";
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Object> onMethodArgumentNotValidException(MethodArgumentNotValidException exception) {
 
-        Map<String, Object> detailedErrors = exception
+        List<FieldValidationError> errors = exception
             .getBindingResult()
             .getFieldErrors()
             .stream()
-            .collect(Collectors.toMap(FieldError::getField, FieldError::getDefaultMessage));
+            .map(fieldError -> {
+                return new FieldValidationError(fieldError.getField(), fieldError.getDefaultMessage());
+            })
+            .collect(Collectors.toList());
 
-        return getResponseEntity("Invalid field", detailedErrors, BAD_REQUEST);
+        return getResponseEntity(INVALID_FIELD_MESSAGE, errors, BAD_REQUEST);
     }
 
     @ExceptionHandler(DomainException.class)
     public ResponseEntity<Object> onDomainException(DomainException exception) {
 
-        return getResponseEntity(exception.getMessage(), exception.getErrors(), BAD_REQUEST);
+        List<FieldValidationError> errors = new ArrayList<>();
+
+        exception
+            .getErrors()
+            .forEach((k, v) -> errors.add(new FieldValidationError(k, v.toString())));
+
+        return getResponseEntity(exception.getMessage(), errors, BAD_REQUEST);
     }
 
-    private ResponseEntity<Object> getResponseEntity(String message, Map<String, Object> detailedErrors, HttpStatus status) {
+    private ResponseEntity<Object> getResponseEntity(String message, List<FieldValidationError> detailedErrors, HttpStatus status) {
 
         Map<String, Object> errorResult = new HashMap<>(Map.of("message", message));
 
@@ -52,5 +63,24 @@ public class WriteExceptionHandler {
         }
 
         return new ResponseEntity<>(errorResult, status);
+    }
+
+    static class FieldValidationError {
+
+        private final String field;
+        private final String detail;
+
+        public FieldValidationError(String field, String detail) {
+            this.field = field;
+            this.detail = detail;
+        }
+
+        public String getField() {
+            return field;
+        }
+
+        public String getDetail() {
+            return detail;
+        }
     }
 }
