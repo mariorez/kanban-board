@@ -10,6 +10,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import javax.validation.ConstraintViolationException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -31,6 +32,22 @@ public class WriteExceptionHandler {
         return getResponseEntity(MALFORMED_JSON_MESSAGE, null, BAD_REQUEST);
     }
 
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<Object> onConstraintViolationException(ConstraintViolationException exception) {
+
+        List<FieldValidationError> errors = exception
+            .getConstraintViolations()
+            .stream()
+            .map(error -> {
+                var fieldPath = error.getPropertyPath().toString();
+                var fieldName = fieldPath.substring(fieldPath.lastIndexOf(".") + 1);
+                return new FieldValidationError(fieldName, error.getMessage());
+            })
+            .collect(Collectors.toList());
+
+        return getResponseEntity(INVALID_FIELD_MESSAGE, errors, BAD_REQUEST);
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Object> onMethodArgumentNotValidException(MethodArgumentNotValidException exception) {
 
@@ -38,9 +55,7 @@ public class WriteExceptionHandler {
             .getBindingResult()
             .getFieldErrors()
             .stream()
-            .map(fieldError -> {
-                return new FieldValidationError(fieldError.getField(), fieldError.getDefaultMessage());
-            })
+            .map(fieldError -> new FieldValidationError(fieldError.getField(), fieldError.getDefaultMessage()))
             .collect(Collectors.toList());
 
         return getResponseEntity(INVALID_FIELD_MESSAGE, errors, BAD_REQUEST);
