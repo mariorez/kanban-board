@@ -6,16 +6,19 @@ import java.util.Map;
 public abstract class DomainException extends RuntimeException {
 
     private static final long serialVersionUID = -7119093928181516799L;
+    private int code;
 
     public enum Error {
 
-        INVALID_DUPLICATED_DATA("Invalid duplicated data"),
-        BUCKET_NOT_EXIST("Bucket not exist");
+        INVALID_DUPLICATED_DATA("Invalid duplicated data", 1000),
+        BUCKET_NOT_EXIST("Bucket not exist", 1001);
 
         private String message;
+        private int code;
 
-        Error(String message) {
+        Error(String message, int code) {
             this.message = message;
+            this.code = code;
         }
     }
 
@@ -23,10 +26,16 @@ public abstract class DomainException extends RuntimeException {
 
     public DomainException(Error error) {
         super(error.message);
+        code = error.code;
     }
 
     public DomainException(Error error, Throwable cause) {
         super(error.message, cause);
+        code = error.code;
+    }
+
+    public int getCode() {
+        return code;
     }
 
     public void addError(String key, Object value) {

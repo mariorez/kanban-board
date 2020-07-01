@@ -112,6 +112,33 @@ class CreateBucketIT extends IntegrationHelper {
             .andExpect(jsonPath("$.message", is("Malformed JSON")));
     }
 
+    @Test
+    void GIVEN_DuplicatedKey_MUST_ReturnBadRequest() throws Exception {
+
+        var duplicatedUuid = "3731c747-ea27-42e5-a52b-1dfbfa9617db";
+        var position = 100.15;
+
+        // given
+        var malformedJson = """
+            {
+                "id": "%s",
+                "position": %s,
+                "name": "WHATEVER"
+            }
+            """.formatted(duplicatedUuid, position);
+
+        // when
+        mockMvc
+            .perform(post("/v1/buckets")
+                .contentType("application/json")
+                .content(malformedJson))
+            .andExpect(status().isBadRequest())
+            .andExpect(content().contentType(APPLICATION_JSON))
+            .andExpect(jsonPath("$.message", is("Invalid field")))
+            .andExpect(jsonPath("$.errors[*].field", containsInAnyOrder("code")))
+            .andExpect(jsonPath("$.errors[*].detail", containsInAnyOrder("1000")));
+    }
+
     private static Stream<Arguments> provideInvalidData() {
 
         var validUuid = UUID.randomUUID().toString();

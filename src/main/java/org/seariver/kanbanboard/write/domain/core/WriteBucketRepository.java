@@ -1,5 +1,6 @@
 package org.seariver.kanbanboard.write.domain.core;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -11,5 +12,5 @@ public interface WriteBucketRepository {
 
     Optional<Bucket> findByUuid(UUID uuid);
 
-    Optional<Bucket> findByUuidOrPosition(UUID uuid, double position);
+    List<Bucket> findByUuidOrPosition(UUID uuid, double position);
 }

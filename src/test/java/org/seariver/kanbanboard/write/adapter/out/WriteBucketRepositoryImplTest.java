@@ -60,21 +60,21 @@ class WriteBucketRepositoryImplTest extends DataSourceHelper {
 
     @ParameterizedTest
     @MethodSource("invalidDataProvider")
-    void WHEN_CreatingBucket_GIVEN_AlreadyExistentBucket_MUST_ThrowException(UUID id,
-                                                                             double position,
-                                                                             String name,
-                                                                             Map<String, Object> expectedError) {
+    void WHEN_CreatingBucket_GIVEN_AlreadyExistentKey_MUST_ThrowException(UUID id,
+                                                                          double position,
+                                                                          Map<String, Object> expectedError) {
         // given
         var expected = new Bucket()
             .setUuid(id)
             .setPosition(position)
-            .setName(name);
+            .setName("WHATEVER");
 
         // then
         DuplicatedDataException exception = assertThrows(DuplicatedDataException.class, () -> repository.create(expected));
 
         // when
         assertThat(exception.getMessage()).isEqualTo("Invalid duplicated data");
+        assertThat(exception.getCode()).isEqualTo(1000);
         assertThat(exception.getErrors()).containsExactlyInAnyOrderEntriesOf(expectedError);
     }
 
@@ -116,22 +116,15 @@ class WriteBucketRepositoryImplTest extends DataSourceHelper {
     private static Stream<Arguments> invalidDataProvider() {
 
         var existentUuid = UUID.fromString("3731c747-ea27-42e5-a52b-1dfbfa9617db");
-        var existentPosition = 200.987;
-        var whateverName = faker.pokemon().name();
+        var existentPositionSameRegister = 200.987;
+        var existentPositionAnotherRegister = 100.15;
+        var validPosition = faker.number().randomDouble(3, 1, 10);
 
         return Stream.of(
-            arguments(existentUuid,
-                faker.number().randomDouble(3, 1, 10),
-                whateverName,
-                Map.of("id", existentUuid)),
-            arguments(UUID.randomUUID(),
-                existentPosition,
-                whateverName,
-                Map.of("position", existentPosition)),
-            arguments(existentUuid,
-                existentPosition,
-                whateverName,
-                Map.of("id", existentUuid, "position", Double.valueOf(existentPosition)))
+            arguments(existentUuid, validPosition, Map.of("id", existentUuid)),
+            arguments(UUID.randomUUID(), existentPositionSameRegister, Map.of("position", existentPositionSameRegister)),
+            arguments(existentUuid, existentPositionSameRegister, Map.of("id", existentUuid, "position", existentPositionSameRegister)),
+            arguments(existentUuid, existentPositionAnotherRegister, Map.of("id", existentUuid, "position", existentPositionAnotherRegister))
         );
     }
 }

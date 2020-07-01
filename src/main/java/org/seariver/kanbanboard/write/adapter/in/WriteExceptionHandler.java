@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import javax.validation.ConstraintViolationException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -64,13 +63,9 @@ public class WriteExceptionHandler {
     @ExceptionHandler(DomainException.class)
     public ResponseEntity<Object> onDomainException(DomainException exception) {
 
-        List<FieldValidationError> errors = new ArrayList<>();
+        var errors = List.of(new FieldValidationError("code", String.valueOf(exception.getCode())));
 
-        exception
-            .getErrors()
-            .forEach((k, v) -> errors.add(new FieldValidationError(k, v.toString())));
-
-        return getResponseEntity(exception.getMessage(), errors, BAD_REQUEST);
+        return getResponseEntity(INVALID_FIELD_MESSAGE, errors, BAD_REQUEST);
     }
 
     private ResponseEntity<Object> getResponseEntity(String message, List<FieldValidationError> detailedErrors, HttpStatus status) {

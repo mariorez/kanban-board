@@ -9,6 +9,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -42,15 +43,18 @@ public class WriteBucketRepositoryImpl implements WriteBucketRepository {
 
             var duplicatedDataException = new DuplicatedDataException(INVALID_DUPLICATED_DATA, exception);
 
-            var existentBucket = findByUuidOrPosition(bucket.getUuid(), bucket.getPosition()).get();
+            var existentBuckets = findByUuidOrPosition(bucket.getUuid(), bucket.getPosition());
 
-            if (existentBucket.getUuid().equals(bucket.getUuid())) {
-                duplicatedDataException.addError("id", bucket.getUuid());
-            }
+            existentBuckets.forEach(existentBucket -> {
 
-            if (existentBucket.getPosition() == bucket.getPosition()) {
-                duplicatedDataException.addError("position", bucket.getPosition());
-            }
+                if (existentBucket.getUuid().equals(bucket.getUuid())) {
+                    duplicatedDataException.addError("id", bucket.getUuid());
+                }
+
+                if (existentBucket.getPosition() == bucket.getPosition()) {
+                    duplicatedDataException.addError("position", bucket.getPosition());
+                }
+            });
 
             throw duplicatedDataException;
         }
@@ -82,25 +86,6 @@ public class WriteBucketRepositoryImpl implements WriteBucketRepository {
         MapSqlParameterSource parameters = new MapSqlParameterSource()
             .addValue("uuid", uuid);
 
-        return getBucket(sql, parameters);
-    }
-
-    public Optional<Bucket> findByUuidOrPosition(UUID uuid, double position) {
-
-        var sql = """
-            SELECT id, uuid, position, name, created_at, updated_at
-            FROM bucket
-            WHERE uuid = :uuid OR position = :position""";
-
-        MapSqlParameterSource parameters = new MapSqlParameterSource()
-            .addValue("uuid", uuid)
-            .addValue("position", position);
-
-        return getBucket(sql, parameters);
-    }
-
-    private Optional<Bucket> getBucket(String sql, MapSqlParameterSource parameters) {
-
         return jdbcTemplate.query(sql, parameters, resultSet -> {
 
             if (resultSet.next()) {
@@ -116,5 +101,27 @@ public class WriteBucketRepositoryImpl implements WriteBucketRepository {
 
             return Optional.empty();
         });
+    }
+
+    public List<Bucket> findByUuidOrPosition(UUID uuid, double position) {
+
+        var sql = """
+            SELECT id, uuid, position, name, created_at, updated_at
+            FROM bucket
+            WHERE uuid = :uuid OR position = :position""";
+
+        MapSqlParameterSource parameters = new MapSqlParameterSource()
+            .addValue("uuid", uuid)
+            .addValue("position", position);
+
+        return jdbcTemplate.query(sql, parameters, (rs, rowNum) ->
+            new Bucket()
+                .setId(rs.getLong("id"))
+                .setUuid(UUID.fromString(rs.getString("uuid")))
+                .setPosition(rs.getDouble("position"))
+                .setName(rs.getString("name"))
+                .setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime())
+                .setUpdatedAt(rs.getTimestamp("updated_at").toLocalDateTime())
+        );
     }
 }
