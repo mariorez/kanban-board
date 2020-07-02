@@ -9,6 +9,7 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import javax.validation.ConstraintViolationException;
 import java.util.HashMap;
@@ -25,6 +26,15 @@ public class WriteExceptionHandler {
     public static final String MALFORMED_JSON_MESSAGE = "Malformed JSON";
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<Object> onMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException exception) {
+
+        var errors = List
+            .of(new FieldValidationError(exception.getName(), exception.getValue().toString()));
+
+        return getResponseEntity(INVALID_FIELD_MESSAGE, errors, BAD_REQUEST);
+    }
+
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<Object> onHttpMessageNotReadableException(HttpMessageNotReadableException exception) {
 
@@ -39,7 +49,7 @@ public class WriteExceptionHandler {
             .stream()
             .map(error -> {
                 var fieldPath = error.getPropertyPath().toString();
-                var fieldName = fieldPath.substring(fieldPath.lastIndexOf(".") + 1);
+                var fieldName = fieldPath.substring(fieldPath.lastIndexOf('.') + 1);
                 return new FieldValidationError(fieldName, error.getMessage());
             })
             .collect(Collectors.toList());

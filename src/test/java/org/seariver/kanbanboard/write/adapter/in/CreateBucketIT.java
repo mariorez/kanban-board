@@ -69,8 +69,8 @@ class CreateBucketIT extends IntegrationHelper {
                                                  List<String> errorsFields,
                                                  List<String> errorsDetails) throws Exception {
         // given
-        name = name == null ? name : String.format("\"%s\"", name);
-        uuid = uuid == null ? uuid : String.format("\"%s\"", uuid);
+        name = name == null ? null : String.format("\"%s\"", name);
+        uuid = uuid == null ? null : String.format("\"%s\"", uuid);
         var payload = """
             {
                 "id": %s,

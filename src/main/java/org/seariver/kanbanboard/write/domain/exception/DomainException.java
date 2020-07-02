@@ -6,7 +6,7 @@ import java.util.Map;
 public abstract class DomainException extends RuntimeException {
 
     private static final long serialVersionUID = -7119093928181516799L;
-    private int code;
+    private final int code;
 
     public enum Error {
 

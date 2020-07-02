@@ -45,7 +45,7 @@ public class WriteBucketController {
 
     @PutMapping(path = BUCKETS_PATH + "/{id}")
     @Validated(OnUpdate.class)
-    public ResponseEntity<String> update(@PathVariable(name = "id") UUID uuid,
+    public ResponseEntity<String> update(@Valid @NotNull @PathVariable(name = "id") UUID uuid,
                                          @Valid @RequestBody BucketInput dto) {
 
         commandBus.execute(new UpdateBucketCommand(uuid, dto.position(), dto.name()));
@@ -53,7 +53,7 @@ public class WriteBucketController {
         return ResponseEntity.noContent().build();
     }
 
-    private record BucketInput(
+    record BucketInput(
         @NotNull(groups = OnCreate.class)
         @Null(groups = OnUpdate.class)
         @JsonProperty("id")
@@ -65,6 +65,7 @@ public class WriteBucketController {
         @Size(min = 1, max = 100)
         @JsonProperty("name")
         String name) {
+        // silence sonarqube
     }
 
     private interface OnCreate {

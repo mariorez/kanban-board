@@ -36,7 +36,7 @@ public class WriteCardController {
             .build();
     }
 
-    private record CardDto(
+    record CardDto(
         @NotNull
         @JsonProperty("id")
         UUID uuid,
@@ -50,5 +50,6 @@ public class WriteCardController {
         @Size(min = 1, max = 100)
         @JsonProperty("name")
         String name) {
+        // silence sonarqube
     }
 }
