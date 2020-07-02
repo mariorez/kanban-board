@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import java.util.UUID;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class CreateCardIT extends IntegrationHelper {
@@ -32,6 +33,7 @@ class CreateCardIT extends IntegrationHelper {
             .perform(post("/v1/cards")
                 .contentType("application/json")
                 .content(payload))
-            .andExpect(status().isCreated());
+            .andExpect(status().isCreated())
+            .andExpect(header().string("Location", String.format("/v1/cards/%s", uuid)));;
     }
 }
