@@ -1,5 +1,7 @@
 # Kanban Board Project
 
+**OBS**: Migrei o projeto do framework **SPRING-BOOT** para **QUARKUS**: https://github.com/mariorez/kanban-quarkus
+
 **Videos deste projeto**: https://www.youtube.com/user/mariorez
 
 ## Stack utilizada
