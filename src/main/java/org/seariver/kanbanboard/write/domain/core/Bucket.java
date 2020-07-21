@@ -6,7 +6,7 @@ import java.util.UUID;
 public class Bucket {
 
     private Long id;
-    private UUID uuid;
+    private UUID externalId;
     private double position;
     private String name;
     private LocalDateTime createdAt;
@@ -21,12 +21,12 @@ public class Bucket {
         return this;
     }
 
-    public UUID getUuid() {
-        return uuid;
+    public UUID getExternalId() {
+        return externalId;
     }
 
-    public Bucket setUuid(UUID uuid) {
-        this.uuid = uuid;
+    public Bucket setExternalId(UUID externalId) {
+        this.externalId = externalId;
         return this;
     }
 

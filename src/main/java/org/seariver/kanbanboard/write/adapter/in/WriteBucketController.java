@@ -30,34 +30,34 @@ public class WriteBucketController {
     @PostMapping(path = BUCKETS_PATH)
     public ResponseEntity<String> create(@RequestBody BucketInput dto) throws URISyntaxException {
 
-        commandBus.execute(new CreateBucketCommand(dto.uuid, dto.position, dto.name));
+        commandBus.execute(new CreateBucketCommand(dto.externalId(), dto.position(), dto.name()));
 
         return ResponseEntity
-                .created(new URI(String.format("/%s/%s", BUCKETS_PATH, dto.uuid)))
+                .created(new URI(String.format("/%s/%s", BUCKETS_PATH, dto.externalId())))
                 .build();
     }
 
     @PutMapping(path = BUCKETS_PATH + "/{id}")
-    public ResponseEntity<String> update(@Valid @NotNull @PathVariable(name = "id") String uuid,
+    public ResponseEntity<String> update(@Valid @NotNull @PathVariable(name = "id") String externalId,
                                          @RequestBody BucketInput dto) {
 
-        commandBus.execute(new UpdateBucketCommand(uuid, dto.name()));
+        commandBus.execute(new UpdateBucketCommand(externalId, dto.name()));
 
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping(path = BUCKETS_PATH + "/{id}/move")
-    public ResponseEntity<String> move(@Valid @NotNull @PathVariable(name = "id") String uuid,
+    public ResponseEntity<String> move(@Valid @NotNull @PathVariable(name = "id") String externalId,
                                        @RequestBody BucketInput dto) {
 
-        commandBus.execute(new MoveBucketCommand(uuid, dto.position()));
+        commandBus.execute(new MoveBucketCommand(externalId, dto.position()));
 
         return ResponseEntity.noContent().build();
     }
 
     record BucketInput(
             @JsonProperty("id")
-            String uuid,
+            String externalId,
             double position,
             String name) {
         // silence sonarqube

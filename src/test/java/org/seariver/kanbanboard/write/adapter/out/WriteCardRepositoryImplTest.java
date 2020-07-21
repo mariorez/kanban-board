@@ -30,12 +30,12 @@ class WriteCardRepositoryImplTest extends DataSourceHelper {
 
         // given
         var bucketId = 1L;
-        var uuid = UUID.randomUUID();
+        var externalId = UUID.randomUUID();
         var position = faker.number().randomDouble(3, 1, 10);
         var name = faker.pokemon().name();
         var expected = new Card()
             .setBucketId(bucketId)
-            .setUuid(uuid)
+            .setExternalId(externalId)
             .setPosition(position)
             .setName(name);
 
@@ -43,10 +43,10 @@ class WriteCardRepositoryImplTest extends DataSourceHelper {
         repository.create(expected);
 
         // then
-        var actualOptional = repository.findByUuid(uuid);
+        var actualOptional = repository.findByExternalId(externalId);
         Card actual = actualOptional.get();
         assertThat(actual.getBucketId()).isEqualTo(bucketId);
-        assertThat(actual.getUuid()).isEqualTo(expected.getUuid());
+        assertThat(actual.getExternalId()).isEqualTo(expected.getExternalId());
         assertThat(actual.getPosition()).isEqualTo(expected.getPosition());
         assertThat(actual.getName()).isEqualTo(expected.getName());
         assertThat(actual.getCreatedAt()).isBeforeOrEqualTo(LocalDateTime.now());

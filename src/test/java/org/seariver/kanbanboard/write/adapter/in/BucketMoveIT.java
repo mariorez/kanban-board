@@ -29,7 +29,7 @@ class BucketMoveIT extends IntegrationHelper {
     void GIVEN_ValidPayload_MUST_MoveSuccess() throws Exception {
 
         // given
-        var uuid = "3731c747-ea27-42e5-a52b-1dfbfa9617db";
+        var externalId = "3731c747-ea27-42e5-a52b-1dfbfa9617db";
         var newPosition = faker.number().randomDouble(5, 1, 10);
         var payload = """
                 {
@@ -39,7 +39,7 @@ class BucketMoveIT extends IntegrationHelper {
 
         // when
         mockMvc
-                .perform(put(ENDPOINT_PATH, uuid)
+                .perform(put(ENDPOINT_PATH, externalId)
                         .contentType(APPLICATION_JSON)
                         .content(payload))
                 .andExpect(status().isNoContent());
@@ -50,14 +50,14 @@ class BucketMoveIT extends IntegrationHelper {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(APPLICATION_JSON))
                 .andExpect(jsonPath("$.length()", greaterThanOrEqualTo(2)))
-                .andExpect(jsonPath("$[*].id", containsInRelativeOrder(uuid, "6d9db741-ef57-4d5a-ac0f-34f68fb0ab5e")))
+                .andExpect(jsonPath("$[*].id", containsInRelativeOrder(externalId, "6d9db741-ef57-4d5a-ac0f-34f68fb0ab5e")))
                 .andExpect(jsonPath("$[*].position", containsInRelativeOrder(newPosition, 100.15)))
                 .andExpect(jsonPath("$[*].name", containsInRelativeOrder("SECOND-BUCKET", "FIRST-BUCKET")));
     }
 
     @ParameterizedTest
     @MethodSource("provideInvalidData")
-    void GIVEN_InvalidData_MUST_ReturnBadRequest(String uuid,
+    void GIVEN_InvalidData_MUST_ReturnBadRequest(String externalId,
                                                  double position,
                                                  String[] errorsFields,
                                                  String[] errorsDetails) throws Exception {
@@ -70,7 +70,7 @@ class BucketMoveIT extends IntegrationHelper {
 
         // when
         mockMvc
-                .perform(put(ENDPOINT_PATH, uuid)
+                .perform(put(ENDPOINT_PATH, externalId)
                         .contentType(APPLICATION_JSON)
                         .content(payload))
                 .andExpect(status().isBadRequest())
@@ -82,12 +82,12 @@ class BucketMoveIT extends IntegrationHelper {
 
     private static Stream<Arguments> provideInvalidData() {
 
-        var validUuid = UUID.randomUUID().toString();
+        var validExternalId = UUID.randomUUID().toString();
         var validName = "WHATEVER";
 
         return Stream.of(
-                arguments(validUuid, -1, args("position"), args("must be greater than 0")),
-                arguments(validUuid, 0, args("position"), args("must be greater than 0"))
+                arguments(validExternalId, -1, args("position"), args("must be greater than 0")),
+                arguments(validExternalId, 0, args("position"), args("must be greater than 0"))
         );
     }
 }

@@ -9,22 +9,22 @@ public class CreateBucketCommand extends SelfValidating<CreateBucketCommand> imp
 
     @NotNull
     @Pattern(regexp = UUID_FORMAT, message = INVALID_UUID)
-    private final String uuid;
+    private final String externalId;
     @Positive
     private final double position;
     @NotBlank
     @Size(min = 1, max = 100)
     private final String name;
 
-    public CreateBucketCommand(String uuid, double position, String name) {
-        this.uuid = uuid;
+    public CreateBucketCommand(String externalId, double position, String name) {
+        this.externalId = externalId;
         this.position = position;
         this.name = name;
         validateSelf();
     }
 
-    public UUID getUuid() {
-        return UUID.fromString(uuid);
+    public UUID getExternalId() {
+        return UUID.fromString(externalId);
     }
 
     public double getPosition() {

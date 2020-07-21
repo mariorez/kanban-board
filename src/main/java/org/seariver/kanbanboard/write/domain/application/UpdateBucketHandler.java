@@ -20,7 +20,7 @@ public class UpdateBucketHandler implements Handler<UpdateBucketCommand> {
 
     public void handle(UpdateBucketCommand command) {
 
-        Optional<Bucket> bucketOptional = repository.findByUuid(command.getUuid());
+        Optional<Bucket> bucketOptional = repository.findByExteranlId(command.getExternalId());
 
         if (!bucketOptional.isPresent()) {
             throw new BucketNotExistentException(BUCKET_NOT_EXIST);

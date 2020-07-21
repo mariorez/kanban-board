@@ -9,7 +9,7 @@ import java.util.UUID;
 public class BucketDto {
 
     @JsonProperty("id")
-    private final UUID uuid;
+    private final UUID externalId;
     @JsonProperty("position")
     private final double position;
     @JsonProperty("name")
@@ -17,14 +17,14 @@ public class BucketDto {
     @JsonProperty("cards")
     private final List<CardDto> cards = new ArrayList<>();
 
-    public BucketDto(UUID uuid, double position, String name) {
-        this.uuid = uuid;
+    public BucketDto(UUID externalId, double position, String name) {
+        this.externalId = externalId;
         this.position = position;
         this.name = name;
     }
 
-    public UUID getUuid() {
-        return uuid;
+    public UUID getExternalId() {
+        return externalId;
     }
 
     public double getPosition() {

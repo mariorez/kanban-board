@@ -29,7 +29,7 @@ class BucketUpdateIT extends IntegrationHelper {
     void GIVEN_ValidPayload_MUST_ReturnSuccess() throws Exception {
 
         // given
-        var uuid = "3731c747-ea27-42e5-a52b-1dfbfa9617db";
+        var externalId = "3731c747-ea27-42e5-a52b-1dfbfa9617db";
         var name = faker.pokemon().name();
         var payload = """
                 {
@@ -39,7 +39,7 @@ class BucketUpdateIT extends IntegrationHelper {
 
         // when
         mockMvc
-                .perform(put(ENDPOINT_PATH, uuid)
+                .perform(put(ENDPOINT_PATH, externalId)
                         .contentType(APPLICATION_JSON)
                         .content(payload))
                 .andExpect(status().isNoContent());
@@ -50,14 +50,14 @@ class BucketUpdateIT extends IntegrationHelper {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(APPLICATION_JSON))
                 .andExpect(jsonPath("$.length()", greaterThanOrEqualTo(2)))
-                .andExpect(jsonPath("$[*].id", containsInRelativeOrder("6d9db741-ef57-4d5a-ac0f-34f68fb0ab5e", uuid)))
+                .andExpect(jsonPath("$[*].id", containsInRelativeOrder("6d9db741-ef57-4d5a-ac0f-34f68fb0ab5e", externalId)))
                 .andExpect(jsonPath("$[*].position", containsInRelativeOrder(100.15, 200.987)))
                 .andExpect(jsonPath("$[*].name", containsInRelativeOrder("FIRST-BUCKET", name)));
     }
 
     @ParameterizedTest
     @MethodSource("provideInvalidData")
-    void GIVEN_InvalidData_MUST_ReturnBadRequest(String uuid,
+    void GIVEN_InvalidData_MUST_ReturnBadRequest(String externalId,
                                                  String name,
                                                  String[] errorsFields,
                                                  String[] errorsDetails) throws Exception {
@@ -71,7 +71,7 @@ class BucketUpdateIT extends IntegrationHelper {
 
         // when
         mockMvc
-                .perform(put(ENDPOINT_PATH, uuid)
+                .perform(put(ENDPOINT_PATH, externalId)
                         .contentType(APPLICATION_JSON)
                         .content(payload))
                 .andExpect(status().isBadRequest())
@@ -83,17 +83,17 @@ class BucketUpdateIT extends IntegrationHelper {
 
     private static Stream<Arguments> provideInvalidData() {
 
-        var validUuid = UUID.randomUUID().toString();
+        var validExternalId = UUID.randomUUID().toString();
         var validName = "WHATEVER";
         var invalidTextGreatherThan100Chars = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras fringilla elit elementum, ullamcorper turpis consequat.";
 
         return Stream.of(
-                arguments("null", validName, args("uuid"), args("invalid UUID format")),
-                arguments("    ", validName, args("uuid"), args("invalid UUID format")),
-                arguments(validUuid, null, args("name"), args("must not be blank")),
-                arguments(validUuid, "", args("name", "name"), args("must not be blank", "size must be between 1 and 100")),
-                arguments(validUuid, "      ", args("name"), args("must not be blank")),
-                arguments(validUuid, invalidTextGreatherThan100Chars, args("name"), args("size must be between 1 and 100"))
+                arguments("null", validName, args("externalId"), args("invalid UUID format")),
+                arguments("    ", validName, args("externalId"), args("invalid UUID format")),
+                arguments(validExternalId, null, args("name"), args("must not be blank")),
+                arguments(validExternalId, "", args("name", "name"), args("must not be blank", "size must be between 1 and 100")),
+                arguments(validExternalId, "      ", args("name"), args("must not be blank")),
+                arguments(validExternalId, invalidTextGreatherThan100Chars, args("name"), args("size must be between 1 and 100"))
         );
     }
 }

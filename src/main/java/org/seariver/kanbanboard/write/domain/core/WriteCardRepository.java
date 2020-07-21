@@ -7,5 +7,5 @@ public interface WriteCardRepository {
 
     void create(Card card);
 
-    Optional<Card> findByUuid(UUID uuid);
+    Optional<Card> findByExternalId(UUID externalId);
 }

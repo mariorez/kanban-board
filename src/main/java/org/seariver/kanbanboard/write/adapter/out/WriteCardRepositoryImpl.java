@@ -22,12 +22,12 @@ public class WriteCardRepositoryImpl implements WriteCardRepository {
     @Override
     public void create(Card card) {
         var sql = """
-            INSERT INTO card (bucket_id, uuid, position, name)
-            values (:bucket_id, :uuid, :position, :name)""";
+            INSERT INTO card (bucket_id, external_id, position, name)
+            values (:bucket_id, :externalId, :position, :name)""";
 
         MapSqlParameterSource parameters = new MapSqlParameterSource()
             .addValue("bucket_id", card.getBucketId())
-            .addValue("uuid", card.getUuid())
+            .addValue("externalId", card.getExternalId())
             .addValue("position", card.getPosition())
             .addValue("name", card.getName());
 
@@ -35,22 +35,22 @@ public class WriteCardRepositoryImpl implements WriteCardRepository {
     }
 
     @Override
-    public Optional<Card> findByUuid(UUID uuid) {
+    public Optional<Card> findByExternalId(UUID externalId) {
 
         var sql = """
-            SELECT bucket_id, uuid, position, name, created_at, updated_at
+            SELECT bucket_id, external_id, position, name, created_at, updated_at
             FROM card
-            WHERE uuid = :uuid""";
+            WHERE external_id = :externalId""";
 
         MapSqlParameterSource parameters = new MapSqlParameterSource()
-            .addValue("uuid", uuid);
+            .addValue("externalId", externalId);
 
         return jdbcTemplate.query(sql, parameters, resultSet -> {
 
             if (resultSet.next()) {
                 return Optional.of(new Card()
                     .setBucketId(resultSet.getLong("bucket_id"))
-                    .setUuid(UUID.fromString(resultSet.getString("uuid")))
+                    .setExternalId(UUID.fromString(resultSet.getString("external_id")))
                     .setPosition(resultSet.getDouble("position"))
                     .setName(resultSet.getString("name"))
                     .setCreatedAt(resultSet.getTimestamp("created_at").toLocalDateTime())

@@ -30,7 +30,7 @@ class BucketCreationIT extends IntegrationHelper {
     void GIVEN_ValidPayload_MUST_ReturnCreated() throws Exception {
 
         // given
-        var uuid = UUID.randomUUID().toString();
+        var externalId = UUID.randomUUID().toString();
         var position = faker.number().randomDouble(5, 1, 10);
         var name = faker.pokemon().name();
         var payload = """
@@ -39,7 +39,7 @@ class BucketCreationIT extends IntegrationHelper {
                     "position": %s,
                     "name": "%s"
                 }
-                """.formatted(uuid, position, name);
+                """.formatted(externalId, position, name);
 
         // when
         mockMvc
@@ -47,7 +47,7 @@ class BucketCreationIT extends IntegrationHelper {
                         .contentType("application/json")
                         .content(payload))
                 .andExpect(status().isCreated())
-                .andExpect(header().string("Location", String.format("/v1/buckets/%s", uuid)));
+                .andExpect(header().string("Location", String.format("/v1/buckets/%s", externalId)));
 
         // then
         mockMvc
@@ -56,7 +56,7 @@ class BucketCreationIT extends IntegrationHelper {
                 .andExpect(content().contentType(APPLICATION_JSON))
                 .andExpect(jsonPath("$.*", hasSize(3)))
                 .andExpect(jsonPath("$[*].id",
-                        containsInRelativeOrder(uuid, "6d9db741-ef57-4d5a-ac0f-34f68fb0ab5e", "3731c747-ea27-42e5-a52b-1dfbfa9617db")))
+                        containsInRelativeOrder(externalId, "6d9db741-ef57-4d5a-ac0f-34f68fb0ab5e", "3731c747-ea27-42e5-a52b-1dfbfa9617db")))
                 .andExpect(jsonPath("$[*].position",
                         containsInRelativeOrder(position, 100.15, 200.987)))
                 .andExpect(jsonPath("$[*].name", containsInRelativeOrder(name, "FIRST-BUCKET", "SECOND-BUCKET")));
@@ -64,21 +64,21 @@ class BucketCreationIT extends IntegrationHelper {
 
     @ParameterizedTest
     @MethodSource("provideInvalidData")
-    void GIVEN_InvalidData_MUST_ReturnBadRequest(String uuid,
+    void GIVEN_InvalidData_MUST_ReturnBadRequest(String externalId,
                                                  double position,
                                                  String name,
                                                  String[] errorsFields,
                                                  String[] errorsDetails) throws Exception {
         // given
         name = name == null ? null : String.format("\"%s\"", name);
-        uuid = uuid == null ? null : String.format("\"%s\"", uuid);
+        externalId = externalId == null ? null : String.format("\"%s\"", externalId);
         var payload = """
                 {
                     "id": %s,
                     "position": %s,
                     "name": %s
                 }
-                """.formatted(uuid, position, name);
+                """.formatted(externalId, position, name);
 
         // when
         mockMvc
@@ -116,7 +116,7 @@ class BucketCreationIT extends IntegrationHelper {
     @Test
     void GIVEN_DuplicatedKey_MUST_ReturnBadRequest() throws Exception {
 
-        var duplicatedUuid = "3731c747-ea27-42e5-a52b-1dfbfa9617db";
+        var duplicatedExternalId = "3731c747-ea27-42e5-a52b-1dfbfa9617db";
         var position = 100.15;
 
         // given
@@ -126,7 +126,7 @@ class BucketCreationIT extends IntegrationHelper {
                     "position": %s,
                     "name": "WHATEVER"
                 }
-                """.formatted(duplicatedUuid, position);
+                """.formatted(duplicatedExternalId, position);
 
         // when
         mockMvc
@@ -142,20 +142,20 @@ class BucketCreationIT extends IntegrationHelper {
 
     private static Stream<Arguments> provideInvalidData() {
 
-        var validUuid = UUID.randomUUID().toString();
+        var validExternalId = UUID.randomUUID().toString();
         var validPosition = faker.number().randomDouble(5, 1, 10);
         var validName = "WHATEVER";
         var invalidTextGreatherThan100Chars = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras fringilla elit elementum, ullamcorper turpis consequat.";
 
         return Stream.of(
-                arguments(null, validPosition, validName, args("uuid"), args("must not be null")),
-                arguments("", validPosition, validName, args("uuid"), args("invalid UUID format")),
-                arguments(validUuid, -1, validName, args("position"), args("must be greater than 0")),
-                arguments(validUuid, 0, validName, args("position"), args("must be greater than 0")),
-                arguments(validUuid, validPosition, null, args("name"), args("must not be blank")),
-                arguments(validUuid, validPosition, "", args("name", "name"), args("must not be blank", "size must be between 1 and 100")),
-                arguments(validUuid, validPosition, "      ", args("name"), args("must not be blank")),
-                arguments(validUuid, validPosition, invalidTextGreatherThan100Chars, args("name"), args("size must be between 1 and 100"))
+                arguments(null, validPosition, validName, args("externalId"), args("must not be null")),
+                arguments("", validPosition, validName, args("externalId"), args("invalid UUID format")),
+                arguments(validExternalId, -1, validName, args("position"), args("must be greater than 0")),
+                arguments(validExternalId, 0, validName, args("position"), args("must be greater than 0")),
+                arguments(validExternalId, validPosition, null, args("name"), args("must not be blank")),
+                arguments(validExternalId, validPosition, "", args("name", "name"), args("must not be blank", "size must be between 1 and 100")),
+                arguments(validExternalId, validPosition, "      ", args("name"), args("must not be blank")),
+                arguments(validExternalId, validPosition, invalidTextGreatherThan100Chars, args("name"), args("size must be between 1 and 100"))
         );
     }
 }

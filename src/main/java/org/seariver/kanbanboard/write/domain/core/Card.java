@@ -7,7 +7,7 @@ public class Card {
 
     private Long id;
     private Long bucketId;
-    private UUID uuid;
+    private UUID externalId;
     private double position;
     private String name;
     private LocalDateTime createdAt;
@@ -31,12 +31,12 @@ public class Card {
         return this;
     }
 
-    public UUID getUuid() {
-        return uuid;
+    public UUID getExternalId() {
+        return externalId;
     }
 
-    public Card setUuid(UUID uuid) {
-        this.uuid = uuid;
+    public Card setExternalId(UUID externalId) {
+        this.externalId = externalId;
         return this;
     }
 

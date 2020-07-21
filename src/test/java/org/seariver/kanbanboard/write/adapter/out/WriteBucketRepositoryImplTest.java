@@ -40,7 +40,7 @@ class WriteBucketRepositoryImplTest extends DataSourceHelper {
                                                                     String name) {
         // given
         var expected = new Bucket()
-            .setUuid(id)
+            .setExternalId(id)
             .setPosition(position)
             .setName(name);
 
@@ -48,10 +48,10 @@ class WriteBucketRepositoryImplTest extends DataSourceHelper {
         repository.create(expected);
 
         // then
-        var actualOptional = repository.findByUuid(id);
+        var actualOptional = repository.findByExteranlId(id);
         var actual = actualOptional.get();
         assertThat(actual.getId()).isGreaterThan(0);
-        assertThat(actual.getUuid()).isEqualTo(expected.getUuid());
+        assertThat(actual.getExternalId()).isEqualTo(expected.getExternalId());
         assertThat(actual.getPosition()).isEqualTo(expected.getPosition());
         assertThat(actual.getName()).isEqualTo(expected.getName());
         assertThat(actual.getCreatedAt()).isBeforeOrEqualTo(LocalDateTime.now());
@@ -65,7 +65,7 @@ class WriteBucketRepositoryImplTest extends DataSourceHelper {
                                                                           Map<String, Object> expectedError) {
         // given
         var expected = new Bucket()
-            .setUuid(id)
+            .setExternalId(id)
             .setPosition(position)
             .setName("WHATEVER");
 
@@ -83,7 +83,7 @@ class WriteBucketRepositoryImplTest extends DataSourceHelper {
 
         // given
         var id = UUID.fromString("3731c747-ea27-42e5-a52b-1dfbfa9617db");
-        var actualBucket = repository.findByUuid(id).get();
+        var actualBucket = repository.findByExteranlId(id).get();
         assertThat(actualBucket.getPosition()).isEqualTo(200.987);
         assertThat(actualBucket.getName()).isEqualTo("SECOND-BUCKET");
 
@@ -95,8 +95,8 @@ class WriteBucketRepositoryImplTest extends DataSourceHelper {
         repository.update(actualBucket);
 
         // then
-        var expectedBucket = repository.findByUuid(id).get();
-        assertThat(expectedBucket.getUuid()).isEqualTo(id);
+        var expectedBucket = repository.findByExteranlId(id).get();
+        assertThat(expectedBucket.getExternalId()).isEqualTo(id);
         assertThat(expectedBucket.getPosition()).isEqualTo(position);
         assertThat(expectedBucket.getName()).isEqualTo(name);
         assertThat(expectedBucket.getCreatedAt()).isNotNull();
@@ -116,16 +116,16 @@ class WriteBucketRepositoryImplTest extends DataSourceHelper {
 
     private static Stream<Arguments> invalidDataProvider() {
 
-        var existentUuid = UUID.fromString("3731c747-ea27-42e5-a52b-1dfbfa9617db");
+        var existentExternalId = UUID.fromString("3731c747-ea27-42e5-a52b-1dfbfa9617db");
         var existentPositionSameRegister = 200.987;
         var existentPositionAnotherRegister = 100.15;
         var validPosition = faker.number().randomDouble(3, 1, 10);
 
         return Stream.of(
-            arguments(existentUuid, validPosition, Map.of("id", existentUuid)),
+            arguments(existentExternalId, validPosition, Map.of("id", existentExternalId)),
             arguments(UUID.randomUUID(), existentPositionSameRegister, Map.of("position", existentPositionSameRegister)),
-            arguments(existentUuid, existentPositionSameRegister, Map.of("id", existentUuid, "position", existentPositionSameRegister)),
-            arguments(existentUuid, existentPositionAnotherRegister, Map.of("id", existentUuid, "position", existentPositionAnotherRegister))
+            arguments(existentExternalId, existentPositionSameRegister, Map.of("id", existentExternalId, "position", existentPositionSameRegister)),
+            arguments(existentExternalId, existentPositionAnotherRegister, Map.of("id", existentExternalId, "position", existentPositionAnotherRegister))
         );
     }
 }

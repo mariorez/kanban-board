@@ -21,21 +21,21 @@ public class MoveBucketHandlerTest extends TestHelper {
     void GIVEN_ValidPosition_MUST_UpdateBucketPosition() {
 
         // given
-        var uuid = UUID.randomUUID();
+        var externalId = UUID.randomUUID();
         var position = faker.number().randomDouble(3, 1, 10);
-        var command = new MoveBucketCommand(uuid.toString(), position);
+        var command = new MoveBucketCommand(externalId.toString(), position);
         var repository = mock(WriteBucketRepository.class);
-        var bucket = new Bucket().setUuid(uuid).setPosition(123);
-        when(repository.findByUuid(uuid)).thenReturn(Optional.of(bucket));
+        var bucket = new Bucket().setExternalId(externalId).setPosition(123);
+        when(repository.findByExteranlId(externalId)).thenReturn(Optional.of(bucket));
 
         // when
         var handler = new MoveBucketHandler(repository);
         handler.handle(command);
 
         // then
-        verify(repository).findByUuid(uuid);
+        verify(repository).findByExteranlId(externalId);
         verify(repository).update(bucket);
-        assertThat(bucket.getUuid()).isEqualTo(uuid);
+        assertThat(bucket.getExternalId()).isEqualTo(externalId);
         assertThat(bucket.getPosition()).isEqualTo(position);
     }
 }

@@ -29,13 +29,14 @@ public class WriteBucketRepositoryImpl implements WriteBucketRepository {
 
         try {
             var sql = """
-                INSERT INTO bucket(uuid, position, name)
-                values (:uuid, :position, :name)""";
+                    INSERT INTO bucket(%s, %s, %s)
+                    values (:%s, :%s, :%s)
+                    """.formatted(EXTERNAL_ID_FIELD, POSITION_FIELD, NAME_FIELD, EXTERNAL_ID_FIELD, POSITION_FIELD, NAME_FIELD);
 
             MapSqlParameterSource parameters = new MapSqlParameterSource()
-                .addValue("uuid", bucket.getUuid())
-                .addValue("position", bucket.getPosition())
-                .addValue("name", bucket.getName());
+                    .addValue(EXTERNAL_ID_FIELD, bucket.getExternalId())
+                    .addValue(POSITION_FIELD, bucket.getPosition())
+                    .addValue(NAME_FIELD, bucket.getName());
 
             jdbcTemplate.update(sql, parameters);
 
@@ -43,12 +44,12 @@ public class WriteBucketRepositoryImpl implements WriteBucketRepository {
 
             var duplicatedDataException = new DuplicatedDataException(INVALID_DUPLICATED_DATA, exception);
 
-            var existentBuckets = findByUuidOrPosition(bucket.getUuid(), bucket.getPosition());
+            var existentBuckets = findByExternalIdOrPosition(bucket.getExternalId(), bucket.getPosition());
 
             existentBuckets.forEach(existentBucket -> {
 
-                if (existentBucket.getUuid().equals(bucket.getUuid())) {
-                    duplicatedDataException.addError("id", bucket.getUuid());
+                if (existentBucket.getExternalId().equals(bucket.getExternalId())) {
+                    duplicatedDataException.addError("id", bucket.getExternalId());
                 }
 
                 if (existentBucket.getPosition() == bucket.getPosition()) {
@@ -64,38 +65,41 @@ public class WriteBucketRepositoryImpl implements WriteBucketRepository {
     public void update(Bucket bucket) {
 
         var sql = """
-            UPDATE bucket
-            SET position = :position, name =:name
-            WHERE uuid = :uuid""";
+                UPDATE bucket
+                SET position = :%s, name =:%s
+                WHERE %s = :%s
+                """.formatted(POSITION_FIELD, NAME_FIELD, EXTERNAL_ID_FIELD, EXTERNAL_ID_FIELD);
 
         MapSqlParameterSource parameters = new MapSqlParameterSource()
-            .addValue("uuid", bucket.getUuid())
-            .addValue("position", bucket.getPosition())
-            .addValue("name", bucket.getName());
+                .addValue(EXTERNAL_ID_FIELD, bucket.getExternalId())
+                .addValue(POSITION_FIELD, bucket.getPosition())
+                .addValue(NAME_FIELD, bucket.getName());
 
         jdbcTemplate.update(sql, parameters);
     }
 
-    public Optional<Bucket> findByUuid(UUID uuid) {
+    public Optional<Bucket> findByExteranlId(UUID externalId) {
 
         var sql = """
-            SELECT id, uuid, position, name, created_at, updated_at
-            FROM bucket
-            WHERE uuid = :uuid""";
+                SELECT %s, %s, %s, %s, %s, %s
+                FROM bucket
+                WHERE %s = :%s
+                """.formatted(ID_FIELD, EXTERNAL_ID_FIELD, POSITION_FIELD, NAME_FIELD, CREATED_AT_FIELD, UPDATED_AT_FIELD,
+                EXTERNAL_ID_FIELD, EXTERNAL_ID_FIELD);
 
         MapSqlParameterSource parameters = new MapSqlParameterSource()
-            .addValue("uuid", uuid);
+                .addValue(EXTERNAL_ID_FIELD, externalId);
 
         return jdbcTemplate.query(sql, parameters, resultSet -> {
 
             if (resultSet.next()) {
                 return Optional.of(new Bucket()
-                    .setId(resultSet.getLong("id"))
-                    .setUuid(UUID.fromString(resultSet.getString("uuid")))
-                    .setPosition(resultSet.getDouble("position"))
-                    .setName(resultSet.getString("name"))
-                    .setCreatedAt(resultSet.getTimestamp("created_at").toLocalDateTime())
-                    .setUpdatedAt(resultSet.getTimestamp("updated_at").toLocalDateTime())
+                        .setId(resultSet.getLong(ID_FIELD))
+                        .setExternalId(UUID.fromString(resultSet.getString(EXTERNAL_ID_FIELD)))
+                        .setPosition(resultSet.getDouble(POSITION_FIELD))
+                        .setName(resultSet.getString(NAME_FIELD))
+                        .setCreatedAt(resultSet.getTimestamp(CREATED_AT_FIELD).toLocalDateTime())
+                        .setUpdatedAt(resultSet.getTimestamp(UPDATED_AT_FIELD).toLocalDateTime())
                 );
             }
 
@@ -103,25 +107,27 @@ public class WriteBucketRepositoryImpl implements WriteBucketRepository {
         });
     }
 
-    public List<Bucket> findByUuidOrPosition(UUID uuid, double position) {
+    public List<Bucket> findByExternalIdOrPosition(UUID externalId, double position) {
 
         var sql = """
-            SELECT id, uuid, position, name, created_at, updated_at
-            FROM bucket
-            WHERE uuid = :uuid OR position = :position""";
+                SELECT %S, %S, %S, %S, %S, %S
+                FROM bucket
+                WHERE %s = :%s OR %s = :%s
+                """.formatted(ID_FIELD, EXTERNAL_ID_FIELD, POSITION_FIELD, NAME_FIELD, CREATED_AT_FIELD, UPDATED_AT_FIELD,
+                EXTERNAL_ID_FIELD, EXTERNAL_ID_FIELD, POSITION_FIELD, POSITION_FIELD);
 
         MapSqlParameterSource parameters = new MapSqlParameterSource()
-            .addValue("uuid", uuid)
-            .addValue("position", position);
+                .addValue(EXTERNAL_ID_FIELD, externalId)
+                .addValue(POSITION_FIELD, position);
 
-        return jdbcTemplate.query(sql, parameters, (rs, rowNum) ->
-            new Bucket()
-                .setId(rs.getLong("id"))
-                .setUuid(UUID.fromString(rs.getString("uuid")))
-                .setPosition(rs.getDouble("position"))
-                .setName(rs.getString("name"))
-                .setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime())
-                .setUpdatedAt(rs.getTimestamp("updated_at").toLocalDateTime())
+        return jdbcTemplate.query(sql, parameters, (resultSet, rowNum) ->
+                new Bucket()
+                        .setId(resultSet.getLong(ID_FIELD))
+                        .setExternalId(UUID.fromString(resultSet.getString(EXTERNAL_ID_FIELD)))
+                        .setPosition(resultSet.getDouble(POSITION_FIELD))
+                        .setName(resultSet.getString(NAME_FIELD))
+                        .setCreatedAt(resultSet.getTimestamp(CREATED_AT_FIELD).toLocalDateTime())
+                        .setUpdatedAt(resultSet.getTimestamp(UPDATED_AT_FIELD).toLocalDateTime())
         );
     }
 }
