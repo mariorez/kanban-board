@@ -22,7 +22,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-class CreateBucketIT extends IntegrationHelper {
+class BucketCreationIT extends IntegrationHelper {
+
+    public static final String ENDPOINT_PATH = "/v1/buckets";
 
     @Test
     void GIVEN_ValidPayload_MUST_ReturnCreated() throws Exception {
@@ -41,7 +43,7 @@ class CreateBucketIT extends IntegrationHelper {
 
         // when
         mockMvc
-                .perform(post("/v1/buckets")
+                .perform(post(ENDPOINT_PATH)
                         .contentType("application/json")
                         .content(payload))
                 .andExpect(status().isCreated())
@@ -80,7 +82,7 @@ class CreateBucketIT extends IntegrationHelper {
 
         // when
         mockMvc
-                .perform(post("/v1/buckets")
+                .perform(post(ENDPOINT_PATH)
                         .contentType("application/json")
                         .content(payload))
                 .andExpect(status().isBadRequest())
@@ -103,7 +105,7 @@ class CreateBucketIT extends IntegrationHelper {
 
         // when
         mockMvc
-                .perform(post("/v1/buckets")
+                .perform(post(ENDPOINT_PATH)
                         .contentType("application/json")
                         .content(malformedJson))
                 .andExpect(status().isBadRequest())
@@ -128,7 +130,7 @@ class CreateBucketIT extends IntegrationHelper {
 
         // when
         mockMvc
-                .perform(post("/v1/buckets")
+                .perform(post(ENDPOINT_PATH)
                         .contentType("application/json")
                         .content(malformedJson))
                 .andExpect(status().isBadRequest())

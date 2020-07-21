@@ -3,9 +3,14 @@ package org.seariver.kanbanboard.write.adapter.in;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.seariver.kanbanboard.write.CommandBus;
 import org.seariver.kanbanboard.write.domain.application.CreateBucketCommand;
+import org.seariver.kanbanboard.write.domain.application.MoveBucketCommand;
 import org.seariver.kanbanboard.write.domain.application.UpdateBucketCommand;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -37,6 +42,15 @@ public class WriteBucketController {
                                          @RequestBody BucketInput dto) {
 
         commandBus.execute(new UpdateBucketCommand(uuid, dto.name()));
+
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping(path = BUCKETS_PATH + "/{id}/move")
+    public ResponseEntity<String> move(@Valid @NotNull @PathVariable(name = "id") String uuid,
+                                       @RequestBody BucketInput dto) {
+
+        commandBus.execute(new MoveBucketCommand(uuid, dto.position()));
 
         return ResponseEntity.noContent().build();
     }

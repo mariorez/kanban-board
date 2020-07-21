@@ -3,40 +3,39 @@ package org.seariver.kanbanboard.write.domain.application;
 import helper.TestHelper;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
 import org.seariver.kanbanboard.write.domain.core.Bucket;
 import org.seariver.kanbanboard.write.domain.core.WriteBucketRepository;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @Tag("unit")
-public class CreateBucketHandlerTest extends TestHelper {
-
-    private ArgumentCaptor<Bucket> captor = ArgumentCaptor.forClass(Bucket.class);
+public class MoveBucketHandlerTest extends TestHelper {
 
     @Test
-    void GIVEN_ValidCommand_MUST_CreateBucketInDatabase() {
+    void GIVEN_ValidPosition_MUST_UpdateBucketPosition() {
 
         // given
         var uuid = UUID.randomUUID();
         var position = faker.number().randomDouble(3, 1, 10);
-        var name = faker.pokemon().name();
-        var command = new CreateBucketCommand(uuid.toString(), position, name);
+        var command = new MoveBucketCommand(uuid.toString(), position);
         var repository = mock(WriteBucketRepository.class);
+        var bucket = new Bucket().setUuid(uuid).setPosition(123);
+        when(repository.findByUuid(uuid)).thenReturn(Optional.of(bucket));
 
         // when
-        var handler = new CreateBucketHandler(repository);
+        var handler = new MoveBucketHandler(repository);
         handler.handle(command);
 
         // then
-        verify(repository).create(captor.capture());
-        var bucket = captor.getValue();
+        verify(repository).findByUuid(uuid);
+        verify(repository).update(bucket);
         assertThat(bucket.getUuid()).isEqualTo(uuid);
         assertThat(bucket.getPosition()).isEqualTo(position);
-        assertThat(bucket.getName()).isEqualTo(name);
     }
 }

@@ -9,14 +9,21 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.util.UUID;
 import java.util.stream.Stream;
 
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.containsInRelativeOrder;
+import static org.hamcrest.Matchers.greaterThanOrEqualTo;
+import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-class UpdateBucketIT extends IntegrationHelper {
+class BucketUpdateIT extends IntegrationHelper {
+
+    public static final String ENDPOINT_PATH = "/v1/buckets/{id}";
 
     @Test
     void GIVEN_ValidPayload_MUST_ReturnSuccess() throws Exception {
@@ -32,7 +39,7 @@ class UpdateBucketIT extends IntegrationHelper {
 
         // when
         mockMvc
-                .perform(put("/v1/buckets/{id}", uuid)
+                .perform(put(ENDPOINT_PATH, uuid)
                         .contentType(APPLICATION_JSON)
                         .content(payload))
                 .andExpect(status().isNoContent());
@@ -64,7 +71,7 @@ class UpdateBucketIT extends IntegrationHelper {
 
         // when
         mockMvc
-                .perform(put("/v1/buckets/{id}", uuid)
+                .perform(put(ENDPOINT_PATH, uuid)
                         .contentType(APPLICATION_JSON)
                         .content(payload))
                 .andExpect(status().isBadRequest())
