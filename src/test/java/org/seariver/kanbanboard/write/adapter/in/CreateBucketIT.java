@@ -148,7 +148,7 @@ class CreateBucketIT extends IntegrationHelper {
 
         return Stream.of(
             arguments(null, validPosition, validName, List.of("uuid"), List.of("must not be null")),
-            arguments("", validPosition, validName, List.of("uuid"), List.of("must not be null")),
+            arguments("", validPosition, validName, List.of("uuid"), List.of("invalid UUID format")),
             arguments(validUuid, -1, validName, List.of("position"), List.of("must be greater than 0")),
             arguments(validUuid, 0, validName, List.of("position"), List.of("must be greater than 0")),
             arguments(validUuid, validPosition, null, List.of("name"), List.of("must not be blank")),

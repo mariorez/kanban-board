@@ -20,7 +20,7 @@ public class UpdateBucketHandler implements Handler<UpdateBucketCommand> {
 
     public void handle(UpdateBucketCommand command) {
 
-        Optional<Bucket> bucketOptional = repository.findByUuid(command.uuid());
+        Optional<Bucket> bucketOptional = repository.findByUuid(command.getUuid());
 
         if (!bucketOptional.isPresent()) {
             throw new BucketNotExistentException(BUCKET_NOT_EXIST);
@@ -29,8 +29,8 @@ public class UpdateBucketHandler implements Handler<UpdateBucketCommand> {
         var bucket = bucketOptional.get();
 
         bucket
-            .setPosition(command.position())
-            .setName(command.name());
+            .setPosition(command.getPosition())
+            .setName(command.getName());
 
         repository.update(bucket);
     }

@@ -92,8 +92,8 @@ class UpdateBucketIT extends IntegrationHelper {
         var invalidTextGreatherThan100Chars = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras fringilla elit elementum, ullamcorper turpis consequat.";
 
         return Stream.of(
-            arguments("null", validPosition, validName, List.of("id"), List.of("null")),
-            arguments("    ", validPosition, validName, List.of("code"), List.of("1001")),
+            arguments("null", validPosition, validName, List.of("uuid"), List.of("invalid UUID format")),
+            arguments("    ", validPosition, validName, List.of("uuid"), List.of("invalid UUID format")),
             arguments(validUuid, -1, validName, List.of("position"), List.of("must be greater than 0")),
             arguments(validUuid, 0, validName, List.of("position"), List.of("must be greater than 0")),
             arguments(validUuid, validPosition, null, List.of("name"), List.of("must not be blank")),

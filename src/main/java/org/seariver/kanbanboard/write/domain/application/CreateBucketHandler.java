@@ -16,9 +16,9 @@ public class CreateBucketHandler implements Handler<CreateBucketCommand> {
     public void handle(CreateBucketCommand command) {
 
         var bucket = new Bucket()
-            .setUuid(command.uuid())
-            .setPosition(command.position())
-            .setName(command.name());
+            .setUuid(command.getUuid())
+            .setPosition(command.getPosition())
+            .setName(command.getName());
 
         repository.create(bucket);
     }
