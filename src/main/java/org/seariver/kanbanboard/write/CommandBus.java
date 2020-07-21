@@ -2,7 +2,7 @@ package org.seariver.kanbanboard.write;
 
 import org.seariver.kanbanboard.write.domain.application.Command;
 import org.seariver.kanbanboard.write.domain.application.Handler;
-import org.seariver.kanbanboard.write.event.CommandEvent;
+import org.seariver.kanbanboard.write.observable.CommandEvent;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
@@ -20,7 +20,7 @@ public class CommandBus {
 
     public void execute(Command command) {
 
-        CommandEvent event = new CommandEvent(this, command);
+        var event = new CommandEvent(this, command);
 
         try {
             handle(command);

@@ -1,4 +1,4 @@
-package org.seariver.kanbanboard.write.event;
+package org.seariver.kanbanboard.write.observable;
 
 import org.seariver.kanbanboard.write.domain.exception.DomainException;
 import org.slf4j.Logger;
