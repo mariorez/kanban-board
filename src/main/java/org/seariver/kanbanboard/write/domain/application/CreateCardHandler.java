@@ -21,14 +21,14 @@ public class CreateCardHandler implements Handler<CreateCardCommand> {
 
     public void handle(CreateCardCommand command) {
 
-        Optional<Bucket> bucketOptional = bucketRepository.findByExteranlId(command.bucketId());
+        Optional<Bucket> bucketOptional = bucketRepository.findByExteranlId(command.getBucketExternalId());
         var bucket = bucketOptional.get();
 
         var card = new Card()
-            .setBucketId(bucket.getId())
-            .setExternalId(command.externalId())
-            .setPosition(command.position())
-            .setName(command.name());
+                .setBucketId(bucket.getId())
+                .setExternalId(command.getExternalId())
+                .setPosition(command.getPosition())
+                .setName(command.getName());
 
         cardRepository.create(card);
     }

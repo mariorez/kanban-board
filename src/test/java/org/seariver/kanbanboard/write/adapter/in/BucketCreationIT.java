@@ -18,7 +18,6 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -46,8 +45,7 @@ class BucketCreationIT extends IntegrationHelper {
                 .perform(post(ENDPOINT_PATH)
                         .contentType("application/json")
                         .content(payload))
-                .andExpect(status().isCreated())
-                .andExpect(header().string("Location", String.format("/v1/buckets/%s", externalId)));
+                .andExpect(status().isCreated());
 
         // then
         mockMvc

@@ -30,8 +30,9 @@ public class WriteBucketRepositoryImpl implements WriteBucketRepository {
         try {
             var sql = """
                     INSERT INTO bucket(%s, %s, %s)
-                    values (:%s, :%s, :%s)
-                    """.formatted(EXTERNAL_ID_FIELD, POSITION_FIELD, NAME_FIELD, EXTERNAL_ID_FIELD, POSITION_FIELD, NAME_FIELD);
+                    values (:%s, :%s, :%s)""".formatted(
+                    EXTERNAL_ID_FIELD, POSITION_FIELD, NAME_FIELD,
+                    EXTERNAL_ID_FIELD, POSITION_FIELD, NAME_FIELD);
 
             MapSqlParameterSource parameters = new MapSqlParameterSource()
                     .addValue(EXTERNAL_ID_FIELD, bucket.getExternalId())
@@ -66,9 +67,13 @@ public class WriteBucketRepositoryImpl implements WriteBucketRepository {
 
         var sql = """
                 UPDATE bucket
-                SET position = :%s, name =:%s
-                WHERE %s = :%s
-                """.formatted(POSITION_FIELD, NAME_FIELD, EXTERNAL_ID_FIELD, EXTERNAL_ID_FIELD);
+                SET
+                    %s = :%s,
+                    %s = :%s
+                WHERE %s = :%s""".formatted(
+                POSITION_FIELD, POSITION_FIELD,
+                NAME_FIELD, NAME_FIELD,
+                EXTERNAL_ID_FIELD, EXTERNAL_ID_FIELD);
 
         MapSqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue(EXTERNAL_ID_FIELD, bucket.getExternalId())
@@ -83,8 +88,8 @@ public class WriteBucketRepositoryImpl implements WriteBucketRepository {
         var sql = """
                 SELECT %s, %s, %s, %s, %s, %s
                 FROM bucket
-                WHERE %s = :%s
-                """.formatted(ID_FIELD, EXTERNAL_ID_FIELD, POSITION_FIELD, NAME_FIELD, CREATED_AT_FIELD, UPDATED_AT_FIELD,
+                WHERE %s = :%s""".formatted(
+                ID_FIELD, EXTERNAL_ID_FIELD, POSITION_FIELD, NAME_FIELD, CREATED_AT_FIELD, UPDATED_AT_FIELD,
                 EXTERNAL_ID_FIELD, EXTERNAL_ID_FIELD);
 
         MapSqlParameterSource parameters = new MapSqlParameterSource()
@@ -112,9 +117,12 @@ public class WriteBucketRepositoryImpl implements WriteBucketRepository {
         var sql = """
                 SELECT %S, %S, %S, %S, %S, %S
                 FROM bucket
-                WHERE %s = :%s OR %s = :%s
-                """.formatted(ID_FIELD, EXTERNAL_ID_FIELD, POSITION_FIELD, NAME_FIELD, CREATED_AT_FIELD, UPDATED_AT_FIELD,
-                EXTERNAL_ID_FIELD, EXTERNAL_ID_FIELD, POSITION_FIELD, POSITION_FIELD);
+                WHERE
+                    %s = :%s OR
+                    %s = :%s""".formatted(
+                ID_FIELD, EXTERNAL_ID_FIELD, POSITION_FIELD, NAME_FIELD, CREATED_AT_FIELD, UPDATED_AT_FIELD,
+                EXTERNAL_ID_FIELD, EXTERNAL_ID_FIELD,
+                POSITION_FIELD, POSITION_FIELD);
 
         MapSqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue(EXTERNAL_ID_FIELD, externalId)

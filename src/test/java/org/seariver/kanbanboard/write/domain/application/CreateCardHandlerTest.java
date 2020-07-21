@@ -27,15 +27,15 @@ public class CreateCardHandlerTest extends TestHelper {
 
         // given
         var bucketId = 100L;
-        var externalId = UUID.randomUUID();
         var bucketExternalId = UUID.randomUUID();
+        var externalId = UUID.randomUUID();
         var position = faker.number().randomDouble(3, 1, 10);
         var name = faker.pokemon().name();
-        CreateCardCommand command = new CreateCardCommand(externalId, bucketExternalId, position, name);
+        CreateCardCommand command = new CreateCardCommand(bucketExternalId.toString(), externalId.toString(), position, name);
         var bucketRepository = mock(WriteBucketRepository.class);
         var cardRepository = mock(WriteCardRepository.class);
         when(bucketRepository.findByExteranlId(bucketExternalId)).thenReturn(
-            Optional.of(new Bucket().setId(bucketId).setExternalId(bucketExternalId)));
+                Optional.of(new Bucket().setId(bucketId).setExternalId(bucketExternalId)));
 
         // when
         CreateCardHandler handler = new CreateCardHandler(bucketRepository, cardRepository);
@@ -45,8 +45,8 @@ public class CreateCardHandlerTest extends TestHelper {
         verify(bucketRepository).findByExteranlId(bucketExternalId);
         verify(cardRepository).create(captor.capture());
         var card = captor.getValue();
-        assertThat(card.getBucketId()).isEqualTo(bucketId);
         assertThat(card.getExternalId()).isEqualTo(externalId);
+        assertThat(card.getBucketId()).isEqualTo(bucketId);
         assertThat(card.getPosition()).isEqualTo(position);
         assertThat(card.getName()).isEqualTo(name);
     }
