@@ -80,6 +80,7 @@ class WriteBucketRepositoryImplTest extends DataSourceHelper {
 
     @Test
     void WHEN_UpdatingBucket_WITH_ValidData_MUST_SaveOnDatabase() {
+
         // given
         var id = UUID.fromString("3731c747-ea27-42e5-a52b-1dfbfa9617db");
         var actualBucket = repository.findByUuid(id).get();

@@ -36,7 +36,7 @@ public class WriteBucketController {
     public ResponseEntity<String> update(@Valid @NotNull @PathVariable(name = "id") String uuid,
                                          @RequestBody BucketInput dto) {
 
-        commandBus.execute(new UpdateBucketCommand(uuid, dto.position(), dto.name()));
+        commandBus.execute(new UpdateBucketCommand(uuid, dto.name()));
 
         return ResponseEntity.noContent().build();
     }

@@ -17,18 +17,18 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @Tag("unit")
-public class UpdateBucketCommandHandlerTest extends TestHelper {
+public class UpdateBucketHandlerTest extends TestHelper {
 
     @Test
     void GIVEN_ValidCommand_MUST_UpdateBucketInDatabase() {
 
         // given
         var uuid = "6d9db741-ef57-4d5a-ac0f-34f68fb0ab5e";
-        var position = faker.number().randomDouble(3, 1, 10);
         var name = faker.pokemon().name();
-        var command = new UpdateBucketCommand(uuid, position, name);
+        int originalPosition = 123;
+        var command = new UpdateBucketCommand(uuid, name);
         var repository = mock(WriteBucketRepository.class);
-        var bucket = new Bucket().setUuid(UUID.fromString(uuid)).setPosition(123).setName("FOOBAR");
+        var bucket = new Bucket().setUuid(UUID.fromString(uuid)).setPosition(originalPosition).setName("FOOBAR");
         when(repository.findByUuid(UUID.fromString(uuid))).thenReturn(Optional.of(bucket));
 
         // when
@@ -39,7 +39,7 @@ public class UpdateBucketCommandHandlerTest extends TestHelper {
         verify(repository).findByUuid(UUID.fromString(uuid));
         verify(repository).update(bucket);
         assertThat(bucket.getUuid()).isEqualTo(UUID.fromString(uuid));
-        assertThat(bucket.getPosition()).isEqualTo(position);
+        assertThat(bucket.getPosition()).isEqualTo(originalPosition);
         assertThat(bucket.getName()).isEqualTo(name);
     }
 
@@ -48,7 +48,7 @@ public class UpdateBucketCommandHandlerTest extends TestHelper {
 
         // given
         var uuid = "019641f6-6e9e-4dd9-ab02-e864a3dfa016";
-        var command = new UpdateBucketCommand(uuid, 1, "WHATEVER");
+        var command = new UpdateBucketCommand(uuid, "WHATEVER");
         var repository = mock(WriteBucketRepository.class);
         when(repository.findByUuid(UUID.fromString(uuid))).thenReturn(Optional.empty());
 
