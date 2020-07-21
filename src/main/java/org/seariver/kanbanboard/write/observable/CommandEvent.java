@@ -20,6 +20,14 @@ public class CommandEvent {
         this.command = command;
     }
 
+    public Command getCommand() {
+        return command;
+    }
+
+    public String getOrigin() {
+        return getCommand().getClass().getSimpleName();
+    }
+
     public Exception getException() {
         return exception;
     }
@@ -54,11 +62,11 @@ public class CommandEvent {
 
     public String toJson() {
 
-        var mapper = new ObjectMapper();
-        Map<String, Object> message = new HashMap<>(Map.of("event", command.toString()));
-        message.put("elapsedTimeInMilli", getElapsedTimeInMilli());
-
         try {
+            var mapper = new ObjectMapper();
+            Map<String, Object> message = new HashMap<>(Map.of("event", getOrigin()));
+            message.put("content", getCommand());
+            message.put("elapsedTimeInMilli", getElapsedTimeInMilli());
 
             if (hasError()) {
                 message.put("message", exception.getMessage());

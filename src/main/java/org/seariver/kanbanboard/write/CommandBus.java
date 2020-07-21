@@ -28,6 +28,7 @@ public class CommandBus {
             event.setException(exception);
             throw exception;
         } finally {
+            event.stopTimer();
             publisher.publishEvent(event);
         }
     }
