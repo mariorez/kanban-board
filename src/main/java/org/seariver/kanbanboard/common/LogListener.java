@@ -1,4 +1,4 @@
-package org.seariver.kanbanboard.write.observable;
+package org.seariver.kanbanboard.common;
 
 import org.seariver.kanbanboard.write.domain.exception.DomainException;
 import org.slf4j.Logger;
@@ -14,7 +14,7 @@ public class LogListener {
 
     @Async
     @EventListener
-    void onEventOccur(CommandEvent event) {
+    void onEventOccur(Event event) {
 
         if (event.isSuccess()) {
             if (logger.isInfoEnabled()) logger.info(event.toJson());

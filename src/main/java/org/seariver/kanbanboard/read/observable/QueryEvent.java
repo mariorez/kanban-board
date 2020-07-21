@@ -1,29 +1,29 @@
-package org.seariver.kanbanboard.write.observable;
+package org.seariver.kanbanboard.read.observable;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.seariver.kanbanboard.common.Event;
-import org.seariver.kanbanboard.write.domain.application.Command;
+import org.seariver.kanbanboard.read.domain.application.Query;
 import org.seariver.kanbanboard.write.domain.exception.DomainException;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class CommandEvent extends Event {
+public class QueryEvent extends Event {
 
-    private final Command command;
+    private final Query query;
 
-    public CommandEvent(Command command) {
+    public QueryEvent(Query query) {
         startTimer();
-        this.command = command;
+        this.query = query;
     }
 
-    public Command getCommand() {
-        return command;
+    public Query getQuery() {
+        return query;
     }
 
     public String getOrigin() {
-        return getCommand().getClass().getSimpleName();
+        return getQuery().getClass().getSimpleName();
     }
 
     public String toJson() {
@@ -31,7 +31,7 @@ public class CommandEvent extends Event {
         try {
             var mapper = new ObjectMapper();
             Map<String, Object> message = new HashMap<>(Map.of("event", getOrigin()));
-            message.put("content", getCommand());
+            message.put("content", getQuery());
             message.put("elapsedTimeInMilli", getElapsedTimeInMilli());
 
             if (hasError()) {
@@ -45,7 +45,8 @@ public class CommandEvent extends Event {
             return mapper.writeValueAsString(message);
 
         } catch (JsonProcessingException jsonException) {
-            return String.format("%s - %s", command, jsonException);
+            return String.format("%s - %s", query, jsonException);
         }
     }
+
 }

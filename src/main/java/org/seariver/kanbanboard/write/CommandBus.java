@@ -20,7 +20,7 @@ public class CommandBus {
 
     public void execute(Command command) {
 
-        var event = new CommandEvent(this, command);
+        var event = new CommandEvent(command);
 
         try {
             handle(command);
