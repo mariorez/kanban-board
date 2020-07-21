@@ -33,8 +33,6 @@ mvn spring-boot:run
 
 ## Documentos complementares
 
-Slide em PDF: ["Test First: Como eu faço?"](Test-First_Como-eu-Faco.pdf)
-
 ![Bucket](kanban-board-bucket.png)
 
 ![Card](kanban-board-card.png)

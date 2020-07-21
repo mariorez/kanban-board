@@ -2,13 +2,13 @@
 FRONTEND -> WriteBucketController: JSON Payload
 WriteBucketController -> CommandBus: CreateBucketCommand
 CommandBus --> CommandBus: try: creates event
-CommandBus -> CreateBucketCommandHandler: CreateBucketCommand
-CreateBucketCommandHandler -> WriteBucketRepository: Bucket
+CommandBus -> CreateBucketHandler: CreateBucketCommand
+CreateBucketHandler -> WriteBucketRepository: Bucket
 WriteBucketRepository -> DATABASE: create statement
 CommandBus --> CommandBus: catch: set exception
 DATABASE -> WriteBucketRepository
-WriteBucketRepository -> CreateBucketCommandHandler
-CreateBucketCommandHandler -> CommandBus
+WriteBucketRepository -> CreateBucketHandler
+CreateBucketHandler -> CommandBus
 CommandBus -> WriteBucketController
 CommandBus --> CommandBus: finally: publishes event
 WriteBucketController -> FRONTEND: HTTP 201 created
