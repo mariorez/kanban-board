@@ -32,7 +32,7 @@ public class UpdateBucketCommandHandlerTest extends TestHelper {
         when(repository.findByUuid(uuid)).thenReturn(Optional.of(bucket));
 
         // when
-        var handler = new UpdateBucketCommandHandler(repository);
+        var handler = new UpdateBucketHandler(repository);
         handler.handle(command);
 
         // then
@@ -53,7 +53,7 @@ public class UpdateBucketCommandHandlerTest extends TestHelper {
         when(repository.findByUuid(uuid)).thenReturn(Optional.empty());
 
         // when
-        var handler = new UpdateBucketCommandHandler(repository);
+        var handler = new UpdateBucketHandler(repository);
         var exception = assertThrows(BucketNotExistentException.class, () -> handler.handle(command));
 
         // then

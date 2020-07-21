@@ -9,12 +9,12 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class CreateCardCommandHandler implements Handler<CreateCardCommand> {
+public class CreateCardHandler implements Handler<CreateCardCommand> {
 
     private WriteBucketRepository bucketRepository;
     private WriteCardRepository cardRepository;
 
-    public CreateCardCommandHandler(WriteBucketRepository bucketRepository, WriteCardRepository cardRepository) {
+    public CreateCardHandler(WriteBucketRepository bucketRepository, WriteCardRepository cardRepository) {
         this.bucketRepository = bucketRepository;
         this.cardRepository = cardRepository;
     }

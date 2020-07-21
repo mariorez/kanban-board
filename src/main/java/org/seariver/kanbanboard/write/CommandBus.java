@@ -33,8 +33,8 @@ public class CommandBus {
     }
 
     private void handle(Command command) {
-        String handlerName = String.format("%sHandler", command.getClass().getSimpleName());
-        String handlerBeanName = Character.toLowerCase(handlerName.charAt(0)) + handlerName.substring(1);
+        var handlerName = command.getClass().getSimpleName().replace("Command", "Handler");
+        var handlerBeanName = Character.toLowerCase(handlerName.charAt(0)) + handlerName.substring(1);
         Handler<Command> handler = (Handler) context.getBean(handlerBeanName);
         handler.handle(command);
     }

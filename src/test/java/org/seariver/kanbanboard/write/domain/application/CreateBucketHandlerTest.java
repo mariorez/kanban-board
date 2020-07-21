@@ -14,7 +14,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 @Tag("unit")
-public class CreateBucketCommandHandlerTest extends TestHelper {
+public class CreateBucketHandlerTest extends TestHelper {
 
     private ArgumentCaptor<Bucket> captor = ArgumentCaptor.forClass(Bucket.class);
 
@@ -29,7 +29,7 @@ public class CreateBucketCommandHandlerTest extends TestHelper {
         var repository = mock(WriteBucketRepository.class);
 
         // when
-        var handler = new CreateBucketCommandHandler(repository);
+        var handler = new CreateBucketHandler(repository);
         handler.handle(command);
 
         // then

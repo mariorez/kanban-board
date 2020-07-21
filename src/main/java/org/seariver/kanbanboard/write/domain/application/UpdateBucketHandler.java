@@ -10,11 +10,11 @@ import java.util.Optional;
 import static org.seariver.kanbanboard.write.domain.exception.DomainException.Error.BUCKET_NOT_EXIST;
 
 @Service
-public class UpdateBucketCommandHandler implements Handler<UpdateBucketCommand> {
+public class UpdateBucketHandler implements Handler<UpdateBucketCommand> {
 
     private WriteBucketRepository repository;
 
-    public UpdateBucketCommandHandler(WriteBucketRepository repository) {
+    public UpdateBucketHandler(WriteBucketRepository repository) {
         this.repository = repository;
     }
 

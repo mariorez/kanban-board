@@ -18,7 +18,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @Tag("unit")
-public class CreateCardCommandHandlerTest extends TestHelper {
+public class CreateCardHandlerTest extends TestHelper {
 
     private ArgumentCaptor<Card> captor = ArgumentCaptor.forClass(Card.class);
 
@@ -38,7 +38,7 @@ public class CreateCardCommandHandlerTest extends TestHelper {
             Optional.of(new Bucket().setId(bucketId).setUuid(bucketUuid)));
 
         // when
-        CreateCardCommandHandler handler = new CreateCardCommandHandler(bucketRepository, cardRepository);
+        CreateCardHandler handler = new CreateCardHandler(bucketRepository, cardRepository);
         handler.handle(command);
 
         // then

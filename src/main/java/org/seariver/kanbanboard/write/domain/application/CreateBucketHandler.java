@@ -5,11 +5,11 @@ import org.seariver.kanbanboard.write.domain.core.WriteBucketRepository;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CreateBucketCommandHandler implements Handler<CreateBucketCommand> {
+public class CreateBucketHandler implements Handler<CreateBucketCommand> {
 
     private final WriteBucketRepository repository;
 
-    public CreateBucketCommandHandler(WriteBucketRepository repository) {
+    public CreateBucketHandler(WriteBucketRepository repository) {
         this.repository = repository;
     }
 
