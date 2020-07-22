@@ -1,7 +1,9 @@
 package org.seariver.kanbanboard.read.adapter.out;
 
 import helper.DataSourceHelper;
+import helper.TestHelper;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.seariver.kanbanboard.read.domain.core.BucketDto;
 import org.seariver.kanbanboard.read.domain.core.ReadBucketRepository;
@@ -10,13 +12,14 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ReadBucketRepositoryImplTest extends DataSourceHelper {
+@Tag("unit")
+public class ReadBucketRepositoryImplTest extends TestHelper {
 
     private ReadBucketRepositoryImpl repository;
 
     @BeforeEach
     void setup() {
-        repository = new ReadBucketRepositoryImpl(dataSource);
+        repository = new ReadBucketRepositoryImpl(new DataSourceHelper());
     }
 
     @Test
@@ -32,7 +35,7 @@ public class ReadBucketRepositoryImplTest extends DataSourceHelper {
 
         // then
         assertThat(actual)
-            .extracting(BucketDto::getName)
-            .containsExactlyElementsOf(List.of("FIRST-BUCKET", "SECOND-BUCKET"));
+                .extracting(BucketDto::getName)
+                .containsExactlyElementsOf(List.of("FIRST-BUCKET", "SECOND-BUCKET"));
     }
 }

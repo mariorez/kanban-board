@@ -1,7 +1,9 @@
 package org.seariver.kanbanboard.write.adapter.out;
 
 import helper.DataSourceHelper;
+import helper.TestHelper;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -19,13 +21,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 
-class WriteBucketRepositoryImplTest extends DataSourceHelper {
+@Tag("unit")
+class WriteBucketRepositoryImplTest extends TestHelper {
 
     private WriteBucketRepositoryImpl repository;
 
     @BeforeEach
     void setup() {
-        repository = new WriteBucketRepositoryImpl(dataSource);
+        repository = new WriteBucketRepositoryImpl(new DataSourceHelper());
     }
 
     @Test
@@ -40,9 +43,9 @@ class WriteBucketRepositoryImplTest extends DataSourceHelper {
                                                                     String name) {
         // given
         var expected = new Bucket()
-            .setExternalId(id)
-            .setPosition(position)
-            .setName(name);
+                .setExternalId(id)
+                .setPosition(position)
+                .setName(name);
 
         // when
         repository.create(expected);
@@ -65,9 +68,9 @@ class WriteBucketRepositoryImplTest extends DataSourceHelper {
                                                                           Map<String, Object> expectedError) {
         // given
         var expected = new Bucket()
-            .setExternalId(id)
-            .setPosition(position)
-            .setName("WHATEVER");
+                .setExternalId(id)
+                .setPosition(position)
+                .setName("WHATEVER");
 
         // then
         DuplicatedDataException exception = assertThrows(DuplicatedDataException.class, () -> repository.create(expected));
@@ -105,12 +108,12 @@ class WriteBucketRepositoryImplTest extends DataSourceHelper {
 
     private static Stream<Arguments> validDataProvider() {
         return Stream.of(
-            arguments(UUID.randomUUID(),
-                faker.number().randomDigitNotZero(),
-                faker.pokemon().name()),
-            arguments(UUID.randomUUID(),
-                faker.number().randomDouble(3, 1, 10),
-                "EXISTENT NAME")
+                arguments(UUID.randomUUID(),
+                        faker.number().randomDigitNotZero(),
+                        faker.pokemon().name()),
+                arguments(UUID.randomUUID(),
+                        faker.number().randomDouble(3, 1, 10),
+                        "EXISTENT NAME")
         );
     }
 
@@ -122,10 +125,10 @@ class WriteBucketRepositoryImplTest extends DataSourceHelper {
         var validPosition = faker.number().randomDouble(3, 1, 10);
 
         return Stream.of(
-            arguments(existentExternalId, validPosition, Map.of("id", existentExternalId)),
-            arguments(UUID.randomUUID(), existentPositionSameRegister, Map.of("position", existentPositionSameRegister)),
-            arguments(existentExternalId, existentPositionSameRegister, Map.of("id", existentExternalId, "position", existentPositionSameRegister)),
-            arguments(existentExternalId, existentPositionAnotherRegister, Map.of("id", existentExternalId, "position", existentPositionAnotherRegister))
+                arguments(existentExternalId, validPosition, Map.of("id", existentExternalId)),
+                arguments(UUID.randomUUID(), existentPositionSameRegister, Map.of("position", existentPositionSameRegister)),
+                arguments(existentExternalId, existentPositionSameRegister, Map.of("id", existentExternalId, "position", existentPositionSameRegister)),
+                arguments(existentExternalId, existentPositionAnotherRegister, Map.of("id", existentExternalId, "position", existentPositionAnotherRegister))
         );
     }
 }
