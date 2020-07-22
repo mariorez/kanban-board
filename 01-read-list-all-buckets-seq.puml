@@ -1,0 +1,17 @@
+@startuml
+FRONTEND -> ReadBucketController: JSON : Payload
+ReadBucketController -> QueryBus: ListAllBucketsQuery
+QueryBus --> QueryBus: try: creates event
+QueryBus -> ListAllBucketsResolver: ListAllBucketsQuery
+ListAllBucketsResolver -> ReadBucketRepository
+ReadBucketRepository -> DATABASE: select statement
+QueryBus --> QueryBus: catch: set exception
+DATABASE -> ReadBucketRepository: resultSet
+ReadBucketRepository -> ListAllBucketsResolver
+ListAllBucketsResolver -> ListAllBucketsResolver: setResult(List<BucketDto>)
+ListAllBucketsResolver -> QueryBus: ListAllBucketsQuery
+QueryBus -> ReadBucketController: ListAllBucketsQuery
+ReadBucketController -> ReadBucketController: getResult(List<BucketDto>)
+QueryBus --> QueryBus: finally: publishes event
+ReadBucketController -> FRONTEND: HTTP 200 : JSON Result
+@enduml

@@ -1,8 +1,8 @@
 # Kanban Board Project
 
-**OBS**: Migrei o projeto do framework **SPRING-BOOT** para **QUARKUS**: https://github.com/mariorez/kanban-quarkus
-
 **Videos deste projeto**: https://www.youtube.com/user/mariorez
+
+Versão **QUARKUS**: https://github.com/mariorez/kanban-quarkus
 
 ## Stack utilizada
 
@@ -33,6 +33,10 @@ mvn spring-boot:run
 
 ## Documentos complementares
 
-![Bucket](kanban-board-bucket.png)
+![Create Bucket Diagram](01_write_create_bucket_seq.png)
 
-![Card](kanban-board-card.png)
+![Read Bucket Diagram](01_read_list_all_buckets_seq.png)
+
+![Bucket](draw-bucket.png)
+
+![Card](draw-card.png)
