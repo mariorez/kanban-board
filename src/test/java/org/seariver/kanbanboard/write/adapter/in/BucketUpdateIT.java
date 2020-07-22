@@ -23,7 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 class BucketUpdateIT extends IntegrationHelper {
 
-    public static final String ENDPOINT_PATH = "/v1/buckets/{id}";
+    private static final String ENDPOINT_PATH = "/v1/buckets/{id}";
 
     @Test
     void GIVEN_ValidPayload_MUST_ReturnSuccess() throws Exception {

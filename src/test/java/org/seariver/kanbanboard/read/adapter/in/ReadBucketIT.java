@@ -13,11 +13,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 class ReadBucketIT extends IntegrationHelper {
 
+    private static final String ENDPOINT_PATH = "/v1/buckets";
+
     @Test
     void WHEN_GetAllBuckets_MUST_ListByPositionOrder() throws Exception {
 
         mockMvc
-            .perform(get("/v1/buckets"))
+            .perform(get(ENDPOINT_PATH))
             .andExpect(status().isOk())
             .andExpect(content().contentType(APPLICATION_JSON))
             .andExpect(jsonPath("$.length()", greaterThanOrEqualTo(2)))
