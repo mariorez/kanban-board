@@ -159,6 +159,7 @@
                 <configuration>
                     <release>${java.version}</release>
                     <compilerArgs>--enable-preview</compilerArgs>
+                    <release>${java.version}</release>
                 </configuration>
             </plugin>
 
