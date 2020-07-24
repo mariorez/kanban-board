@@ -2,14 +2,14 @@ package org.seariver.kanbanboard.write.observable;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.seariver.kanbanboard.common.Event;
+import org.seariver.kanbanboard.common.InternalEvent;
 import org.seariver.kanbanboard.write.domain.application.Command;
 import org.seariver.kanbanboard.write.domain.exception.DomainException;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class CommandEvent extends Event {
+public class CommandEvent extends InternalEvent {
 
     private final Command command;
 

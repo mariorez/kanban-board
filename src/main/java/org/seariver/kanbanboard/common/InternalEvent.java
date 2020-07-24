@@ -1,9 +1,9 @@
 package org.seariver.kanbanboard.common;
 
-import static org.seariver.kanbanboard.common.Event.Type.COMMAND;
-import static org.seariver.kanbanboard.common.Event.Type.QUERY;
+import static org.seariver.kanbanboard.common.InternalEvent.Type.COMMAND;
+import static org.seariver.kanbanboard.common.InternalEvent.Type.QUERY;
 
-public abstract class Event {
+public abstract class InternalEvent {
 
     private Exception exception;
     private long startTime;

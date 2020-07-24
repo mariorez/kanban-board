@@ -10,8 +10,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
-import static org.seariver.kanbanboard.common.Event.Type.COMMAND;
-import static org.seariver.kanbanboard.common.Event.Type.QUERY;
+import static org.seariver.kanbanboard.common.InternalEvent.Type.COMMAND;
+import static org.seariver.kanbanboard.common.InternalEvent.Type.QUERY;
 
 @Service
 public class ServiceBus {
@@ -34,7 +34,7 @@ public class ServiceBus {
         execute(event);
     }
 
-    private void execute(Event event) {
+    private void execute(InternalEvent event) {
 
         try {
             run(event);
@@ -47,7 +47,7 @@ public class ServiceBus {
         }
     }
 
-    private void run(Event event) {
+    private void run(InternalEvent event) {
 
         var beanName = Character.toLowerCase(event.getOrigin().charAt(0)) + event.getOrigin().substring(1);
 

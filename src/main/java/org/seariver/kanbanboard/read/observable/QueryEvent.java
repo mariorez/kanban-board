@@ -2,14 +2,14 @@ package org.seariver.kanbanboard.read.observable;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.seariver.kanbanboard.common.Event;
+import org.seariver.kanbanboard.common.InternalEvent;
 import org.seariver.kanbanboard.read.domain.application.Query;
 import org.seariver.kanbanboard.write.domain.exception.DomainException;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class QueryEvent extends Event {
+public class QueryEvent extends InternalEvent {
 
     private final Query query;
 
