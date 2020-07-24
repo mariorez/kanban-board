@@ -1,6 +1,6 @@
 package org.seariver.kanbanboard.read.adapter.in;
 
-import org.seariver.kanbanboard.read.QueryBus;
+import org.seariver.kanbanboard.common.ServiceBus;
 import org.seariver.kanbanboard.read.domain.application.ListAllBucketsQuery;
 import org.seariver.kanbanboard.read.domain.core.BucketDto;
 import org.springframework.http.ResponseEntity;
@@ -14,17 +14,18 @@ import java.util.List;
 @RequestMapping("v1/buckets")
 public class ReadBucketController {
 
-    private QueryBus queryBus;
+    private ServiceBus serviceBus;
 
-    public ReadBucketController(QueryBus queryBus) {
-        this.queryBus = queryBus;
+    public ReadBucketController(ServiceBus serviceBus) {
+        this.serviceBus = serviceBus;
     }
 
     @GetMapping
     public ResponseEntity<List<BucketDto>> listAll() {
 
         var query = new ListAllBucketsQuery();
-        queryBus.execute(query);
+
+        serviceBus.execute(query);
 
         return ResponseEntity.ok(query.getResult());
     }

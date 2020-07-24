@@ -22,8 +22,9 @@ public class CommandEvent extends Event {
         return command;
     }
 
-    public String getOrigin() {
-        return getCommand().getClass().getSimpleName();
+    @Override
+    public Object getSource() {
+        return getCommand();
     }
 
     public String toJson() {
@@ -35,9 +36,9 @@ public class CommandEvent extends Event {
             message.put("elapsedTimeInMilli", getElapsedTimeInMilli());
 
             if (hasError()) {
-                message.put("message", exception.getMessage());
+                message.put("message", getException().getMessage());
 
-                if (exception instanceof DomainException domainException && domainException.hasError()) {
+                if (getException() instanceof DomainException domainException && domainException.hasError()) {
                     message.put("errors", domainException.getErrors().toString());
                 }
             }

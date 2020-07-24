@@ -1,14 +1,45 @@
 package org.seariver.kanbanboard.common;
 
+import static org.seariver.kanbanboard.common.Event.Type.COMMAND;
+import static org.seariver.kanbanboard.common.Event.Type.QUERY;
+
 public abstract class Event {
 
-    protected Exception exception;
-    protected long startTime;
-    protected long stopTime;
+    private Exception exception;
+    private long startTime;
+    private long stopTime;
 
-    public abstract String getOrigin();
+    enum Type {
+
+        COMMAND("Command"),
+        QUERY("Query");
+
+        private String typeName;
+
+        Type(String typeName) {
+            this.typeName = typeName;
+        }
+
+        @Override
+        public String toString() {
+            return typeName;
+        }
+    }
+
+    public abstract Object getSource();
 
     public abstract String toJson();
+
+    public Type getType() {
+
+        if (getOrigin().contains(COMMAND.toString())) return COMMAND;
+        if (getOrigin().contains(QUERY.toString())) return QUERY;
+        return null;
+    }
+
+    public String getOrigin() {
+        return getSource().getClass().getSimpleName();
+    }
 
     public Exception getException() {
         return exception;

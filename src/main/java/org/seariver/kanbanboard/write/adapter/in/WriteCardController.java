@@ -1,7 +1,7 @@
 package org.seariver.kanbanboard.write.adapter.in;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.seariver.kanbanboard.write.CommandBus;
+import org.seariver.kanbanboard.common.ServiceBus;
 import org.seariver.kanbanboard.write.domain.application.CreateCardCommand;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,17 +19,17 @@ import java.net.URISyntaxException;
 @RequestMapping("v1/buckets")
 public class WriteCardController {
 
-    private CommandBus commandBus;
+    private ServiceBus serviceBus;
 
-    public WriteCardController(CommandBus commandBus) {
-        this.commandBus = commandBus;
+    public WriteCardController(ServiceBus serviceBus) {
+        this.serviceBus = serviceBus;
     }
 
     @PostMapping(path = "/{bucketId}/cards")
     public ResponseEntity<String> create(@Valid @NotNull @PathVariable(name = "bucketId") String bucketExternalId,
                                          @RequestBody CardDto dto) throws URISyntaxException {
 
-        commandBus.execute(new CreateCardCommand(bucketExternalId, dto.externalId(), dto.position(), dto.name()));
+        serviceBus.execute(new CreateCardCommand(bucketExternalId, dto.externalId(), dto.position(), dto.name()));
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }

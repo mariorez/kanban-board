@@ -1,7 +1,7 @@
 package org.seariver.kanbanboard.write.adapter.in;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.seariver.kanbanboard.write.CommandBus;
+import org.seariver.kanbanboard.common.ServiceBus;
 import org.seariver.kanbanboard.write.domain.application.CreateBucketCommand;
 import org.seariver.kanbanboard.write.domain.application.MoveBucketCommand;
 import org.seariver.kanbanboard.write.domain.application.UpdateBucketCommand;
@@ -22,16 +22,16 @@ import java.net.URISyntaxException;
 @RequestMapping("v1/buckets")
 public class WriteBucketController {
 
-    private CommandBus commandBus;
+    private ServiceBus serviceBus;
 
-    public WriteBucketController(CommandBus commandBus) {
-        this.commandBus = commandBus;
+    public WriteBucketController(ServiceBus serviceBus) {
+        this.serviceBus = serviceBus;
     }
 
     @PostMapping
     public ResponseEntity<String> create(@RequestBody BucketInput dto) throws URISyntaxException {
 
-        commandBus.execute(new CreateBucketCommand(dto.externalId(), dto.position(), dto.name()));
+        serviceBus.execute(new CreateBucketCommand(dto.externalId(), dto.position(), dto.name()));
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
@@ -40,7 +40,7 @@ public class WriteBucketController {
     public ResponseEntity<String> update(@Valid @NotNull @PathVariable(name = "id") String externalId,
                                          @RequestBody BucketInput dto) {
 
-        commandBus.execute(new UpdateBucketCommand(externalId, dto.name()));
+        serviceBus.execute(new UpdateBucketCommand(externalId, dto.name()));
 
         return ResponseEntity.noContent().build();
     }
@@ -49,7 +49,7 @@ public class WriteBucketController {
     public ResponseEntity<String> move(@Valid @NotNull @PathVariable(name = "id") String externalId,
                                        @RequestBody BucketInput dto) {
 
-        commandBus.execute(new MoveBucketCommand(externalId, dto.position()));
+        serviceBus.execute(new MoveBucketCommand(externalId, dto.position()));
 
         return ResponseEntity.noContent().build();
     }
