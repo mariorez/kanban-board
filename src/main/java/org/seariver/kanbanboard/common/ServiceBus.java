@@ -10,9 +10,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
-import static org.seariver.kanbanboard.common.InternalEvent.Type.COMMAND;
-import static org.seariver.kanbanboard.common.InternalEvent.Type.QUERY;
-
 @Service
 public class ServiceBus {
 
@@ -49,18 +46,20 @@ public class ServiceBus {
 
     private void run(InternalEvent event) {
 
-        var beanName = Character.toLowerCase(event.getOrigin().charAt(0)) + event.getOrigin().substring(1);
+        var beanName = event.getOrigin().substring(0, 1).toLowerCase() + event.getOrigin().substring(1);
 
-        if (event.getType() == COMMAND) {
-            var handlerBeanName = beanName.replace("Command", "Handler");
-            Handler<Command> handler = (Handler) context.getBean(handlerBeanName);
-            handler.handle((Command) event.getSource());
-        } else if (event.getType() == QUERY) {
-            var resolverBeanName = beanName.replace("Query", "Resolver");
-            Resolver<Query> resolver = (Resolver) context.getBean(resolverBeanName);
-            resolver.resolve((Query) event.getSource());
-        } else {
-            throw new ServiceBusInvalidObjectException(event);
+        switch (event.getType()) {
+            case COMMAND -> {
+                var handlerBeanName = beanName.replace("Command", "Handler");
+                Handler<Command> handler = (Handler) context.getBean(handlerBeanName);
+                handler.handle((Command) event.getSource());
+            }
+            case QUERY -> {
+                var resolverBeanName = beanName.replace("Query", "Resolver");
+                Resolver<Query> resolver = (Resolver) context.getBean(resolverBeanName);
+                resolver.resolve((Query) event.getSource());
+            }
+            default -> throw new ServiceBusInvalidObjectException(event);
         }
     }
 }
