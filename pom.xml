@@ -20,7 +20,7 @@
         <commons-dbcp2.version>2.7.0</commons-dbcp2.version>
         <springfox-swagger2.version>2.9.2</springfox-swagger2.version>
         <jacoco-maven-plugin.version>0.8.5</jacoco-maven-plugin.version>
-        <javafaker.version>0.12</javafaker.version>
+        <javafaker.version>1.0.2</javafaker.version>
         <pitest-maven.version>1.5.2</pitest-maven.version>
         <pitest-junit5-plugin.version>0.12</pitest-junit5-plugin.version>
         <logzio-logback-appender.version>1.0.24</logzio-logback-appender.version>
@@ -121,13 +121,6 @@
         </dependency>
 
         <dependency>
-            <groupId>com.github.javafaker</groupId>
-            <artifactId>javafaker</artifactId>
-            <version>${javafaker.version}</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <scope>test</scope>
@@ -139,6 +132,13 @@
             <version>${commons-dbcp2.version}</version>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>com.github.javafaker</groupId>
+            <artifactId>javafaker</artifactId>
+            <version>${javafaker.version}</version>
+        </dependency>
+
     </dependencies>
 
     <build>
