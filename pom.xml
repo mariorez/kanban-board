@@ -18,7 +18,7 @@
         <java.version>17</java.version>
         <spring-cloud.version>2020.0.4</spring-cloud.version>
         <commons-dbcp2.version>2.7.0</commons-dbcp2.version>
-        <springfox-swagger2.version>2.9.2</springfox-swagger2.version>
+        <springfox-swagger2.version>2.10.0</springfox-swagger2.version>
         <jacoco-maven-plugin.version>0.8.5</jacoco-maven-plugin.version>
         <javafaker.version>1.0.2</javafaker.version>
         <pitest-maven.version>1.5.2</pitest-maven.version>
